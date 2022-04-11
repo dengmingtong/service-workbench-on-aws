@@ -62,7 +62,7 @@ class SharePortfolioWithTargetAcc extends StepBase {
     const xAccEnvMgmtRoleArn = resolvedVars.xAccEnvMgmtRoleArn || envMgmtRoleArn;
     const externalId = resolvedVars.externalId;
 
-    // The ARN of the role has the format "arn:aws:iam::<aws-account-id>:role/<role-name>"
+    // The ARN of the role has the format "arn:aws-cn:iam::<aws-account-id>:role/<role-name>"
     const toAccId = roleArn => _.split(roleArn, ':')[4];
     const srcAwsAccountId = toAccId(envMgmtRoleArn);
     const targetAwsAccountId = toAccId(xAccEnvMgmtRoleArn);

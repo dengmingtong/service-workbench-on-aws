@@ -14,8 +14,8 @@ Resources:
               Service: lambda.amazonaws.com
             Action: 'sts:AssumeRole'
       ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-        - arn:aws:iam::aws:policy/AmazonCognitoPowerUser
+        - arn:aws-cn:iam::aws-cn:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws-cn:iam::aws-cn:policy/AmazonCognitoPowerUser
       Policies:
         - PolicyName: db-access
           PolicyDocument:

@@ -93,7 +93,7 @@ function createAllowStatement(statementId, actions, resource, condition) {
 }
 
 function getRootArnForAccount(memberAccountId) {
-  return `arn:aws:iam::${memberAccountId}:root`;
+  return `arn:aws-cn:iam::${memberAccountId}:root`;
 }
 
 function addEmptyPrincipalIfNotPresent(statement) {
@@ -109,7 +109,7 @@ function addEmptyPrincipalIfNotPresent(statement) {
 const getStatementParamsFn = (bucket, prefix) => {
   return {
     statementId: `Get:${prefix}`,
-    resource: [`arn:aws:s3:::${bucket}/${prefix}*`],
+    resource: [`arn:aws-cn:s3:::${bucket}/${prefix}*`],
     actions: ['s3:GetObject'],
   };
 };
@@ -117,7 +117,7 @@ const getStatementParamsFn = (bucket, prefix) => {
 const listStatementParamsFn = (bucket, prefix) => {
   return {
     statementId: `List:${prefix}`,
-    resource: `arn:aws:s3:::${bucket}`,
+    resource: `arn:aws-cn:s3:::${bucket}`,
     actions: ['s3:ListBucket'],
     condition: {
       StringLike: {
@@ -130,7 +130,7 @@ const listStatementParamsFn = (bucket, prefix) => {
 const putStatementParamsFn = (bucket, prefix) => {
   return {
     statementId: `Put:${prefix}`,
-    resource: [`arn:aws:s3:::${bucket}/${prefix}*`],
+    resource: [`arn:aws-cn:s3:::${bucket}/${prefix}*`],
     actions: [
       's3:GetObject',
       's3:GetObjectVersion',

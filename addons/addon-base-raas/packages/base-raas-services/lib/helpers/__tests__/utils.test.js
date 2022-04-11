@@ -15,8 +15,8 @@
 const { addEmptyPrincipalIfNotPresent, addAccountToStatement } = require('../utils');
 
 describe('utils functions', () => {
-  const awsArn = 'arn:aws:s3:::bucket-data/users/example@example.com/my-egress-store-1';
-  const rootArn = 'arn:aws:iam::01234567891234:root';
+  const awsArn = 'arn:aws-cn:s3:::bucket-data/users/example@example.com/my-egress-store-1';
+  const rootArn = 'arn:aws-cn:iam::01234567891234:root';
   const accountId = '01234567891234';
   describe('addEmptyPrincipalIfNotPresent', () => {
     it('it should return empty s3 policy with empty input', () => {

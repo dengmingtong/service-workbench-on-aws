@@ -193,7 +193,7 @@ const fetchOpenData = async ({ fileUrls, requiredTags, log, fetchFile }) => {
   const metadata = await Promise.all(fileUrls.map(fetchFile));
 
   log.info(`Filtering for ${requiredTags} tags and resources with valid ARNs`);
-  const validS3Arn = new RegExp(/^arn:aws:s3:.*:.*:.+$/);
+  const validS3Arn = new RegExp(/^arn:aws-cn:s3:.*:.*:.+$/);
   const filtered = metadata.filter(({ tags, resources }) => {
     return (
       requiredTags.some(filterTag => tags.includes(filterTag)) &&

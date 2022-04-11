@@ -159,7 +159,7 @@ class DataEgressService extends Service {
       projectId: environment.projectId,
       resources: [
         {
-          arn: `arn:aws:s3:::${bucketName}/${environment.id}/`,
+          arn: `arn:aws-cn:s3:::${bucketName}/${environment.id}/`,
         },
       ],
       roleArn,
@@ -339,7 +339,7 @@ class DataEgressService extends Service {
     egressStoreInfo.updatedBy = curUser;
     egressStoreInfo.updatedAt = new Date().toISOString();
     egressStoreInfo.isAbleToSubmitEgressRequest = false;
-    egressStoreInfo.egressStoreObjectListLocation = `arn:aws:s3:::${egressStoreObjectList.bucket}/${egressStoreObjectList.key}`;
+    egressStoreInfo.egressStoreObjectListLocation = `arn:aws-cn:s3:::${egressStoreObjectList.bucket}/${egressStoreObjectList.key}`;
     egressStoreInfo.ver = parseInt(egressStoreInfo.ver, 10) + 1; // parseInt(string, radix) string: The value to parse. radix: An integer between 2 and 36 that represents the radix of the string.
 
     const userService = await this.service('userService');
@@ -349,7 +349,7 @@ class DataEgressService extends Service {
     await this.lockAndUpdate(egressStoreDdbLockId, egressStoreInfo.id, egressStoreInfo);
 
     const message = {
-      egress_store_object_list_location: `arn:aws:s3:::${egressStoreObjectList.bucket}/${egressStoreObjectList.key}`,
+      egress_store_object_list_location: `arn:aws-cn:s3:::${egressStoreObjectList.bucket}/${egressStoreObjectList.key}`,
       id: uuid.v4(),
       egress_store_id: egressStoreInfo.id,
       egress_store_name: egressStoreInfo.egressStoreName,
@@ -491,7 +491,7 @@ class DataEgressService extends Service {
             {
               Effect: 'Allow',
               Principal: {
-                AWS: `arn:aws:iam::${memberAccountId}:root`,
+                AWS: `arn:aws-cn:iam::${memberAccountId}:root`,
               },
               Action: 'sts:AssumeRole',
             },

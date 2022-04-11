@@ -46,7 +46,7 @@ describe('EnvironmentResourceService', () => {
       name: 'Study1',
       resources: [
         {
-          arn: 'arn:aws:s3:::study-bucket/studies/Organization/Study1/',
+          arn: 'arn:aws-cn:s3:::study-bucket/studies/Organization/Study1/',
         },
       ],
       envPermission: {
@@ -64,10 +64,10 @@ describe('EnvironmentResourceService', () => {
       },
       resources: [
         {
-          arn: 'arn:aws:s3:::study-bucket/studies/users/user1/Study2/',
+          arn: 'arn:aws-cn:s3:::study-bucket/studies/users/user1/Study2/',
         },
         {
-          arn: 'arn:aws:s3:::study-bucket/TO_BE_IGNORED/',
+          arn: 'arn:aws-cn:s3:::study-bucket/TO_BE_IGNORED/',
         },
       ],
     },
@@ -80,16 +80,16 @@ describe('EnvironmentResourceService', () => {
           Sid: 'Get:studies/Organization/Study1/',
           Effect: 'Allow',
           Principal: {
-            AWS: ['arn:aws:iam::accountId1:root'],
+            AWS: ['arn:aws-cn:iam::accountId1:root'],
           },
           Action: ['s3:GetObject'],
-          Resource: ['arn:aws:s3:::study-bucket/studies/Organization/Study1/*'],
+          Resource: ['arn:aws-cn:s3:::study-bucket/studies/Organization/Study1/*'],
         },
         {
           Sid: 'Put:studies/Organization/Study1/',
           Effect: 'Allow',
           Principal: {
-            AWS: ['arn:aws:iam::accountId1:root'],
+            AWS: ['arn:aws-cn:iam::accountId1:root'],
           },
           Action: [
             's3:GetObject',
@@ -103,16 +103,16 @@ describe('EnvironmentResourceService', () => {
             's3:DeleteObject',
             's3:DeleteObjectVersion',
           ],
-          Resource: ['arn:aws:s3:::study-bucket/studies/Organization/Study1/*'],
+          Resource: ['arn:aws-cn:s3:::study-bucket/studies/Organization/Study1/*'],
         },
         {
           Sid: 'List:studies/Organization/Study1/',
           Effect: 'Allow',
           Principal: {
-            AWS: ['arn:aws:iam::accountId1:root'],
+            AWS: ['arn:aws-cn:iam::accountId1:root'],
           },
           Action: ['s3:ListBucket'],
-          Resource: 'arn:aws:s3:::study-bucket',
+          Resource: 'arn:aws-cn:s3:::study-bucket',
           Condition: {
             StringLike: {
               's3:prefix': ['studies/Organization/Study1/*'],
@@ -123,19 +123,19 @@ describe('EnvironmentResourceService', () => {
           Sid: 'Get:studies/users/user1/Study2/',
           Effect: 'Allow',
           Principal: {
-            AWS: ['arn:aws:iam::accountId1:root'],
+            AWS: ['arn:aws-cn:iam::accountId1:root'],
           },
           Action: ['s3:GetObject'],
-          Resource: ['arn:aws:s3:::study-bucket/studies/users/user1/Study2/*'],
+          Resource: ['arn:aws-cn:s3:::study-bucket/studies/users/user1/Study2/*'],
         },
         {
           Sid: 'List:studies/users/user1/Study2/',
           Effect: 'Allow',
           Principal: {
-            AWS: ['arn:aws:iam::accountId1:root'],
+            AWS: ['arn:aws-cn:iam::accountId1:root'],
           },
           Action: ['s3:ListBucket'],
-          Resource: 'arn:aws:s3:::study-bucket',
+          Resource: 'arn:aws-cn:s3:::study-bucket',
           Condition: {
             StringLike: {
               's3:prefix': ['studies/users/user1/Study2/*'],
@@ -232,7 +232,7 @@ describe('EnvironmentResourceService', () => {
       const study1 = studies.filter(study => study.id.includes('Study1'));
       newPolicy.Statement.map(statement => {
         if (statement.Sid.includes('Study1')) {
-          statement.Principal.AWS.push('arn:aws:iam::accountId2:root');
+          statement.Principal.AWS.push('arn:aws-cn:iam::accountId2:root');
         }
         return statement;
       });
@@ -266,7 +266,7 @@ describe('EnvironmentResourceService', () => {
         name: 'OpenData1',
         resources: [
           {
-            arn: 'arn:aws:s3:::study-bucket/OpenData1/',
+            arn: 'arn:aws-cn:s3:::study-bucket/OpenData1/',
           },
         ],
         envPermission: {
@@ -304,7 +304,7 @@ describe('EnvironmentResourceService', () => {
         name: 'Study3',
         resources: [
           {
-            arn: 'arn:aws:s3:::some-external-bucket/Study3/',
+            arn: 'arn:aws-cn:s3:::some-external-bucket/Study3/',
           },
         ],
         envPermission: {
@@ -342,7 +342,7 @@ describe('EnvironmentResourceService', () => {
         name: 'Study3',
         resources: [
           {
-            arn: 'arn:aws:s3:::study-bucket/Study3/',
+            arn: 'arn:aws-cn:s3:::study-bucket/Study3/',
           },
         ],
         envPermission: {
@@ -357,7 +357,7 @@ describe('EnvironmentResourceService', () => {
         name: 'Study4',
         resources: [
           {
-            arn: 'arn:aws:s3:::study-bucket/Study4/',
+            arn: 'arn:aws-cn:s3:::study-bucket/Study4/',
           },
         ],
       };
@@ -368,7 +368,7 @@ describe('EnvironmentResourceService', () => {
         name: 'Study5',
         resources: [
           {
-            arn: 'arn:aws:s3:::study-bucket/Study5/',
+            arn: 'arn:aws-cn:s3:::study-bucket/Study5/',
           },
         ],
         envPermission: {
@@ -382,7 +382,7 @@ describe('EnvironmentResourceService', () => {
         name: 'Study6',
         resources: [
           {
-            arn: 'arn:aws:s3:::study-bucket/Study6/',
+            arn: 'arn:aws-cn:s3:::study-bucket/Study6/',
           },
         ],
         envPermission: {
@@ -466,7 +466,7 @@ describe('EnvironmentResourceService', () => {
       const s3Policy = testS3PolicyFn();
       const policyWithMultipleAccounts = { ...s3Policy };
       policyWithMultipleAccounts.Statement.map(statement => {
-        statement.Principal.AWS = ['arn:aws:iam::accountId1:root', 'arn:aws:iam::accountId2:root'];
+        statement.Principal.AWS = ['arn:aws-cn:iam::accountId1:root', 'arn:aws-cn:iam::accountId2:root'];
         return statement;
       });
       // remove accountId1 from Study1
@@ -480,7 +480,7 @@ describe('EnvironmentResourceService', () => {
       const newExpectedPolicy = { ...policyWithMultipleAccounts };
       newExpectedPolicy.Statement.map(statement => {
         if (statement.Sid.includes('Study1')) {
-          statement.Principal.AWS = ['arn:aws:iam::accountId2:root'];
+          statement.Principal.AWS = ['arn:aws-cn:iam::accountId2:root'];
         }
         return statement;
       });
@@ -519,7 +519,7 @@ describe('EnvironmentResourceService', () => {
             Sid: 'KMS Policy',
             Effect: 'Allow',
             Principal: {
-              AWS: ['arn:aws:iam::accountId1:root'],
+              AWS: ['arn:aws-cn:iam::accountId1:root'],
             },
             Action: ['kms:Encrypt', 'kms:Decrypt', 'kms:ReEncrypt*', 'kms:GenerateDataKey*', 'kms:DescribeKey'],
             Resource: '*',
@@ -575,7 +575,7 @@ describe('EnvironmentResourceService', () => {
             Sid: 'KMS Policy',
             Effect: 'Allow',
             Principal: {
-              AWS: ['arn:aws:iam::accountId1:root'],
+              AWS: ['arn:aws-cn:iam::accountId1:root'],
             },
             Action: ['kms:Encrypt', 'kms:Decrypt', 'kms:ReEncrypt*', 'kms:GenerateDataKey*', 'kms:DescribeKey'],
             Resource: '*',
@@ -656,7 +656,7 @@ describe('EnvironmentResourceService', () => {
             Sid: 'KMS Policy',
             Effect: 'Allow',
             Principal: {
-              AWS: ['arn:aws:iam::accountId1:root'],
+              AWS: ['arn:aws-cn:iam::accountId1:root'],
             },
             Action: ['kms:Encrypt', 'kms:Decrypt', 'kms:ReEncrypt*', 'kms:GenerateDataKey*', 'kms:DescribeKey'],
             Resource: '*',
@@ -682,7 +682,7 @@ describe('EnvironmentResourceService', () => {
             Sid: 'KMS Policy',
             Effect: 'Allow',
             Principal: {
-              AWS: ['arn:aws:iam::accountId1:root', 'arn:aws:iam::accountId2:root'],
+              AWS: ['arn:aws-cn:iam::accountId1:root', 'arn:aws-cn:iam::accountId2:root'],
             },
             Action: ['kms:Encrypt', 'kms:Decrypt', 'kms:ReEncrypt*', 'kms:GenerateDataKey*', 'kms:DescribeKey'],
             Resource: '*',
@@ -711,7 +711,7 @@ describe('EnvironmentResourceService', () => {
             Sid: 'KMS Policy',
             Effect: 'Allow',
             Principal: {
-              AWS: ['arn:aws:iam::accountId1:root'],
+              AWS: ['arn:aws-cn:iam::accountId1:root'],
             },
             Action: ['kms:Encrypt', 'kms:Decrypt', 'kms:ReEncrypt*', 'kms:GenerateDataKey*', 'kms:DescribeKey'],
             Resource: '*',
@@ -782,7 +782,7 @@ describe('EnvironmentResourceService', () => {
             Sid: 'KMS Policy',
             Effect: 'Allow',
             Principal: {
-              AWS: ['arn:aws:iam::accountId1:root', 'arn:aws:iam::accountId2:root', 'arn:aws:iam::accountId3:root'],
+              AWS: ['arn:aws-cn:iam::accountId1:root', 'arn:aws-cn:iam::accountId2:root', 'arn:aws-cn:iam::accountId3:root'],
             },
             Action: ['kms:Encrypt', 'kms:Decrypt', 'kms:ReEncrypt*', 'kms:GenerateDataKey*', 'kms:DescribeKey'],
             Resource: '*',
@@ -790,7 +790,7 @@ describe('EnvironmentResourceService', () => {
         ],
       };
       const expectedKMSPolicy = { ...oldKMSPolicy };
-      expectedKMSPolicy.Statement[0].Principal.AWS = ['arn:aws:iam::accountId1:root', 'arn:aws:iam::accountId3:root'];
+      expectedKMSPolicy.Statement[0].Principal.AWS = ['arn:aws-cn:iam::accountId1:root', 'arn:aws-cn:iam::accountId3:root'];
       AWSMock.mock('KMS', 'describeKey', (params, callback) => {
         callback(null, { KeyMetadata: { KeyId: 'kmsStudyKeyId' } });
       });
@@ -821,7 +821,7 @@ describe('EnvironmentResourceService', () => {
             Sid: 'KMS Policy',
             Effect: 'Allow',
             Principal: {
-              AWS: ['arn:aws:iam::accountId1:root', 'arn:aws:iam::accountId2:root', 'arn:aws:iam::accountId3:root'],
+              AWS: ['arn:aws-cn:iam::accountId1:root', 'arn:aws-cn:iam::accountId2:root', 'arn:aws-cn:iam::accountId3:root'],
             },
             Action: ['kms:Encrypt', 'kms:Decrypt', 'kms:ReEncrypt*', 'kms:GenerateDataKey*', 'kms:DescribeKey'],
             Resource: '*',
@@ -829,7 +829,7 @@ describe('EnvironmentResourceService', () => {
         ],
       };
       const expectedKMSPolicy = { ...oldKMSPolicy };
-      expectedKMSPolicy.Statement[0].Principal.AWS = ['arn:aws:iam::accountId1:root', 'arn:aws:iam::accountId3:root'];
+      expectedKMSPolicy.Statement[0].Principal.AWS = ['arn:aws-cn:iam::accountId1:root', 'arn:aws-cn:iam::accountId3:root'];
       AWSMock.mock('KMS', 'describeKey', (params, callback) => {
         expect(params).toMatchObject({
           KeyId: 'studyKmsKeyAlias',

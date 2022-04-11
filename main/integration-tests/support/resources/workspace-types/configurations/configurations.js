@@ -61,7 +61,7 @@ class Configurations extends CollectionResource {
         { key: 'VPC', value: 'vpc-fffff' },
         { key: 'Subnet', value: 'subnet-ffffff' },
         { key: 'EnvironmentInstanceFiles', value: 's3://xxx-xxx-xxx-123' },
-        { key: 'EncryptionKeyArn', value: 'arn:aws:kms:us-east-1:1234567key/f4cbf1b2-9ee0-4bcb-9067-c82a9124e5ef' },
+        { key: 'EncryptionKeyArn', value: 'arn:aws-cn:kms:us-east-1:1234567key/f4cbf1b2-9ee0-4bcb-9067-c82a9124e5ef' },
       ],
       ...configuration,
     };

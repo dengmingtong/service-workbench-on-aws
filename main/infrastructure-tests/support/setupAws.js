@@ -26,7 +26,7 @@ async function setupAws() {
 
   // Assume credentials of hosting account
   const sts = new AWS.STS({ apiVersion: '2011-06-15' });
-  const roleArn = `arn:aws:iam::${hostingAccountId}:role/${hostingAccountStackName}-infrastructure-test-role`;
+  const roleArn = `arn:aws-cn:iam::${hostingAccountId}:role/${hostingAccountStackName}-infrastructure-test-role`;
   const params = {
     RoleArn: roleArn,
     RoleSessionName: `${envName}-${Date.now()}`,

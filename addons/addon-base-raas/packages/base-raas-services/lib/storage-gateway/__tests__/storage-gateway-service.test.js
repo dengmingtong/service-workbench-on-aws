@@ -182,7 +182,7 @@ describe('storageGatewayService', () => {
         ],
       };
       const expectedGatewayARN = {
-        GatewayARN: 'arn:aws:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
+        GatewayARN: 'arn:aws-cn:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
       };
       userService.mustFindUser = jest.fn().mockImplementationOnce(params => {
         expect(params).toMatchObject(context.principalIdentifier);
@@ -232,7 +232,7 @@ describe('storageGatewayService', () => {
   describe('deleteGateway', () => {
     it('should fail on bad GatewayARN', async () => {
       const expectedRequest = {
-        GatewayARN: 'arn:aws:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
+        GatewayARN: 'arn:aws-cn:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
       };
       AWSMock.mock('StorageGateway', 'deleteGateway', (params, callback) => {
         expect(params).toMatchObject(expectedRequest);
@@ -241,7 +241,7 @@ describe('storageGatewayService', () => {
       try {
         await storageGateway.deleteGateway(
           context,
-          'arn:aws:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
+          'arn:aws-cn:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
         );
         expect.fail('Expected to throw error InvalidGatewayARN');
       } catch (error) {
@@ -251,16 +251,16 @@ describe('storageGatewayService', () => {
 
     it('should succeed on correct GatewayARN', async () => {
       const deleteResponse = {
-        GatewayARN: 'arn:aws:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
+        GatewayARN: 'arn:aws-cn:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
       };
       const expectedRequest = {
-        GatewayARN: 'arn:aws:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
+        GatewayARN: 'arn:aws-cn:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
       };
       AWSMock.mock('StorageGateway', 'deleteGateway', (params, callback) => {
         expect(params).toMatchObject(expectedRequest);
         callback(null, deleteResponse);
       });
-      await storageGateway.deleteGateway(context, 'arn:aws:storagegateway:us-west-2:111111111111:gateway/sgw-11111111');
+      await storageGateway.deleteGateway(context, 'arn:aws-cn:storagegateway:us-west-2:111111111111:gateway/sgw-11111111');
     });
   });
 
@@ -268,7 +268,7 @@ describe('storageGatewayService', () => {
     it('should fail on invalid GatewayARN', async () => {
       const rawData = {
         volumeId: 'volume-123',
-        gatewayARN: 'arn:aws:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
+        gatewayARN: 'arn:aws-cn:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
       };
       const volumeIdRequest = {
         VolumeIds: [rawData.volumeId],
@@ -307,7 +307,7 @@ describe('storageGatewayService', () => {
     it('should succeed on valid GatewayARN', async () => {
       const rawData = {
         volumeId: 'volume-123',
-        gatewayARN: 'arn:aws:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
+        gatewayARN: 'arn:aws-cn:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
       };
       const volumeIdRequest = {
         VolumeIds: [rawData.volumeId],
@@ -328,7 +328,7 @@ describe('storageGatewayService', () => {
         ],
       };
       const localDisksResponse = {
-        GatewayARN: 'arn:aws:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
+        GatewayARN: 'arn:aws-cn:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
         Disks: [
           {
             DiskId: '7c3164b9-b237-40d2-9647-a4839a9b7bd1',
@@ -404,7 +404,7 @@ describe('storageGatewayService', () => {
   describe('listLocalDisks', () => {
     it('should fail on invalid GatewayARN', async () => {
       const expectedRequest = {
-        GatewayARN: 'arn:aws:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
+        GatewayARN: 'arn:aws-cn:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
       };
       AWSMock.mock('StorageGateway', 'listLocalDisks', (params, callback) => {
         expect(params).toMatchObject(expectedRequest);
@@ -413,7 +413,7 @@ describe('storageGatewayService', () => {
       try {
         await storageGateway.listLocalDisks(
           context,
-          'arn:aws:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
+          'arn:aws-cn:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
         );
         expect.fail('Expected to throw error InvalidGatewayARN');
       } catch (error) {
@@ -423,7 +423,7 @@ describe('storageGatewayService', () => {
 
     it('should succeed on valid GatewayARN', async () => {
       const localDisksResponse = {
-        GatewayARN: 'arn:aws:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
+        GatewayARN: 'arn:aws-cn:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
         Disks: [
           {
             DiskId: '7c3164b9-b237-40d2-9647-a4839a9b7bd3',
@@ -437,7 +437,7 @@ describe('storageGatewayService', () => {
         ],
       };
       const expectedRequest = {
-        GatewayARN: 'arn:aws:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
+        GatewayARN: 'arn:aws-cn:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
       };
       AWSMock.mock('StorageGateway', 'listLocalDisks', (params, callback) => {
         expect(params).toMatchObject(expectedRequest);
@@ -445,7 +445,7 @@ describe('storageGatewayService', () => {
       });
       const receivedResponse = await storageGateway.listLocalDisks(
         context,
-        'arn:aws:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
+        'arn:aws-cn:storagegateway:us-west-2:111111111111:gateway/sgw-11111111',
       );
       expect(localDisksResponse).toEqual(receivedResponse);
     });
@@ -459,10 +459,10 @@ describe('storageGatewayService', () => {
         ec2Instance: 'gateway-instance123',
         elasticIP: '11.11.11.aa',
         securityGroup: 'gateway-sg',
-        ec2RoleARN: 'arn:aws:iam:us-west-2:111111111111:role/gateway-role',
+        ec2RoleARN: 'arn:aws-cn:iam:us-west-2:111111111111:role/gateway-role',
         invalidField: 'invalid',
       };
-      const gatewayArn = 'arn:aws:storagegateway:us-west-2:111111111111:gateway/sgw-11111111';
+      const gatewayArn = 'arn:aws-cn:storagegateway:us-west-2:111111111111:gateway/sgw-11111111';
       try {
         await storageGateway.saveToDDB(context, dbData, gatewayArn);
         expect.fail('Expected to have validation errors');
@@ -487,12 +487,12 @@ describe('storageGatewayService', () => {
         ec2Instance: 'gateway-instance123',
         elasticIP: '11.11.11.11',
         securityGroup: 'gateway-sg',
-        ec2RoleARN: 'arn:aws:iam:us-west-2:111111111111:role/gateway-role',
+        ec2RoleARN: 'arn:aws-cn:iam:us-west-2:111111111111:role/gateway-role',
         volumeIds: ['volume-123'],
-        cfnStackId: 'arn:aws:cloudformation:us-east-2:123456789012:stack/mystack/newstack123',
+        cfnStackId: 'arn:aws-cn:cloudformation:us-east-2:123456789012:stack/mystack/newstack123',
       };
       const userId = context.principalIdentifier.uid;
-      const gatewayArn = 'arn:aws:storagegateway:us-west-2:111111111111:gateway/sgw-11111111';
+      const gatewayArn = 'arn:aws-cn:storagegateway:us-west-2:111111111111:gateway/sgw-11111111';
       try {
         await storageGateway.saveToDDB(context, dbData, gatewayArn);
       } catch (error) {
@@ -647,7 +647,7 @@ describe('storageGatewayService', () => {
         Role: 'roleArn',
         ClientList: ['10.52.4.93/32'],
         KMSEncrypted: true,
-        KMSKey: 'arn:aws:kms:us-east-1:1234567890:key/some-kms-key-name',
+        KMSKey: 'arn:aws-cn:kms:us-east-1:1234567890:key/some-kms-key-name',
       };
       const sgResponse = { FileShareARN: 'newFileShareArn' };
       AWSMock.mock('StorageGateway', 'createNFSFileShare', (params, callback) => {
@@ -661,7 +661,7 @@ describe('storageGatewayService', () => {
       // OPERATE
       const result = await storageGateway.createFileShare(context, 'gatewayArn', 's3LocationArn', 'roleArn', {
         KMSEncrypted: true,
-        KMSKey: 'arn:aws:kms:us-east-1:1234567890:key/some-kms-key-name',
+        KMSKey: 'arn:aws-cn:kms:us-east-1:1234567890:key/some-kms-key-name',
       });
       // CHECK
       expect(result).toEqual('newFileShareArn');
@@ -714,7 +714,7 @@ describe('storageGatewayService', () => {
       // OPERATE
       const result = await storageGateway.createFileShare(context, 'gatewayArn', 's3LocationArn', 'roleArn', {
         KMSEncrypted: true,
-        KMSKey: 'arn:aws:kms:us-east-1:1234567890:key/some-kms-key-name',
+        KMSKey: 'arn:aws-cn:kms:us-east-1:1234567890:key/some-kms-key-name',
       });
       // CHECK
       expect(result).toEqual('an-existing-file-share-arn');

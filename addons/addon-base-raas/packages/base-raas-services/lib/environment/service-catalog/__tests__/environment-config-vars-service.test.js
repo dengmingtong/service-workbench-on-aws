@@ -118,7 +118,7 @@ describe('EnvironmentSCService', () => {
     awsAccountsService.mustFind = jest.fn(() => {
       return Promise.resolve({
         cfnStackId:
-          'arn:aws:cloudformation:eu-west-1:123456789012:stack/initial-stack-1625689755737/ff9a0dc0-df61-11eb-8b32-024312ba26d9',
+          'arn:aws-cn:cloudformation:eu-west-1:123456789012:stack/initial-stack-1625689755737/ff9a0dc0-df61-11eb-8b32-024312ba26d9',
       });
     });
     // Skip authorization by default
@@ -297,7 +297,7 @@ describe('EnvironmentSCService', () => {
           subnetId: 'SubnetId-Test',
           encryptionKeyArn: 'UltraSecureEncryptionKey',
           cfnStackId:
-            'arn:aws:cloudformation:eu-west-1:123456789012:stack/initial-stack-1625689755737/ff9a0dc0-df61-11eb-8b32-024312ba26d9',
+            'arn:aws-cn:cloudformation:eu-west-1:123456789012:stack/initial-stack-1625689755737/ff9a0dc0-df61-11eb-8b32-024312ba26d9',
         };
       });
 
@@ -387,7 +387,7 @@ describe('EnvironmentSCService', () => {
           subnetId: 'SubnetId-Test',
           encryptionKeyArn: 'UltraSecureEncryptionKey',
           cfnStackId:
-            'arn:aws:cloudformation:eu-west-1:123456789012:stack/initial-stack-1625689755737/ff9a0dc0-df61-11eb-8b32-024312ba26d9',
+            'arn:aws-cn:cloudformation:eu-west-1:123456789012:stack/initial-stack-1625689755737/ff9a0dc0-df61-11eb-8b32-024312ba26d9',
         };
       });
 

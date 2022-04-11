@@ -33,7 +33,7 @@ const readWriteStatementId = 'S3StudyReadWriteAccess';
 const readOnlyStatementId = 'S3StudyReadAccess';
 
 const parseS3Arn = arn => {
-  const path = arn.slice('arn:aws:s3:::'.length);
+  const path = arn.slice('arn:aws-cn:s3:::'.length);
   const slashIndex = path.indexOf('/');
   return slashIndex !== -1
     ? {
@@ -266,7 +266,7 @@ class EnvironmentMountService extends Service {
       Effect: 'Allow',
       Principal: { AWS: [] },
       Action: 's3:ListBucket',
-      Resource: `arn:aws:s3:::${s3BucketName}`,
+      Resource: `arn:aws-cn:s3:::${s3BucketName}`,
       Condition: {
         StringLike: {
           's3:prefix': [`${prefix}*`],
@@ -279,7 +279,7 @@ class EnvironmentMountService extends Service {
       Effect: 'Allow',
       Principal: { AWS: [] },
       Action: ['s3:GetObject'],
-      Resource: [`arn:aws:s3:::${s3BucketName}/${prefix}*`],
+      Resource: [`arn:aws-cn:s3:::${s3BucketName}/${prefix}*`],
     };
     // Write Permission
     const putStatement = {
@@ -293,7 +293,7 @@ class EnvironmentMountService extends Service {
         's3:PutObjectAcl',
         's3:DeleteObject',
       ],
-      Resource: [`arn:aws:s3:::${s3BucketName}/${prefix}*`],
+      Resource: [`arn:aws-cn:s3:::${s3BucketName}/${prefix}*`],
     };
 
     return [listStatement, getStatement, putStatement];
@@ -861,7 +861,7 @@ class EnvironmentMountService extends Service {
           // Pull out resource ARNs
           .map(resource => resource.arn)
           // Only grab S3 ARNs
-          .filter(arn => arn.startsWith('arn:aws:s3:'))
+          .filter(arn => arn.startsWith('arn:aws-cn:s3:'))
           // Normalize the ARNs by ensuring they end with "/*"
           .map(arn => {
             switch (arn.slice(-1)) {
@@ -937,7 +937,7 @@ class EnvironmentMountService extends Service {
           Sid: `studyListS3Access${bucketCtr}`,
           Effect: 'Allow',
           Action: 's3:ListBucket',
-          Resource: `arn:aws:s3:::${bucketName}`,
+          Resource: `arn:aws-cn:s3:::${bucketName}`,
           Condition: {
             StringLike: {
               's3:prefix': bucketPaths[bucketName],

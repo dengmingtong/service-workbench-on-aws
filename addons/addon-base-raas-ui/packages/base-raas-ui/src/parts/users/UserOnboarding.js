@@ -109,7 +109,7 @@ const generateDefaultIAMPolicy = accountId =>
         "cloudformation:DeleteStack",
         "cloudformation:DescribeStacks"
       ],
-      "Resource": "arn:aws:cloudformation:*:${accountId}:stack/analysis*/*"
+      "Resource": "arn:aws-cn:cloudformation:*:${accountId}:stack/analysis*/*"
     },
     {
       "Sid": "emr",
@@ -137,8 +137,8 @@ const generateDefaultIAMPolicy = accountId =>
         "sagemaker:StopNotebookInstance"
       ],
       "Resource": [
-        "arn:aws:sagemaker:*:${accountId}:notebook-instance-lifecycle-config/*",
-        "arn:aws:sagemaker:*:${accountId}:notebook-instance/*"
+        "arn:aws-cn:sagemaker:*:${accountId}:notebook-instance-lifecycle-config/*",
+        "arn:aws-cn:sagemaker:*:${accountId}:notebook-instance/*"
       ]
     },
     {
@@ -154,7 +154,7 @@ const generateDefaultIAMPolicy = accountId =>
         "iam:DeleteRole",
         "iam:PassRole"
       ],
-      "Resource": "arn:aws:iam::${accountId}:role/analysis-*"
+      "Resource": "arn:aws-cn:iam::${accountId}:role/analysis-*"
     },
     {
       "Sid": "iamInstanceProfileAccess",
@@ -166,7 +166,7 @@ const generateDefaultIAMPolicy = accountId =>
         "iam:DeleteInstanceProfile",
         "iam:RemoveRoleFromInstanceProfile"
       ],
-      "Resource": "arn:aws:iam::${accountId}:instance-profile/analysis-*"
+      "Resource": "arn:aws-cn:iam::${accountId}:instance-profile/analysis-*"
     },
     {
       "Sid": "iamRoleServicePolicyAccess",
@@ -175,10 +175,10 @@ const generateDefaultIAMPolicy = accountId =>
         "iam:AttachRolePolicy",
         "iam:DetachRolePolicy"
       ],
-      "Resource": "arn:aws:iam::${accountId}:role/analysis-*",
+      "Resource": "arn:aws-cn:iam::${accountId}:role/analysis-*",
       "Condition": {
         "ArnLike": {
-          "iam:PolicyARN": "arn:aws:iam::aws:policy/service-role/AmazonElasticMapReduceRole"
+          "iam:PolicyARN": "arn:aws-cn:iam::aws-cn:policy/service-role/AmazonElasticMapReduceRole"
         }
       }
     },
@@ -189,7 +189,7 @@ const generateDefaultIAMPolicy = accountId =>
         "iam:CreateServiceLinkedRole",
         "iam:PutRolePolicy"
       ],
-      "Resource": "arn:aws:iam::*:role/aws-service-role/elasticmapreduce.amazonaws.com*/AWSServiceRoleForEMRCleanup*",
+      "Resource": "arn:aws-cn:iam::*:role/aws-service-role/elasticmapreduce.amazonaws.com*/AWSServiceRoleForEMRCleanup*",
       "Condition": {
         "StringLike": {
           "iam:AWSServiceName": [
@@ -207,7 +207,7 @@ const generateDefaultIAMPolicy = accountId =>
         "s3:PutBucketPublicAccessBlock",
         "s3:PutBucketTagging"
       ],
-      "Resource": "arn:aws:s3:::analysis*"
+      "Resource": "arn:aws-cn:s3:::analysis*"
     },
     {
       "Sid": "ssm",

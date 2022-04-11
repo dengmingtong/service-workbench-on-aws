@@ -78,7 +78,7 @@ describe('EnvironmentMountService', () => {
           Effect: 'Allow',
           Principal: { AWS: [] },
           Action: 's3:ListBucket',
-          Resource: `arn:aws:s3:::${s3BucketName}`,
+          Resource: `arn:aws-cn:s3:::${s3BucketName}`,
           Condition: {
             StringLike: {
               's3:prefix': [`${s3Prefix}*`],
@@ -90,7 +90,7 @@ describe('EnvironmentMountService', () => {
           Effect: 'Allow',
           Principal: { AWS: [] },
           Action: ['s3:GetObject'],
-          Resource: [`arn:aws:s3:::${s3BucketName}/${s3Prefix}*`],
+          Resource: [`arn:aws-cn:s3:::${s3BucketName}/${s3Prefix}*`],
         },
         {
           Sid: `Put:${s3Prefix}`,
@@ -103,7 +103,7 @@ describe('EnvironmentMountService', () => {
             's3:PutObjectAcl',
             's3:DeleteObject',
           ],
-          Resource: [`arn:aws:s3:::${s3BucketName}/${s3Prefix}*`],
+          Resource: [`arn:aws-cn:s3:::${s3BucketName}/${s3Prefix}*`],
         },
       ];
 
@@ -270,7 +270,7 @@ describe('EnvironmentMountService', () => {
       const envsForUser = [{ studyIds: ['StudyA'] }];
       environmentScService.getActiveEnvsForUser = jest.fn().mockResolvedValue(envsForUser);
       iamService.putRolePolicy = jest.fn();
-      const studyBucket = 'arn:aws:s3:::xxxxxxxx-namespace-studydata';
+      const studyBucket = 'arn:aws-cn:s3:::xxxxxxxx-namespace-studydata';
       const studyPrefix = 'studies/Organization/SampleStudy/*';
       const inputPolicy = {
         Version: '2012-10-17',
@@ -279,7 +279,7 @@ describe('EnvironmentMountService', () => {
             Sid: 'studyKMSAccess',
             Action: ['Permission1', 'Permission2'],
             Effect: 'Allow',
-            Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+            Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
           },
           {
             Sid: 'studyListS3AccessN',
@@ -308,7 +308,7 @@ describe('EnvironmentMountService', () => {
             Sid: 'studyKMSAccess',
             Action: ['Permission1', 'Permission2'],
             Effect: 'Allow',
-            Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+            Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
           },
           {
             Sid: 'studyListS3AccessN',
@@ -353,7 +353,7 @@ describe('EnvironmentMountService', () => {
       const envsForUser = [{ studyIds: ['StudyA'] }];
       environmentScService.getActiveEnvsForUser = jest.fn().mockResolvedValue(envsForUser);
       iamService.putRolePolicy = jest.fn();
-      const studyBucket = 'arn:aws:s3:::xxxxxxxx-namespace-studydata';
+      const studyBucket = 'arn:aws-cn:s3:::xxxxxxxx-namespace-studydata';
       const studyPrefix = 'studies/Organization/SampleStudy/*';
       const inputPolicy = {
         Version: '2012-10-17',
@@ -362,7 +362,7 @@ describe('EnvironmentMountService', () => {
             Sid: 'studyKMSAccess',
             Action: ['Permission1', 'Permission2'],
             Effect: 'Allow',
-            Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+            Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
           },
           {
             Sid: 'studyListS3AccessN',
@@ -397,7 +397,7 @@ describe('EnvironmentMountService', () => {
             Sid: 'studyKMSAccess',
             Action: ['Permission1', 'Permission2'],
             Effect: 'Allow',
-            Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+            Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
           },
           {
             Sid: 'studyListS3AccessN',
@@ -442,7 +442,7 @@ describe('EnvironmentMountService', () => {
       const envsForUser = [{ studyIds: ['StudyA'] }];
       environmentScService.getActiveEnvsForUser = jest.fn().mockResolvedValue(envsForUser);
       iamService.putRolePolicy = jest.fn();
-      const studyBucket = 'arn:aws:s3:::xxxxxxxx-namespace-studydata';
+      const studyBucket = 'arn:aws-cn:s3:::xxxxxxxx-namespace-studydata';
       const studyPrefix = 'studies/Organization/SampleStudy/*';
       const inputPolicy = {
         Version: '2012-10-17',
@@ -451,7 +451,7 @@ describe('EnvironmentMountService', () => {
             Sid: 'studyKMSAccess',
             Action: ['Permission1', 'Permission2'],
             Effect: 'Allow',
-            Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+            Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
           },
           {
             Sid: 'studyListS3AccessN',
@@ -486,7 +486,7 @@ describe('EnvironmentMountService', () => {
             Sid: 'studyKMSAccess',
             Action: ['Permission1', 'Permission2'],
             Effect: 'Allow',
-            Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+            Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
           },
           {
             Sid: 'studyListS3AccessN',
@@ -525,7 +525,7 @@ describe('EnvironmentMountService', () => {
       const envsForUser = [{ studyIds: ['StudyA'] }];
       environmentScService.getActiveEnvsForUser = jest.fn().mockResolvedValue(envsForUser);
       iamService.putRolePolicy = jest.fn();
-      const studyBucket = 'arn:aws:s3:::xxxxxxxx-namespace-studydata';
+      const studyBucket = 'arn:aws-cn:s3:::xxxxxxxx-namespace-studydata';
       const studyPrefix = 'studies/Organization/SampleStudy/*';
       const inputPolicy = {
         Version: '2012-10-17',
@@ -534,7 +534,7 @@ describe('EnvironmentMountService', () => {
             Sid: 'studyKMSAccess',
             Action: ['Permission1', 'Permission2'],
             Effect: 'Allow',
-            Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+            Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
           },
           {
             Sid: 'studyListS3AccessN',
@@ -569,7 +569,7 @@ describe('EnvironmentMountService', () => {
             Sid: 'studyKMSAccess',
             Action: ['Permission1', 'Permission2'],
             Effect: 'Allow',
-            Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+            Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
           },
           {
             Sid: 'studyListS3AccessN',
@@ -615,7 +615,7 @@ describe('EnvironmentMountService', () => {
       const envsForUser = [{ studyIds: ['StudyA'] }];
       environmentScService.getActiveEnvsForUser = jest.fn().mockResolvedValue(envsForUser);
       iamService.putRolePolicy = jest.fn();
-      const studyBucket = 'arn:aws:s3:::xxxxxxxx-namespace-studydata';
+      const studyBucket = 'arn:aws-cn:s3:::xxxxxxxx-namespace-studydata';
       const studyPrefix = 'studies/Organization/SampleStudy/*';
       const inputPolicy = {
         Version: '2012-10-17',
@@ -624,7 +624,7 @@ describe('EnvironmentMountService', () => {
             Sid: 'studyKMSAccess',
             Action: ['Permission1', 'Permission2'],
             Effect: 'Allow',
-            Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+            Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
           },
           {
             Sid: 'studyListS3AccessN',
@@ -659,7 +659,7 @@ describe('EnvironmentMountService', () => {
             Sid: 'studyKMSAccess',
             Action: ['Permission1', 'Permission2'],
             Effect: 'Allow',
-            Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+            Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
           },
           {
             Sid: 'studyListS3AccessN',
@@ -712,7 +712,7 @@ describe('EnvironmentMountService', () => {
       const envsForUser = [{ studyIds: ['StudyA'] }];
       environmentScService.getActiveEnvsForUser = jest.fn().mockResolvedValue(envsForUser);
       iamService.putRolePolicy = jest.fn();
-      const studyBucket = 'arn:aws:s3:::xxxxxxxx-namespace-studydata';
+      const studyBucket = 'arn:aws-cn:s3:::xxxxxxxx-namespace-studydata';
       const studyPrefix = 'studies/Organization/SampleStudy/*';
       const inputPolicy = {
         Version: '2012-10-17',
@@ -721,7 +721,7 @@ describe('EnvironmentMountService', () => {
             Sid: 'studyKMSAccess',
             Action: ['Permission1', 'Permission2'],
             Effect: 'Allow',
-            Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+            Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
           },
           {
             Sid: 'studyListS3AccessN',
@@ -769,7 +769,7 @@ describe('EnvironmentMountService', () => {
             Sid: 'studyKMSAccess',
             Action: ['Permission1', 'Permission2'],
             Effect: 'Allow',
-            Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+            Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
           },
           {
             Sid: 'studyListS3AccessN',
@@ -829,7 +829,7 @@ describe('EnvironmentMountService', () => {
     const envsForUser = [{ studyIds: ['StudyA'] }];
     environmentScService.getActiveEnvsForUser = jest.fn().mockResolvedValue(envsForUser);
     iamService.putRolePolicy = jest.fn();
-    const studyBucket = 'arn:aws:s3:::xxxxxxxx-namespace-studydata';
+    const studyBucket = 'arn:aws-cn:s3:::xxxxxxxx-namespace-studydata';
     const studyPrefix = 'studies/Organization/SampleStudy/*';
     const inputPolicy = {
       Version: '2012-10-17',
@@ -838,7 +838,7 @@ describe('EnvironmentMountService', () => {
           Sid: 'studyKMSAccess',
           Action: ['Permission1', 'Permission2'],
           Effect: 'Allow',
-          Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+          Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
         },
         {
           Sid: 'studyListS3AccessN',
@@ -873,7 +873,7 @@ describe('EnvironmentMountService', () => {
           Sid: 'studyKMSAccess',
           Action: ['Permission1', 'Permission2'],
           Effect: 'Allow',
-          Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+          Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
         },
         {
           Sid: 'studyListS3AccessN',
@@ -919,7 +919,7 @@ describe('EnvironmentMountService', () => {
     const envsForUser = [{ studyIds: ['StudyA'] }];
     environmentScService.getActiveEnvsForUser = jest.fn().mockResolvedValue(envsForUser);
     iamService.putRolePolicy = jest.fn();
-    const studyBucket = 'arn:aws:s3:::xxxxxxxx-namespace-studydata';
+    const studyBucket = 'arn:aws-cn:s3:::xxxxxxxx-namespace-studydata';
     const studyPrefix = 'studies/Organization/SampleStudy/*';
     const inputPolicy = {
       Version: '2012-10-17',
@@ -928,7 +928,7 @@ describe('EnvironmentMountService', () => {
           Sid: 'studyKMSAccess',
           Action: ['Permission1', 'Permission2'],
           Effect: 'Allow',
-          Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+          Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
         },
         {
           Sid: 'studyListS3AccessN',
@@ -970,7 +970,7 @@ describe('EnvironmentMountService', () => {
           Sid: 'studyKMSAccess',
           Action: ['Permission1', 'Permission2'],
           Effect: 'Allow',
-          Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+          Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
         },
         {
           Sid: 'studyListS3AccessN',
@@ -1032,7 +1032,7 @@ describe('EnvironmentMountService', () => {
     const envsForUser = [{ studyIds: ['StudyA'] }];
     environmentScService.getActiveEnvsForUser = jest.fn().mockResolvedValue(envsForUser);
     iamService.putRolePolicy = jest.fn();
-    const studyBucket = 'arn:aws:s3:::xxxxxxxx-namespace-studydata';
+    const studyBucket = 'arn:aws-cn:s3:::xxxxxxxx-namespace-studydata';
     const studyPrefix = 'studies/Organization/SampleStudy/*';
     const inputPolicy = {
       Version: '2012-10-17',
@@ -1041,7 +1041,7 @@ describe('EnvironmentMountService', () => {
           Sid: 'studyKMSAccess',
           Action: ['Permission1', 'Permission2'],
           Effect: 'Allow',
-          Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+          Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
         },
         {
           Sid: 'studyListS3AccessN',
@@ -1076,7 +1076,7 @@ describe('EnvironmentMountService', () => {
           Sid: 'studyKMSAccess',
           Action: ['Permission1', 'Permission2'],
           Effect: 'Allow',
-          Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+          Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
         },
         {
           Sid: 'studyListS3AccessN',
@@ -1137,7 +1137,7 @@ describe('EnvironmentMountService', () => {
     const envsForUser = [{ studyIds: ['StudyA'] }];
     environmentScService.getActiveEnvsForUser = jest.fn().mockResolvedValue(envsForUser);
     iamService.putRolePolicy = jest.fn();
-    const studyBucket = 'arn:aws:s3:::xxxxxxxx-namespace-studydata';
+    const studyBucket = 'arn:aws-cn:s3:::xxxxxxxx-namespace-studydata';
     const studyPrefix = 'studies/Organization/SampleStudy/*';
     const inputPolicy = {
       Version: '2012-10-17',
@@ -1146,7 +1146,7 @@ describe('EnvironmentMountService', () => {
           Sid: 'studyKMSAccess',
           Action: ['Permission1', 'Permission2'],
           Effect: 'Allow',
-          Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+          Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
         },
         {
           Sid: 'studyListS3AccessN',
@@ -1181,7 +1181,7 @@ describe('EnvironmentMountService', () => {
           Sid: 'studyKMSAccess',
           Action: ['Permission1', 'Permission2'],
           Effect: 'Allow',
-          Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+          Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
         },
         {
           Sid: 'studyListS3AccessN',
@@ -1226,7 +1226,7 @@ describe('EnvironmentMountService', () => {
     const envsForUser = [{ studyIds: ['StudyA'] }];
     environmentScService.getActiveEnvsForUser = jest.fn().mockResolvedValue(envsForUser);
     iamService.putRolePolicy = jest.fn();
-    const studyBucket = 'arn:aws:s3:::xxxxxxxx-namespace-studydata';
+    const studyBucket = 'arn:aws-cn:s3:::xxxxxxxx-namespace-studydata';
     const studyPrefix = 'studies/Organization/SampleStudy/*';
     const inputPolicy = {
       Version: '2012-10-17',
@@ -1235,7 +1235,7 @@ describe('EnvironmentMountService', () => {
           Sid: 'studyKMSAccess',
           Action: ['Permission1', 'Permission2'],
           Effect: 'Allow',
-          Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+          Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
         },
         {
           Sid: 'studyListS3AccessN',
@@ -1270,7 +1270,7 @@ describe('EnvironmentMountService', () => {
           Sid: 'studyKMSAccess',
           Action: ['Permission1', 'Permission2'],
           Effect: 'Allow',
-          Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+          Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
         },
         {
           Sid: 'studyListS3AccessN',
@@ -1332,7 +1332,7 @@ describe('EnvironmentMountService', () => {
     const envsForUser = [{ studyIds: ['StudyA'] }];
     environmentScService.getActiveEnvsForUser = jest.fn().mockResolvedValue(envsForUser);
     iamService.putRolePolicy = jest.fn();
-    const studyBucket = 'arn:aws:s3:::xxxxxxxx-namespace-studydata';
+    const studyBucket = 'arn:aws-cn:s3:::xxxxxxxx-namespace-studydata';
     const studyPrefix = 'studies/Organization/SampleStudy/*';
     const inputPolicy = {
       Version: '2012-10-17',
@@ -1341,7 +1341,7 @@ describe('EnvironmentMountService', () => {
           Sid: 'studyKMSAccess',
           Action: ['Permission1', 'Permission2'],
           Effect: 'Allow',
-          Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+          Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
         },
         {
           Sid: 'studyListS3AccessN',
@@ -1389,7 +1389,7 @@ describe('EnvironmentMountService', () => {
           Sid: 'studyKMSAccess',
           Action: ['Permission1', 'Permission2'],
           Effect: 'Allow',
-          Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+          Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
         },
         {
           Sid: 'studyListS3AccessN',
@@ -1435,7 +1435,7 @@ describe('EnvironmentMountService', () => {
     const envsForUser = [{ studyIds: ['StudyA'] }];
     environmentScService.getActiveEnvsForUser = jest.fn().mockResolvedValue(envsForUser);
     iamService.putRolePolicy = jest.fn();
-    const studyBucket = 'arn:aws:s3:::xxxxxxxx-namespace-studydata';
+    const studyBucket = 'arn:aws-cn:s3:::xxxxxxxx-namespace-studydata';
     const studyPrefix = 'studies/Organization/SampleStudy/*';
     const inputPolicy = {
       Version: '2012-10-17',
@@ -1444,7 +1444,7 @@ describe('EnvironmentMountService', () => {
           Sid: 'studyKMSAccess',
           Action: ['Permission1', 'Permission2'],
           Effect: 'Allow',
-          Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+          Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
         },
         {
           Sid: 'studyListS3AccessN',
@@ -1479,7 +1479,7 @@ describe('EnvironmentMountService', () => {
           Sid: 'studyKMSAccess',
           Action: ['Permission1', 'Permission2'],
           Effect: 'Allow',
-          Resource: 'arn:aws:kms:region:xxxxxxxx:key/someRandomString',
+          Resource: 'arn:aws-cn:kms:region:xxxxxxxx:key/someRandomString',
         },
         {
           Sid: 'studyListS3AccessN',

@@ -2136,8 +2136,8 @@ components:
   schemas:
     RoleArn:
       type: string
-      pattern: '^arn:aws:iam::.*$'
-      example: 'arn:aws:iam::000000000000:role/role-arn'
+      pattern: '^arn:aws-cn:iam::.*$'
+      example: 'arn:aws-cn:iam::000000000000:role/role-arn'
     VpcId:
       type: string
       pattern: '^vpc-[a-f0-9]{8,17}$'
@@ -2148,8 +2148,8 @@ components:
       example: 'subnet-00000000000000000'
     EncryptionKeyArn:
       type: string
-      pattern: '^arn:aws:kms:.*$'
-      example: 'arn:aws:kms:us-west-2:000000000000:key/1234a5b6-c7d8-11ea-b397-791ba40a5d32'
+      pattern: '^arn:aws-cn:kms:.*$'
+      example: 'arn:aws-cn:kms:us-west-2:000000000000:key/1234a5b6-c7d8-11ea-b397-791ba40a5d32'
     AwsAccountId:
       type: string
       example: '123456789101'
@@ -2917,7 +2917,7 @@ components:
           example: 'test-account-email@testing-domain.com'
         masterRoleArn:
           type: string
-          example: 'arn:aws:iam::000000000000:role/master-role-arn'
+          example: 'arn:aws-cn:iam::000000000000:role/master-role-arn'
         externalId:
           type: string
           example: 'ExternalId'
@@ -2952,15 +2952,15 @@ components:
         cfnStackId:
           type: string
           maxLength: 255
-          example: 'arn:aws:cloudformation::000000000000:region/stack-name'
+          example: 'arn:aws-cn:cloudformation::000000000000:region/stack-name'
         roleArn:
           type: string
           minLength: 10
-          example: 'arn:aws:iam::000000000000:role/role-arn'
+          example: 'arn:aws-cn:iam::000000000000:role/role-arn'
         onboardStatusRoleArn:
           type: string
           minLength: 10
-          example: 'arn:aws:iam::000000000000:role/role-arn'
+          example: 'arn:aws-cn:iam::000000000000:role/role-arn'
         externalId:
           type: string
           minLength: 1
@@ -2992,7 +2992,7 @@ components:
           type: string
           minLength: 1
           maxLength: 255
-          example: 'arn:aws:cloudformation:us-west-2:000000000000:stack/initial-stack-0000000000000/00000000-0000-0000-0000-000000000000'
+          example: 'arn:aws-cn:cloudformation:us-west-2:000000000000:stack/initial-stack-0000000000000/00000000-0000-0000-0000-000000000000'
         cfnInfo:
           $ref: '#/components/schemas/CfnInfo'
         status:
@@ -3067,7 +3067,7 @@ components:
           $ref: '#/components/schemas/AwsPartition'
         kmsArn:
           type: string
-          example: 'arn:aws:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf847d23'
+          example: 'arn:aws-cn:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf847d23'
           maxLength: 90
         access:
           type: string
@@ -3149,7 +3149,7 @@ components:
           example: 'study-folder-test-3'
         kmsArn:
           type: string
-          example: 'arn:aws:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf847d23'
+          example: 'arn:aws-cn:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf847d23'
           maxLength: 90
         kmsScope:
           enum:
@@ -3429,7 +3429,7 @@ components:
         resources:
           type: array
           example: [
-          {"arn": "arn:aws:s3:::123456789101-studydata/studies/Organization/org-study-2/"}
+          {"arn": "arn:aws-cn:s3:::123456789101-studydata/studies/Organization/org-study-2/"}
           ]
           items:
             type: object
@@ -3475,11 +3475,11 @@ components:
         appRoleArn:
           type: string
           maxLength: 2048
-          example: 'arn:aws:iam::123456789101:role/swb-data-access-role'
+          example: 'arn:aws-cn:iam::123456789101:role/swb-data-access-role'
         resources:
           type: array
           example: [
-          {"arn": "arn:aws:s3:::123456789101-studydata/studies/Organization/org-study-2/"}
+          {"arn": "arn:aws-cn:s3:::123456789101-studydata/studies/Organization/org-study-2/"}
           ]
           items:
             type: object

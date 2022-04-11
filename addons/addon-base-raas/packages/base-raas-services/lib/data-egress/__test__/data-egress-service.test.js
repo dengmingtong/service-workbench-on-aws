@@ -60,14 +60,14 @@ describe('DataEgressService', () => {
         {
           Sid: 'Get:test-id/',
           Effect: 'Allow',
-          Principal: { AWS: 'arn:aws:iam::test-accountId:root' },
+          Principal: { AWS: 'arn:aws-cn:iam::test-accountId:root' },
           Action: ['s3:GetObject'],
-          Resource: ['arn:aws:s3:::test-egressStoreBucketName/test-id/*'],
+          Resource: ['arn:aws-cn:s3:::test-egressStoreBucketName/test-id/*'],
         },
         {
           Sid: 'Put:test-id/',
           Effect: 'Allow',
-          Principal: { AWS: 'arn:aws:iam::test-accountId:root' },
+          Principal: { AWS: 'arn:aws-cn:iam::test-accountId:root' },
           Action: [
             's3:GetObject',
             's3:GetObjectVersion',
@@ -80,14 +80,14 @@ describe('DataEgressService', () => {
             's3:DeleteObject',
             's3:DeleteObjectVersion',
           ],
-          Resource: ['arn:aws:s3:::test-egressStoreBucketName/test-id/*'],
+          Resource: ['arn:aws-cn:s3:::test-egressStoreBucketName/test-id/*'],
         },
         {
           Sid: 'List:test-id/',
           Effect: 'Allow',
-          Principal: { AWS: 'arn:aws:iam::test-accountId:root' },
+          Principal: { AWS: 'arn:aws-cn:iam::test-accountId:root' },
           Action: ['s3:ListBucket'],
-          Resource: 'arn:aws:s3:::test-egressStoreBucketName',
+          Resource: 'arn:aws-cn:s3:::test-egressStoreBucketName',
           Condition: { StringLike: { 's3:prefix': ['test-id/*'] } },
         },
       ],
@@ -306,7 +306,7 @@ describe('DataEgressService', () => {
         projectId: rawEnvironment.projectId,
         resources: [
           {
-            arn: `arn:aws:s3:::test-egressStoreBucketName/${rawEnvironment.id}/`,
+            arn: `arn:aws-cn:s3:::test-egressStoreBucketName/${rawEnvironment.id}/`,
           },
         ],
         roleArn,
@@ -977,7 +977,7 @@ describe('DataEgressService', () => {
             egress_store_id: 'id',
             egress_store_name: 'egressStoreName',
             egress_store_object_list_location:
-              'arn:aws:s3:::test-egressNotificationBucketName/id/egressStoreName-ver1.json',
+              'arn:aws-cn:s3:::test-egressNotificationBucketName/id/egressStoreName-ver1.json',
             id: expect.anything(),
             project_id: 'projectId',
             s3_bucketname: 's3BucketName',

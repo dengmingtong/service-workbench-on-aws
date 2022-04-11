@@ -238,7 +238,7 @@ describe('StudyOperationService', () => {
               's3:GetObjectVersionTagging',
               's3:GetObjectVersionTorrent',
             ],
-            Resource: ['arn:aws:s3:::bucket/study/*'],
+            Resource: ['arn:aws-cn:s3:::bucket/study/*'],
           },
         ],
       };

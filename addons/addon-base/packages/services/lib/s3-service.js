@@ -218,7 +218,7 @@ class S3Service extends Service {
       await s3Client.deleteObjects(deleteParams).promise();
       if (listedObjects.IsTruncated) await this.clearPath(bucketName, dir);
     } catch (error) {
-      throw this.boom.badRequest(`S3Service error with deleting objects in arn:aws:s3:::${bucketName}/${dir}`, true);
+      throw this.boom.badRequest(`S3Service error with deleting objects in arn:aws-cn:s3:::${bucketName}/${dir}`, true);
     }
   }
 
@@ -234,7 +234,7 @@ class S3Service extends Service {
     try {
       await s3Client.putObjectTagging(params).promise();
     } catch (error) {
-      throw this.boom.badRequest(`S3Service error with putting tag on object arn:aws:s3:::${bucket}/${key}`, true);
+      throw this.boom.badRequest(`S3Service error with putting tag on object arn:aws-cn:s3:::${bucket}/${key}`, true);
     }
   }
 

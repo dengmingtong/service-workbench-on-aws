@@ -32,7 +32,7 @@ const createStudy = ({
   kmsArn = undefined,
   bucket = 'bucket-1',
   qualifier = 'swb-IhsKhN8GsLneiis11ujlb8',
-  appRoleArn = 'arn:aws:iam::123456789012:role/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
+  appRoleArn = 'arn:aws-cn:iam::123456789012:role/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
   accessType = 'readwrite',
   envPermission = { read: true, write: true },
   folder = '/',
@@ -54,7 +54,7 @@ const createStudy = ({
 });
 
 const createAppRole = ({
-  arn = 'arn:aws:iam::123456789012:role/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
+  arn = 'arn:aws-cn:iam::123456789012:role/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
   accountId = '1122334455',
   mainRegion = 'us-east-1',
   awsPartition = 'aws',
@@ -64,7 +64,7 @@ const createAppRole = ({
   status = 'pending',
   name = 'swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
   qualifier = 'swb-IhsKhN8GsLneiis11ujlb8',
-  boundaryPolicyArn = 'arn:aws:iam::123456789012:policy/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
+  boundaryPolicyArn = 'arn:aws-cn:iam::123456789012:policy/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
   studies = {
     'study-1': {
       accessType: 'readonly',
@@ -97,10 +97,10 @@ describe('toAppRoleEntity', () => {
     const expectedAppRoleEntity = createAppRole();
     const dbEntity = {
       awsPartition: 'aws',
-      boundaryPolicyArn: 'arn:aws:iam::123456789012:policy/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
+      boundaryPolicyArn: 'arn:aws-cn:iam::123456789012:policy/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
       bucket: 'bucket-1',
       pk: 'ACT#1122334455',
-      sk: 'APP#bucket-1#arn:aws:iam::123456789012:role/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
+      sk: 'APP#bucket-1#arn:aws-cn:iam::123456789012:role/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
       bucketRegion: 'us-east-1',
       by: 'sampleUser',
       mainRegion: 'us-east-1',
@@ -121,9 +121,9 @@ describe('toDbEntity', () => {
     const appRole = createAppRole();
     const by = 'sampleUserUid';
     const expectedDbEntity = {
-      arn: 'arn:aws:iam::123456789012:role/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
+      arn: 'arn:aws-cn:iam::123456789012:role/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
       awsPartition: 'aws',
-      boundaryPolicyArn: 'arn:aws:iam::123456789012:policy/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
+      boundaryPolicyArn: 'arn:aws-cn:iam::123456789012:policy/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
       bucket: 'bucket-1',
       bucketRegion: 'us-east-1',
       by: 'sampleUser',
@@ -178,9 +178,9 @@ describe('addStudy', () => {
     const appRoleEntity = createAppRole();
     const expectedAppRoleEntity = {
       accountId: '1122334455',
-      arn: 'arn:aws:iam::123456789012:role/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
+      arn: 'arn:aws-cn:iam::123456789012:role/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
       awsPartition: 'aws',
-      boundaryPolicyArn: 'arn:aws:iam::123456789012:policy/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
+      boundaryPolicyArn: 'arn:aws-cn:iam::123456789012:policy/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
       bucket: 'bucket-1',
       bucketRegion: 'us-east-1',
       by: 'sampleUser',
@@ -243,14 +243,14 @@ describe('toCfnResources', () => {
                     's3:GetObjectVersionTorrent',
                   ],
                   Effect: 'Allow',
-                  Resource: ['arn:aws:s3:::bucket-1/*'],
+                  Resource: ['arn:aws-cn:s3:::bucket-1/*'],
                   Sid: 'S3StudyReadAccess',
                 },
                 {
                   Action: ['s3:ListBucket', 's3:ListBucketVersions'],
                   Condition: { StringLike: { 's3:prefix': ['*'] } },
                   Effect: 'Allow',
-                  Resource: 'arn:aws:s3:::bucket-1',
+                  Resource: 'arn:aws-cn:s3:::bucket-1',
                   Sid: 'studyListS3Access1',
                 },
               ],
@@ -290,8 +290,8 @@ describe('toCfnResources', () => {
                       ],
                       Effect: 'Allow',
                       Resource: [
-                        'arn:aws:iam::1122334455:role/swb-IhsKhN8GsLneiis11ujlb8-fs-*',
-                        'arn:aws:iam::1122334455:policy/swb-IhsKhN8GsLneiis11ujlb8-fs-*',
+                        'arn:aws-cn:iam::1122334455:role/swb-IhsKhN8GsLneiis11ujlb8-fs-*',
+                        'arn:aws-cn:iam::1122334455:policy/swb-IhsKhN8GsLneiis11ujlb8-fs-*',
                       ],
                       Sid: 'RoleAndPolicyManagement',
                     },
@@ -300,11 +300,11 @@ describe('toCfnResources', () => {
                       Condition: {
                         StringEquals: {
                           'iam:PermissionsBoundary':
-                            'arn:aws:iam::123456789012:policy/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
+                            'arn:aws-cn:iam::123456789012:policy/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
                         },
                       },
                       Effect: 'Allow',
-                      Resource: 'arn:aws:iam::1122334455:role/swb-IhsKhN8GsLneiis11ujlb8-fs-*',
+                      Resource: 'arn:aws-cn:iam::1122334455:role/swb-IhsKhN8GsLneiis11ujlb8-fs-*',
                       Sid: 'RoleCreation',
                     },
                   ],

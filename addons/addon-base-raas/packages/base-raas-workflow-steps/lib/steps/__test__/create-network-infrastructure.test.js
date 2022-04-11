@@ -197,9 +197,9 @@ describe('CreateNetworkInfra', () => {
         ec2Instance: 'instance-12345678',
         elasticIP: '11.11.11.11',
         securityGroup: 'sg-1234567',
-        ec2RoleARN: 'arn:aws:iam:us-west-2:111111111111:role/gateway-role',
+        ec2RoleARN: 'arn:aws-cn:iam:us-west-2:111111111111:role/gateway-role',
         volumeIds: [addToCacheInput.volumeId],
-        cfnStackId: 'arn:aws:cloudformation:us-east-2:123456789012:stack/mystack/newstack123',
+        cfnStackId: 'arn:aws-cn:cloudformation:us-east-2:123456789012:stack/mystack/newstack123',
       };
       step.state.string.mockImplementation(param => {
         switch (param) {
@@ -510,7 +510,7 @@ describe('CreateNetworkInfra', () => {
               },
               {
                 OutputKey: 'EC2RoleArn',
-                OutputValue: 'arn:aws:iam:us-west-2:111111111111:role/gateway-role',
+                OutputValue: 'arn:aws-cn:iam:us-west-2:111111111111:role/gateway-role',
               },
               {
                 OutputKey: 'EC2Instance',

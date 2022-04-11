@@ -336,7 +336,7 @@ class StudyService extends Service {
         dbObject.resources = [];
       }
       studyFileLocation = this.getFilesPrefix(requestContext, id, rawStudyEntity.category);
-      dbObject.resources.push({ arn: `arn:aws:s3:::${this.studyDataBucket}/${studyFileLocation}` });
+      dbObject.resources.push({ arn: `arn:aws-cn:s3:::${this.studyDataBucket}/${studyFileLocation}` });
     }
 
     // Time to save the db object

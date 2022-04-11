@@ -133,7 +133,7 @@ class ProvisionAccount extends StepBase {
 
     await iam
       .attachRolePolicy({
-        PolicyArn: 'arn:aws:iam::aws:policy/service-role/AmazonAppStreamServiceAccess',
+        PolicyArn: 'arn:aws-cn:iam::aws-cn:policy/service-role/AmazonAppStreamServiceAccess',
         RoleName: 'AmazonAppStreamServiceAccess',
       })
       .promise();
@@ -150,7 +150,7 @@ class ProvisionAccount extends StepBase {
 
     await iam
       .attachRolePolicy({
-        PolicyArn: 'arn:aws:iam::aws:policy/service-role/ApplicationAutoScalingForAmazonAppStreamAccess',
+        PolicyArn: 'arn:aws-cn:iam::aws-cn:policy/service-role/ApplicationAutoScalingForAmazonAppStreamAccess',
         RoleName: 'ApplicationAutoScalingForAmazonAppStreamAccess',
       })
       .promise();
@@ -430,7 +430,7 @@ class ProvisionAccount extends StepBase {
     /* response example
     data = {
       Account: {
-      Arn: "arn:aws:organizations::111111111111:account/o-exampleorgid/555555555555", 
+      Arn: "arn:aws-cn:organizations::111111111111:account/o-exampleorgid/555555555555", 
       Email: "anika@example.com", 
       Id: "555555555555", 
       Name: "Beta Account"
@@ -448,7 +448,7 @@ class ProvisionAccount extends StepBase {
     ]);
     const accountId = await this.state.string('ACCOUNT_ID');
     // TODO: pass user customized role name, for now it's fixed as OrganizationAccountAccessRole
-    const RoleArn = `arn:aws:iam::${accountId}:role/OrganizationAccountAccessRole`;
+    const RoleArn = `arn:aws-cn:iam::${accountId}:role/OrganizationAccountAccessRole`;
     const sts = new aws.sdk.STS(credential);
     const {
       Credentials: { AccessKeyId: accessKeyId, SecretAccessKey: secretAccessKey, SessionToken: sessionToken },
@@ -558,7 +558,7 @@ class ProvisionAccount extends StepBase {
      */
     // Get new account ID
     const accountId = await this.state.string('ACCOUNT_ID');
-    const remoteAccountArn = `arn:aws:iam::${accountId}:root`;
+    const remoteAccountArn = `arn:aws-cn:iam::${accountId}:root`;
     // Get S3 and KMS resource names
     const s3BucketName = this.settings.get(settingKeys.artifactsBucketName);
 
@@ -593,7 +593,7 @@ class ProvisionAccount extends StepBase {
           Effect: 'Allow',
           Principal: { AWS: [] },
           Action: ['s3:GetObject', 's3:PutObject', 's3:GetObjectAcl'],
-          Resource: [`arn:aws:s3:::${s3BucketName}/*`], // The previous star-slash confuses some syntax highlighers */
+          Resource: [`arn:aws-cn:s3:::${s3BucketName}/*`], // The previous star-slash confuses some syntax highlighers */
         };
 
         // Pull out existing statements if available

@@ -41,7 +41,7 @@ const createStudy = ({
   bucketAccess = 'roles',
   bucket = 'bucket-1',
   qualifier = 'swb-IhsKhN8GsLneiis11ujlb8',
-  appRoleArn = 'arn:aws:iam::123456789012:role/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
+  appRoleArn = 'arn:aws-cn:iam::123456789012:role/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
   accessType = 'readwrite',
   envPermission = { read: true, write: true },
   folder = '/',
@@ -62,7 +62,7 @@ const createStudy = ({
 });
 
 const createAppRole = ({
-  arn = 'arn:aws:iam::123456789012:role/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
+  arn = 'arn:aws-cn:iam::123456789012:role/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
   accountId = '1122334455',
   mainRegion = 'us-east-1',
   awsPartition = 'aws',
@@ -72,7 +72,7 @@ const createAppRole = ({
   status = 'pending',
   name = 'swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
   qualifier = 'swb-IhsKhN8GsLneiis11ujlb8',
-  boundaryPolicyArn = 'arn:aws:iam::123456789012:policy/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
+  boundaryPolicyArn = 'arn:aws-cn:iam::123456789012:policy/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
   studies = {
     'study-1': {
       accessType: 'readonly',
@@ -167,7 +167,7 @@ describe('ApplicationRoleService', () => {
         bucketAccess: 'roles',
         bucket: 'bucket-1',
         qualifier: 'swb-IhsKhN8GsLneiis11ujlb8',
-        appRoleArn: 'arn:aws:iam::123456789012:role/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
+        appRoleArn: 'arn:aws-cn:iam::123456789012:role/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
         accessType: 'readwrite',
         envPermission: { read: true, write: true },
         folder: '/',
@@ -199,7 +199,7 @@ describe('ApplicationRoleService', () => {
         bucketAccess: 'roles',
         bucket: 'bucket-1',
         qualifier: 'swb-IhsKhN8GsLneiis11ujlb8',
-        appRoleArn: 'arn:aws:iam::123456789012:role/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
+        appRoleArn: 'arn:aws-cn:iam::123456789012:role/swb-IhsKhN8GsLneiis11ujlb8-app-1234567890xxx',
         accessType: 'readwrite',
         envPermission: { read: true, write: true },
         folder: '/',

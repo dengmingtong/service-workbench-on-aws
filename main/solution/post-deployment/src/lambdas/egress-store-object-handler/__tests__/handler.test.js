@@ -66,7 +66,7 @@ describe('handler', () => {
               ownerIdentity: {
                 principalId: 'test-principalId',
               },
-              arn: 'arn:aws:s3:::test-bucketName',
+              arn: 'arn:aws-cn:s3:::test-bucketName',
             },
             object: {
               key: encodeURIComponent('test-objectfolder/test-objectKey'),
@@ -110,7 +110,7 @@ describe('handler', () => {
               ownerIdentity: {
                 principalId: 'test-principalId',
               },
-              arn: 'arn:aws:s3:::test-bucketName',
+              arn: 'arn:aws-cn:s3:::test-bucketName',
             },
             object: {
               key: encodeURIComponent('test-objectfolder/'),
@@ -150,7 +150,7 @@ describe('handler', () => {
               ownerIdentity: {
                 principalId: 'test-principalId',
               },
-              arn: 'arn:aws:s3:::test-bucketName',
+              arn: 'arn:aws-cn:s3:::test-bucketName',
             },
             object: {
               key: encodeURIComponent('test-objectfolder/'),

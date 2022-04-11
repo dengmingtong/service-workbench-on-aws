@@ -187,7 +187,7 @@ describe('studyService', () => {
         description: 'asas',
         projectId: 'project1',
         folder: '*',
-        kmsArn: 'arn:aws:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
+        kmsArn: 'arn:aws-cn:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
         kmsScope: 'bucket',
         adminUsers: ['admin'],
         accessType: 'readonly',
@@ -214,7 +214,7 @@ describe('studyService', () => {
         description: 'asas',
         projectId: 'project1',
         folder: 'folder*',
-        kmsArn: 'arn:aws:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
+        kmsArn: 'arn:aws-cn:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
         kmsScope: 'bucket',
         adminUsers: ['admin'],
         accessType: 'readonly',
@@ -241,7 +241,7 @@ describe('studyService', () => {
         description: 'valid',
         projectId: 'project1',
         folder: 'folder?',
-        kmsArn: 'arn:aws:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
+        kmsArn: 'arn:aws-cn:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
         kmsScope: 'bucket',
         adminUsers: ['admin'],
         accessType: 'readonly',
@@ -268,7 +268,7 @@ describe('studyService', () => {
         description: 'valid',
         projectId: 'project1',
         folder: 'folder',
-        kmsArn: 'arn:aws:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
+        kmsArn: 'arn:aws-cn:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
         kmsScope: 'bucket',
         adminUsers: ['admin'],
         accessType: 'readonly',
@@ -295,7 +295,7 @@ describe('studyService', () => {
         description: 'valid',
         projectId: 'project1',
         folder: 'folder',
-        kmsArn: 'arn:aws:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
+        kmsArn: 'arn:aws-cn:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
         kmsScope: 'bucket',
         adminUsers: ['admin'],
         accessType: 'readonly',
@@ -322,7 +322,7 @@ describe('studyService', () => {
         description: 'valid<hack>',
         projectId: 'project1',
         folder: 'folder',
-        kmsArn: 'arn:aws:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
+        kmsArn: 'arn:aws-cn:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
         kmsScope: 'bucket',
         adminUsers: ['admin'],
         accessType: 'readonly',
@@ -349,7 +349,7 @@ describe('studyService', () => {
         description: 'valid',
         projectId: 'project1',
         folder: 'folder<hack>',
-        kmsArn: 'arn:aws:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
+        kmsArn: 'arn:aws-cn:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
         kmsScope: 'bucket',
         adminUsers: ['admin'],
         accessType: 'readonly',
@@ -412,7 +412,7 @@ describe('studyService', () => {
         description: 'valid',
         projectId: 'project1',
         folder: 'folder',
-        kmsArn: 'arn:aws:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
+        kmsArn: 'arn:aws-cn:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
         kmsScope: 'bucket',
         adminUsers: ['admin'],
         accessType: 'readwrite',
@@ -440,7 +440,7 @@ describe('studyService', () => {
         name: 'Study 1',
         resources: [
           {
-            arn: 'arn:aws:s3:::study1',
+            arn: 'arn:aws-cn:s3:::study1',
           },
         ],
         sha: '19d5b9c735712185ca1c691143e458a7aa2b7f69',
@@ -460,7 +460,7 @@ describe('studyService', () => {
         name: 'Study 1',
         resources: [
           {
-            arn: 'arn:aws:s3:::study1',
+            arn: 'arn:aws-cn:s3:::study1',
           },
         ],
         sha: '19d5b9z735712185ca1c691143t458a7aa2b7f69',
@@ -601,7 +601,7 @@ describe('studyService', () => {
         id: 'newOpenStudy',
         category: 'Organization',
         projectId: 'existingProjId',
-        resources: [{ arn: 'arn:aws:s3:::someRandomStudyArn' }],
+        resources: [{ arn: 'arn:aws-cn:s3:::someRandomStudyArn' }],
       };
       projectService.verifyUserProjectAssociation.mockImplementationOnce(() => true);
 
@@ -624,7 +624,7 @@ describe('studyService', () => {
       const studyEntity = {
         id: 'newOpenStudy',
         category: 'Open Data',
-        resources: [{ arn: 'arn:aws:s3:::someRandomStudyArn' }],
+        resources: [{ arn: 'arn:aws-cn:s3:::someRandomStudyArn' }],
       };
       setupDbUpdate(dbService, studyEntity);
 
@@ -851,7 +851,7 @@ describe('studyService', () => {
         name: 'name',
         category: 'Organization',
         description: 'desc',
-        resources: [{ arn: 'arn:aws:s3:::someRandomStudyArn' }],
+        resources: [{ arn: 'arn:aws-cn:s3:::someRandomStudyArn' }],
       };
       // OPERATE
       await expect(service.create(requestContext, dataIpt)).rejects.toThrow(
@@ -871,7 +871,7 @@ describe('studyService', () => {
         name: '<hack>',
         category: 'Organization',
         description: 'desc',
-        resources: [{ arn: 'arn:aws:s3:::someRandomStudyArn' }],
+        resources: [{ arn: 'arn:aws-cn:s3:::someRandomStudyArn' }],
       };
       // OPERATE
       await expect(service.create(requestContext, dataIpt)).rejects.toThrow(
@@ -892,7 +892,7 @@ describe('studyService', () => {
         category: 'Organization',
         description: 'desc',
         sha: 'fake',
-        resources: [{ arn: 'arn:aws:s3:::someRandomStudyArn' }],
+        resources: [{ arn: 'arn:aws-cn:s3:::someRandomStudyArn' }],
       };
       // OPERATE
       await expect(service.create(requestContext, dataIpt)).rejects.toThrow(
@@ -912,7 +912,7 @@ describe('studyService', () => {
         name: 'Study 1',
         resources: [
           {
-            arn: 'arn:aws:s3:::study1',
+            arn: 'arn:aws-cn:s3:::study1',
           },
         ],
         sha: '19d5b9c735712185ca1c691143e458a7aa2b7f69',
@@ -938,7 +938,7 @@ describe('studyService', () => {
         name: 'Study 1',
         resources: [
           {
-            arn: 'arn:aws:s3:::study1',
+            arn: 'arn:aws-cn:s3:::study1',
           },
         ],
         sha: '19d5b9z735712185ca1c691143t458a7aa2b7f69',
@@ -965,7 +965,7 @@ describe('studyService', () => {
         id: '<hack>',
         name: 'name',
         description: 'desc',
-        resources: [{ arn: 'arn:aws:s3:::someRandomStudyArn' }],
+        resources: [{ arn: 'arn:aws-cn:s3:::someRandomStudyArn' }],
       };
       // OPERATE
       await expect(service.update(requestContext, dataIpt)).rejects.toThrow(
@@ -984,7 +984,7 @@ describe('studyService', () => {
         id: 'id',
         name: '<hack>',
         description: 'desc',
-        resources: [{ arn: 'arn:aws:s3:::someRandomStudyArn' }],
+        resources: [{ arn: 'arn:aws-cn:s3:::someRandomStudyArn' }],
       };
       // OPERATE
       await expect(service.update(requestContext, dataIpt)).rejects.toThrow(
@@ -1004,7 +1004,7 @@ describe('studyService', () => {
         name: 'name',
         description: 'desc',
         sha: 'fake',
-        resources: [{ arn: 'arn:aws:s3:::someRandomStudyArn' }],
+        resources: [{ arn: 'arn:aws-cn:s3:::someRandomStudyArn' }],
       };
       // OPERATE
       await expect(service.update(requestContext, dataIpt)).rejects.toThrow(
@@ -1141,7 +1141,7 @@ describe('studyService', () => {
       // BUILD
       const dataIpt = {
         id: 'existingOrgStudy',
-        resources: [{ arn: 'arn:aws:s3:::someRandomStudyArn' }],
+        resources: [{ arn: 'arn:aws-cn:s3:::someRandomStudyArn' }],
         rev: 1,
       };
 

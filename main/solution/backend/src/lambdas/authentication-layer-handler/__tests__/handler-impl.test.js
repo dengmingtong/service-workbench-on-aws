@@ -39,7 +39,7 @@ describe('handler', () => {
   it('removes the bearer prefix from authorizationTokens containing a Bearer prefix', async () => {
     authenticationService.authenticate = jest.fn(() => Promise.resolve({ authenticated: true }));
     await handler({
-      methodArn: 'arn:aws:execute-api:us-east-1:123456789012:api-id/test/GET/mydemoresource/foo',
+      methodArn: 'arn:aws-cn:execute-api:us-east-1:123456789012:api-id/test/GET/mydemoresource/foo',
       authorizationToken: 'Bearer foo',
     });
     expect(authenticationService.authenticate).toHaveBeenCalledWith('foo');
@@ -49,7 +49,7 @@ describe('handler', () => {
     authenticationService.authenticate = jest.fn(() => Promise.resolve({ authenticated: false }));
     return expect(
       handler({
-        methodArn: 'arn:aws:execute-api:us-east-1:123456789012:api-id/test/GET/mydemoresource/foo',
+        methodArn: 'arn:aws-cn:execute-api:us-east-1:123456789012:api-id/test/GET/mydemoresource/foo',
         authorizationToken: 'foo',
       }),
     ).rejects.toThrow('Unauthorized');
@@ -65,7 +65,7 @@ describe('handler', () => {
       }),
     );
     const result = await handler({
-      methodArn: 'arn:aws:execute-api:us-east-1:123456789012:api-id/test/GET/mydemoresource/foo',
+      methodArn: 'arn:aws-cn:execute-api:us-east-1:123456789012:api-id/test/GET/mydemoresource/foo',
       authorizationToken: 'foo',
     });
     expect(result).toEqual({
@@ -76,7 +76,7 @@ describe('handler', () => {
           {
             Effect: 'Allow',
             Action: 'execute-api:Invoke',
-            Resource: 'arn:aws:execute-api:us-east-1:123456789012:api-id/test/*/*',
+            Resource: 'arn:aws-cn:execute-api:us-east-1:123456789012:api-id/test/*/*',
           },
         ],
       },
@@ -99,7 +99,7 @@ describe('handler', () => {
       }),
     );
     const result = await handler({
-      methodArn: 'arn:aws:execute-api:us-east-1:123456789012:api-id/test/GET/mydemoresource/foo',
+      methodArn: 'arn:aws-cn:execute-api:us-east-1:123456789012:api-id/test/GET/mydemoresource/foo',
       authorizationToken: 'foo',
     });
     expect(result).toEqual({
@@ -110,7 +110,7 @@ describe('handler', () => {
           {
             Effect: 'Allow',
             Action: 'execute-api:Invoke',
-            Resource: 'arn:aws:execute-api:us-east-1:123456789012:api-id/test/*/*',
+            Resource: 'arn:aws-cn:execute-api:us-east-1:123456789012:api-id/test/*/*',
           },
         ],
       },

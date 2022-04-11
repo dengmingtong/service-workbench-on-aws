@@ -40,7 +40,7 @@ describe('fetchAndSaveOpenData', () => {
     name: 'Study 1',
     resources: [
       {
-        arn: 'arn:aws:s3:::study1',
+        arn: 'arn:aws-cn:s3:::study1',
       },
     ],
     sha: 'abc2',
@@ -74,7 +74,7 @@ describe('fetchOpenData', () => {
     name: 'Study 1',
     resources: [
       {
-        arn: 'arn:aws:s3:::study1',
+        arn: 'arn:aws-cn:s3:::study1',
         description: 'Description for Study 1',
         region: 'us-east-1',
         type: 'S3 Bucket',
@@ -91,7 +91,7 @@ describe('fetchOpenData', () => {
     resources: [
       {
         description: 'Description for Study 1',
-        arn: 'arn:aws:s3:::study1',
+        arn: 'arn:aws-cn:s3:::study1',
         region: 'us-east-1',
         type: 'S3 Bucket',
       },

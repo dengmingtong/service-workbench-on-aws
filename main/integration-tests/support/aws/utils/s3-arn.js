@@ -25,7 +25,7 @@ const { chopLeft, chopRight } = require('../../utils/utils');
  * @param arn A possible S3 arn string
  */
 function parseS3Arn(arn = '') {
-  // arn:aws:s3:::123456789012-study/studies/Organization/org-study-a1/*
+  // arn:aws-cn:s3:::123456789012-study/studies/Organization/org-study-a1/*
   let trimmed = _.trim(arn);
   if (_.isEmpty(arn)) return;
 

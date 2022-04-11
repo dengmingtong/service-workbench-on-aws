@@ -67,7 +67,7 @@ describe('Create study scenarios', () => {
         await expect(
           researcherSession.resources.studies.create({
             id: studyId,
-            resources: [{ arn: 'arn:aws:s3:::someRandomStudyArn' }],
+            resources: [{ arn: 'arn:aws-cn:s3:::someRandomStudyArn' }],
             category: studyCategory,
           }),
         ).rejects.toMatchObject({

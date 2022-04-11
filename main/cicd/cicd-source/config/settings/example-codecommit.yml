@@ -55,8 +55,8 @@ repoBranch: master
 #    "artifactsS3BucketArn" respectively then deploy "cicd-source" stack again to lock down the permissions in
 #    "CodeCommitSourceRole"
 #
-#       artifactsS3BucketArn: "arn:aws:s3:::<artifact-bucket-name>"
-#       artifactsKmsKeyArn: "arn:aws:kms:<region>:<target-aws-account>:key/<kms-key-id>"
+#       artifactsS3BucketArn: "arn:aws-cn:s3:::<artifact-bucket-name>"
+#       artifactsKmsKeyArn: "arn:aws-cn:kms:<region>:<target-aws-account>:key/<kms-key-id>"
 #
 
 artifactsS3BucketArn: '*'

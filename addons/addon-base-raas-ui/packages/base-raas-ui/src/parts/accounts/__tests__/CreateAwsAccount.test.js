@@ -61,7 +61,7 @@ describe('CreateAwsAccount', () => {
     component.awsAccount = {
       accountName: 'MyResearchProjectAccount',
       accountEmail: 'user@example.com',
-      masterRoleArn: 'arn:aws:iam::111111111111:role/MyRole',
+      masterRoleArn: 'arn:aws-cn:iam::111111111111:role/MyRole',
       externalId: '123',
       description: 'This is my research project account',
     };

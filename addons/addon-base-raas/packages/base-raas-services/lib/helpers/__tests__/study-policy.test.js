@@ -51,7 +51,7 @@ describe('study-policy', () => {
             's3:DeleteObjectVersionTagging',
           ],
           Effect: 'Allow',
-          Resource: ['arn:aws:s3:::test-S3BucketName/test-folder*'],
+          Resource: ['arn:aws-cn:s3:::test-S3BucketName/test-folder*'],
           Sid: 'S3StudyReadWriteAccess',
         },
         {
@@ -62,7 +62,7 @@ describe('study-policy', () => {
             },
           },
           Effect: 'Allow',
-          Resource: 'arn:aws:s3:::test-S3BucketName',
+          Resource: 'arn:aws-cn:s3:::test-S3BucketName',
           Sid: 'studyListS3Access1',
         },
         {

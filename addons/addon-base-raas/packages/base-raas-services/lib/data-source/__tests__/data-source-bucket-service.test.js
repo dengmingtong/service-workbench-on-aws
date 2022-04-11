@@ -64,7 +64,7 @@ describe('DataSourceBucketService', () => {
         name: 'bucket-1',
         region: 'us-east-1',
         awsPartition: 'aws',
-        kmsArn: 'arn:aws:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
+        kmsArn: 'arn:aws-cn:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
         access: 'roles',
         sse: 'kms',
       };
@@ -115,7 +115,7 @@ describe('DataSourceBucketService', () => {
         name: 'bucket-1',
         region: 'us-east-1',
         partition: 'aws',
-        kmsArn: 'arn:aws:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
+        kmsArn: 'arn:aws-cn:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
       };
 
       await expect(service.register(requestContext, { id }, rawData)).rejects.toThrow(
@@ -136,7 +136,7 @@ describe('DataSourceBucketService', () => {
         name: 'bucket-1',
         region: 'us-east-1',
         awsPartition: 'aws',
-        kmsArn: 'arn:aws:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
+        kmsArn: 'arn:aws-cn:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
         access: 'roles',
         sse: 'kms',
       };
@@ -171,7 +171,7 @@ describe('DataSourceBucketService', () => {
         name: 'bucket-1',
         region: 'us-east-1',
         awsPartition: 'aws',
-        kmsArn: 'arn:aws:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
+        kmsArn: 'arn:aws-cn:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
         access: 'roles',
         sse: 'kms',
       };
@@ -225,7 +225,7 @@ describe('DataSourceBucketService', () => {
         name: 'bucketbucketbucketbucketbucketbucketbucketbucketbucketbucketbucket',
         region: 'us-east-1',
         awsPartition: 'aws',
-        kmsArn: 'arn:aws:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
+        kmsArn: 'arn:aws-cn:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
         access: 'roles',
         sse: 'kms',
       };
@@ -243,7 +243,7 @@ describe('DataSourceBucketService', () => {
         name: 'bucket?',
         region: 'us-east-1',
         awsPartition: 'aws',
-        kmsArn: 'arn:aws:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
+        kmsArn: 'arn:aws-cn:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
         access: 'roles',
         sse: 'kms',
       };
@@ -261,7 +261,7 @@ describe('DataSourceBucketService', () => {
         name: 'bucket*',
         region: 'us-east-1',
         awsPartition: 'aws',
-        kmsArn: 'arn:aws:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
+        kmsArn: 'arn:aws-cn:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
         access: 'roles',
         sse: 'kms',
       };
@@ -279,7 +279,7 @@ describe('DataSourceBucketService', () => {
         name: 'bucket-1##<hack>',
         region: 'us-east-1',
         awsPartition: 'aws',
-        kmsArn: 'arn:aws:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
+        kmsArn: 'arn:aws-cn:kms:us-east-1:123456789101:key/2e3c97b6-8bb3-4cf8-bc77-d56ebf84test',
         access: 'roles',
         sse: 'kms',
       };

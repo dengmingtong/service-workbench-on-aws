@@ -13,8 +13,8 @@ Object {
       "Effect": "Deny",
       "Principal": "*",
       "Resource": Array [
-        "arn:aws:s3:::dummyBucket/*",
-        "arn:aws:s3:::dummyBucket",
+        "arn:aws-cn:s3:::dummyBucket/*",
+        "arn:aws-cn:s3:::dummyBucket",
       ],
       "Sid": "Deny requests that do not use TLS/HTTPS",
     },
@@ -27,7 +27,7 @@ Object {
       },
       "Effect": "Deny",
       "Principal": "*",
-      "Resource": "arn:aws:s3:::dummyBucket/*",
+      "Resource": "arn:aws-cn:s3:::dummyBucket/*",
       "Sid": "Deny requests that do not use SigV4",
     },
     Object {
@@ -42,10 +42,10 @@ Object {
       "Effect": "Allow",
       "Principal": Object {
         "AWS": Array [
-          "arn:aws:iam::0123456789:root",
+          "arn:aws-cn:iam::0123456789:root",
         ],
       },
-      "Resource": "arn:aws:s3:::dummyBucket",
+      "Resource": "arn:aws-cn:s3:::dummyBucket",
       "Sid": "List:undefined",
     },
     Object {
@@ -55,11 +55,11 @@ Object {
       "Effect": "Allow",
       "Principal": Object {
         "AWS": Array [
-          "arn:aws:iam::0123456789:root",
+          "arn:aws-cn:iam::0123456789:root",
         ],
       },
       "Resource": Array [
-        "arn:aws:s3:::dummyBucket/undefined*",
+        "arn:aws-cn:s3:::dummyBucket/undefined*",
       ],
       "Sid": "Get:undefined",
     },

@@ -18,9 +18,9 @@ When [**Creating a Member AWS Account(s)**](create_member_account) in the organi
       "Effect": "Allow",
       "Principal": {
         "AWS": [
-          "arn:aws:iam::${MainAccount}:role/${ApiHandlerRole}",
-          "arn:aws:iam::${MainAccount}:role/${WorkflowLoopRunnerRole}",
-          "arn:aws:iam::${MemberAccount}:root"
+          "arn:aws-cn:iam::${MainAccount}:role/${ApiHandlerRole}",
+          "arn:aws-cn:iam::${MainAccount}:role/${WorkflowLoopRunnerRole}",
+          "arn:aws-cn:iam::${MemberAccount}:root"
         ]
       },
       "Action": "sts:AssumeRole",

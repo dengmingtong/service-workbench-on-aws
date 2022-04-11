@@ -15,7 +15,7 @@ This role resides in the [**Master AWS Account**](introduction) and is assumed b
     {
       "Effect": "Allow",
       "Principal": {
-        "AWS": "arn:aws:iam::${MainAccount}:root"
+        "AWS": "arn:aws-cn:iam::${MainAccount}:root"
       },
       "Action": "sts:AssumeRole",
       "Condition": {
@@ -61,7 +61,7 @@ This policy is for the controlling role between [**Master AWS Account**](introdu
     "Statement": {
         "Effect": "Allow",
         "Action": "sts:AssumeRole",
-        "Resource": "arn:aws:iam::*:role/OrganizationAccountAccessRole"
+        "Resource": "arn:aws-cn:iam::*:role/OrganizationAccountAccessRole"
     }
 }
 ```

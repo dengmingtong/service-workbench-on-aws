@@ -131,7 +131,7 @@ describe('accountService', () => {
         AWSMock.mock('STS', 'getCallerIdentity', {
           UserId: 'Jeet',
           Account: '111111111111',
-          Arn: 'arn:aws:sts::111111111111:assumed-role/Jeet/Jeet',
+          Arn: 'arn:aws-cn:sts::111111111111:assumed-role/Jeet/Jeet',
         });
 
         // OPERATE
@@ -210,7 +210,7 @@ describe('accountService', () => {
         AWSMock.mock('STS', 'getCallerIdentity', {
           UserId: 'Jeet',
           Account: '111111111111',
-          Arn: 'arn:aws:sts::111111111111:assumed-role/Jeet/Jeet',
+          Arn: 'arn:aws-cn:sts::111111111111:assumed-role/Jeet/Jeet',
         });
 
         settingsService.get = jest.fn(key => {

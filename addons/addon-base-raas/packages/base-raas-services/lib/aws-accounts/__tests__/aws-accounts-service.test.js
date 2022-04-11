@@ -419,11 +419,11 @@ describe('AwsAccountService', () => {
       rev: 2, // must have for an update
       name: 'my-aws-account',
       externalId: '012345678998',
-      roleArn: 'arn:aws:iam::role/AccountRole',
+      roleArn: 'arn:aws-cn:iam::role/AccountRole',
       accountId: '012345678998',
       vpcId: 'vpc-abcdef123',
       subnetId: 'subnet-abcdef123',
-      encryptionKeyArn: 'arn:aws:kms::key/someKey',
+      encryptionKeyArn: 'arn:aws-cn:kms::key/someKey',
     };
 
     beforeEach(() => {

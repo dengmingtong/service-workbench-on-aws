@@ -47,7 +47,7 @@
 # Note the current implementation assumes that DNS is handled elsewhere; a future
 # improvement will automatically handle creation of the cert and Route53 entries.
 #domainName: sw.example.com
-#certificateArn: arn:aws:acm:us-east-1:123456789012:certificate/abcdef01-abcd-ef01-2345-abcdef012345
+#certificateArn: arn:aws-cn:acm:us-east-1:123456789012:certificate/abcdef01-abcd-ef01-2345-abcdef012345
 
 # Array of identity provider ids.
 # The usual practice is to keep this same as the domain name of the idp.

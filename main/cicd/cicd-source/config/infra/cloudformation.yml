@@ -15,7 +15,7 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              AWS: arn:aws:iam::${self:custom.settings.targetAccountId}:root
+              AWS: arn:aws-cn:iam::${self:custom.settings.targetAccountId}:root
             Action: sts:AssumeRole
       Policies:
         - PolicyName: CopySourceCodePolicy

@@ -48,7 +48,7 @@ class Buckets extends CollectionResource {
       name: gen.string({ prefix: 'ds-bucket-test' }),
       region,
       awsPartition: 'aws',
-      kmsArn: `arn:aws:kms:${region}:${accountId}:key/${gen.string()}-key`,
+      kmsArn: `arn:aws-cn:kms:${region}:${accountId}:key/${gen.string()}-key`,
       access: 'roles',
       sse: 'kms',
       ...bucket,

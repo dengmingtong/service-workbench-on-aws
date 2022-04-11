@@ -295,7 +295,7 @@ class DataSourceAccountService extends Service {
 
     const { id, qualifier, stack: stackName, mainRegion } = accountEntity;
     const roleName = `${qualifier}-app-role-stack`;
-    const roleArn = `arn:aws:iam::${id}:role/${roleName}`;
+    const roleArn = `arn:aws-cn:iam::${id}:role/${roleName}`;
     const cfnApi = await this.getCfnSdk(roleArn, mainRegion);
     const params = { StackName: stackName };
     const stacks = await cfnApi.describeStacks(params).promise();

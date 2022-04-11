@@ -201,15 +201,15 @@ function toRoleCfnResource(appRoleEntity, swbMainAccountId) {
                     'iam:GetRolePolicy',
                   ],
                   Resource: [
-                    `arn:aws:iam::${accountId}:role/${qualifier}-fs-*`,
-                    `arn:aws:iam::${accountId}:policy/${qualifier}-fs-*`,
+                    `arn:aws-cn:iam::${accountId}:role/${qualifier}-fs-*`,
+                    `arn:aws-cn:iam::${accountId}:policy/${qualifier}-fs-*`,
                   ],
                 },
                 {
                   Sid: 'RoleCreation',
                   Effect: 'Allow',
                   Action: 'iam:CreateRole',
-                  Resource: `arn:aws:iam::${accountId}:role/${qualifier}-fs-*`,
+                  Resource: `arn:aws-cn:iam::${accountId}:role/${qualifier}-fs-*`,
                   Condition: {
                     StringEquals: {
                       'iam:PermissionsBoundary': boundaryPolicyArn,

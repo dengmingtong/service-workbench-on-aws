@@ -107,17 +107,17 @@ resources:
                 Action:
                   - apigateway:GET
                   - apigateway:PATCH
-                Resource: 'arn:aws:apigateway:${self:custom.settings.awsRegion}::/account'
+                Resource: 'arn:aws-cn:apigateway:${self:custom.settings.awsRegion}::/account'
               - Effect: Allow
                 Action:
                   - iam:CreateRole
                   - iam:AttachRolePolicy
                   - iam:ListAttachedRolePolicies
                   - iam:PassRole
-                Resource: 'arn:aws:iam::${self:custom.settings.awsAccountInfo.awsAccountId}:role/serverlessApiGatewayCloudWatchRole'
+                Resource: 'arn:aws-cn:iam::${self:custom.settings.awsAccountInfo.awsAccountId}:role/serverlessApiGatewayCloudWatchRole'
                 Condition:
                   ArnEqualsIfExists:
-                    iam:PolicyARN: 'arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs'
+                    iam:PolicyARN: 'arn:aws-cn:iam::aws-cn:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs'
   - extensions:
       # Add custom permission boundary to role serverless uses for creating Cloudwatch publishing role
       IamRoleCustomResourcesLambdaExecution:
