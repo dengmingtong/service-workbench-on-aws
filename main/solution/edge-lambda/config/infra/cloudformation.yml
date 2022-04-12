@@ -15,8 +15,8 @@ Resources:
                 - edgelambda.amazonaws.com
             Action: 'sts:AssumeRole'
       ManagedPolicyArns:
-        - arn:aws-cn:iam::aws-cn:policy/AWSLambdaExecute
-        - arn:aws-cn:iam::aws-cn:policy/AmazonS3ReadOnlyAccess
+        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/AWSLambdaExecute'
+        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/AmazonS3ReadOnlyAccess'
       Policies:
         - PolicyName: logs-access
           PolicyDocument:
@@ -26,7 +26,7 @@ Resources:
                 - logs:CreateLogGroup
                 - logs:CreateLogStream
                 - logs:PutLogEvents
-              Resource: 'arn:aws-cn:logs:*:*:*'
+              Resource: !Sub 'arn:${AWS::Partition}:logs:*:*:*'
 
   # =============================================================================================
   # CloudFront Interceptor Lambda (Lambda@Edge)

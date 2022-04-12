@@ -133,7 +133,7 @@ class ProvisionAccount extends StepBase {
 
     await iam
       .attachRolePolicy({
-        PolicyArn: 'arn:aws-cn:iam::aws-cn:policy/service-role/AmazonAppStreamServiceAccess',
+        PolicyArn: 'arn:aws-cn:iam::aws:policy/service-role/AmazonAppStreamServiceAccess',
         RoleName: 'AmazonAppStreamServiceAccess',
       })
       .promise();
@@ -150,7 +150,7 @@ class ProvisionAccount extends StepBase {
 
     await iam
       .attachRolePolicy({
-        PolicyArn: 'arn:aws-cn:iam::aws-cn:policy/service-role/ApplicationAutoScalingForAmazonAppStreamAccess',
+        PolicyArn: 'arn:aws-cn:iam::aws:policy/service-role/ApplicationAutoScalingForAmazonAppStreamAccess',
         RoleName: 'ApplicationAutoScalingForAmazonAppStreamAccess',
       })
       .promise();

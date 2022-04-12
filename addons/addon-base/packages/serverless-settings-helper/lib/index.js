@@ -157,15 +157,19 @@ module.exports = {
     // to pull in cross-region CloudFormation outputs
     if (globalDeployment) {
       mergedSettingsObj.additionalAwsRegion = mergedSettingsObj.awsRegion;
-      mergedSettingsObj.awsRegion = 'us-east-1';
+      // mergedSettingsObj.awsRegion = 'us-east-1';
+      mergedSettingsObj.awsRegion = 'cn-north-1';
     }
 
     // If the destination region is not us-east-1, we still need access to CloudFormation
     // outputs in us-east-1 for any global deployments, so use the "addtional region"
     // setting to pull them in
-    if (mergedSettingsObj.awsRegion !== 'us-east-1') {
-      mergedSettingsObj.additionalAwsRegion = 'us-east-1';
-    }
+    // if (mergedSettingsObj.awsRegion !== 'us-east-1') {
+    //   mergedSettingsObj.additionalAwsRegion = 'us-east-1';
+    // }
+    if (mergedSettingsObj.awsRegion !== 'cn-north-1') {
+      mergedSettingsObj.additionalAwsRegion = 'cn-north-1';
+    }    
 
     const { awsProfile, awsRegion } = mergedSettingsObj;
 

@@ -77,23 +77,31 @@ class CreateServiceCatalogPortfolio extends Service {
   }
 
   async createOrUpdatePortfolio() {
+    this.log.info('mingtong step 1');
     const createServiceCatalogPortfolio = this.settings.getBoolean(settingKeys.createServiceCatalogPortfolio);
     if (!createServiceCatalogPortfolio) {
       this.log.info('Service catalog portfolio creation is disabled. Skipping this post-deployment step...');
       return;
     }
 
+    this.log.info('mingtong step 2');
+
     let portfolioToUpdate;
     const existingDeploymentItem = await this.findDeploymentItem({ id: deploymentItemId });
+    this.log.info('mingtong step 3');
+    this.log.info('mingtong step 3, existingDeploymentItem: ', existingDeploymentItem);
+
     if (!existingDeploymentItem) {
       // No portfolio was created yet. Creating...
+      this.log.info('mingtong step 4');
       portfolioToUpdate = await this.createPortfolio();
     } else {
+      this.log.info('mingtong step 5');
       const deploymentItemValue = JSON.parse(existingDeploymentItem.value);
       // Portfolio alreday exists, need to check and update products as necessary
       portfolioToUpdate = await this.updateProducts(deploymentItemValue.portfolioId);
     }
-
+    this.log.info('mingtong step 6');
     // Either create/update, we'll be updating deploymentItem in DB
     await this.createDeploymentItem({ id: deploymentItemId, strValue: JSON.stringify(portfolioToUpdate) });
     this.log.info('Service catalog portfolio create/update completed.');
@@ -101,8 +109,11 @@ class CreateServiceCatalogPortfolio extends Service {
 
   async createPortfolio() {
     const aws = await this.service('aws');
+    this.log.info('mingtong step 4-1');
     const servicecatalog = new aws.sdk.ServiceCatalog({ apiVersion: '2015-12-10' });
+    this.log.info('mingtong step 4-2');
     const displayName = this.settings.get(settingKeys.namespace);
+    this.log.info('mingtong step 4-3');
     const portfolioToCreate = {
       DisplayName: displayName /* required */,
       ProviderName: '_system_' /* required */,
@@ -114,25 +125,31 @@ class CreateServiceCatalogPortfolio extends Service {
     };
 
     try {
+      this.log.info('mingtong step 4-4');
       const serviceCatalogInfo = await servicecatalog.createPortfolio(portfolioToCreate).promise();
+      this.log.info('mingtong step 4-5');
       const portfolioId = serviceCatalogInfo.PortfolioDetail.Id;
       portfolioToUpdate.portfolioId = portfolioId;
 
       await this._associatePortfolioWithRole(portfolioId);
+      this.log.info('mingtong step 4-6');
       this.log.info(`Finished creating service catalog portfolio ${portfolioId}`);
 
       // Portfolio's ready, now let's add products
       portfolioToUpdate.products = await this.createAllProducts();
+      this.log.info('mingtong step 4-7');
       await Promise.all(
         _.map(portfolioToUpdate.products, async product => {
           await this.associatePortfolio(product.productId, portfolioId);
         }),
       );
+      this.log.info('mingtong step 4-8');
       await Promise.all(
         _.map(portfolioToUpdate.products, async product => {
           await this.createLaunchConstraint(portfolioId, product.productId);
         }),
       );
+      this.log.info('mingtong step 4-9');
     } catch (err) {
       this.log.error(err);
       // In case of any error let it bubble up
@@ -166,7 +183,7 @@ class CreateServiceCatalogPortfolio extends Service {
   async createProduct(product) {
     const aws = await this.service('aws');
     const servicecatalog = new aws.sdk.ServiceCatalog({ apiVersion: '2015-12-10' });
-
+    this.log.info('mingtong step create', product);
     const productInfo = await servicecatalog.createProduct(product).promise();
     const productId = productInfo.ProductViewDetail.ProductViewSummary.ProductId;
     const provisioningArtifactId = productInfo.ProvisioningArtifactDetail.Id;
@@ -191,11 +208,13 @@ class CreateServiceCatalogPortfolio extends Service {
   }
 
   async updateProducts(existingPortfolioId) {
+    this.log.info('mingtong step 5-0');
     const envTypeCandidateService = await this.service('envTypeCandidateService');
     const envTypesAvailable = await envTypeCandidateService.list(getSystemRequestContext(), {
       filter: { status: ['*'] },
     });
 
+    this.log.info('mingtong step 5-1');
     const portfolioToUpdate = {
       portfolioId: existingPortfolioId,
       products: [],
@@ -207,22 +226,26 @@ class CreateServiceCatalogPortfolio extends Service {
       provisioningArtifactName: obj.provisioningArtifact.name,
     }));
     const scAvailableProductNames = _.map(scAvailableProducts, p => p.productName);
-
+    this.log.info('mingtong step 5-2');
     const updatePromises = _.map(productsToCreate, async productToCreate => {
       // If the user forgot to add displayName, we'll use filename instead to search
       const productName = productToCreate.displayName || productToCreate.filename;
       if (_.includes(scAvailableProductNames, productName)) {
         // Check if artifact we created exists and is latest.
         const deploymentItem = await this.findDeploymentItem({ id: deploymentItemId });
+        this.log.info('mingtong step 5-3');
         const existingPortfolioValue = JSON.parse(deploymentItem.value);
         const deployedProducts = existingPortfolioValue.products || [];
         const productFound = deployedProducts.find(p => p.productName === productName);
+        this.log.info('mingtong step 5-4');
         if (productFound) {
+          this.log.info('mingtong step 5-5');
           // Find DB productFound.provisioningArtifactId in envTypesAvailable products
           const ScProduct = scAvailableProducts.find(s => s.productName === productName);
           if (productFound.provisioningArtifactId === ScProduct.provisioningArtifactId) {
             // If found, compare hash - upload new artifact if different - else skip
             const cfnTemplateBody = await this.getS3Object(productToCreate.filename); // Latest in S3
+            this.log.info('mingtong step 5-6');
             const s3DataHash = createHash(cfnTemplateBody);
             const currentScObjectHash = productFound.data;
             const productDetails = {
@@ -231,18 +254,20 @@ class CreateServiceCatalogPortfolio extends Service {
               provisioningArtifactId: productFound.provisioningArtifactId,
               data: s3DataHash,
             };
+            this.log.info('mingtong step 5-7');
             if (s3DataHash !== currentScObjectHash) {
               this.log.info(
                 `A previously used CfN file was updated with new CfN product template data for ${productName}`,
               );
               // Get all provisioning artifacts for this product
               const latestVersionInSC = ScProduct.provisioningArtifactName;
+              this.log.info('mingtong step 5-8');
               const newProvisioningId = await this.createProductArtifact(
                 productFound.productId,
                 productToCreate.filename,
                 latestVersionInSC,
               );
-
+              this.log.info('mingtong step 5-9');
               productDetails.provisioningArtifactId = newProvisioningId;
             }
             // Record in DB the latest (or unchanged) product details
@@ -273,11 +298,12 @@ class CreateServiceCatalogPortfolio extends Service {
             await this.createLaunchConstraint(portfolioToUpdate.portfolioId, currentProduct.productId);
           }),
         );
+        this.log.info('mingtong step 5-10');
         portfolioToUpdate.products.push(productData);
       }
     });
     await Promise.all(updatePromises);
-
+    this.log.info('mingtong step 5-11');
     return portfolioToUpdate;
   }
 
@@ -290,7 +316,7 @@ class CreateServiceCatalogPortfolio extends Service {
     const params = {
       Parameters: {
         Info: {
-          LoadTemplateFromURL: `https://${s3BucketName}.s3.amazonaws.com/service-catalog-products/${productFileName}.cfn.yml`,
+          LoadTemplateFromURL: `https://${s3BucketName}.s3.cn-north-1.amazonaws.com/service-catalog-products/${productFileName}.cfn.yml`,
         },
         DisableTemplateValidation: true,
         Type: 'CLOUD_FORMATION_TEMPLATE',
@@ -424,7 +450,7 @@ class CreateServiceCatalogPortfolio extends Service {
       ProvisioningArtifactParameters: {
         DisableTemplateValidation: true,
         Info: {
-          LoadTemplateFromURL: `https://${s3BucketName}.s3.amazonaws.com/service-catalog-products/${productToCreate.filename}.cfn.yml`,
+          LoadTemplateFromURL: `https://${s3BucketName}.s3.cn-north-1.amazonaws.com/service-catalog-products/${productToCreate.filename}.cfn.yml`,
         },
         Type: 'CLOUD_FORMATION_TEMPLATE',
         Name: autoCreateVersion, // Could be used as a version id in the future, for now, just a placeholder

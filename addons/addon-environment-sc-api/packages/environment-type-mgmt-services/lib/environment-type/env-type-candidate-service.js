@@ -56,30 +56,35 @@ class EnvTypeCandidateService extends Service {
     requestContext,
     { filter = { status: [envTypeCandidateStatusEnum.notImported], version: versionFilterEnum.latest } } = {},
   ) {
+
+    this.log.info('mingtong step 5-0-0');
     // ensure that the caller has permissions to list raw environment types (AWS Service Catalog Products not yet imported into "app store")
     // Perform default condition checks to make sure the user is active and is admin
     await this.assertAuthorized(requestContext, { action: 'list', conditions: [allowIfActive, allowIfAdmin] });
-
+    this.log.info('mingtong step 5-0-4');
     const filterStatuses = filter.status || [envTypeCandidateStatusEnum.notImported];
     const versionFilter = filter.version || versionFilterEnum.latest;
-
+    this.log.info('mingtong step 5-0-5');
     // Validate filter
     await this.validateListFilter({ filterStatuses, versionFilter });
-
+    this.log.info('mingtong step 5-0-6');
     // Search products available to the SC admin role
     // get service catalog client sdk with the service catalog admin role credentials
     const [aws] = await this.service(['aws']);
     const serviceCatalogClient = await getServiceCatalogClient(aws, this.settings.get(settingKeys.envMgmtRoleArn));
+    this.log.info('mingtong step 5-0-7');
     const result = await retry(() =>
       // wrap with retry with exponential backoff in case of throttling errors
       serviceCatalogClient.searchProducts({ SortBy: 'CreationDate', SortOrder: 'DESCENDING' }).promise(),
     );
+    this.log.info('mingtong step 5-0-8');
     const products = result.ProductViewSummaries || [];
+    this.log.info('mingtong step 5-0-9', products);
 
     // Find corresponding SC product versions (aka provisioningArtifacts)
     // and translate to env type candidates
     const productEnvTypes = await this.toEnvTypeCandidates(serviceCatalogClient, products, versionFilter);
-
+    this.log.info('mingtong step 5-0-10');
     // The productEnvTypes is an array with the following shape
     // [
     //   [env type for product 1 v1,  env type for product 1 v2, ...]
@@ -89,16 +94,20 @@ class EnvTypeCandidateService extends Service {
     //
     // Flatten this to return one array containing candidate env types for all versions
     const envTypeCandidates = _.flatten(productEnvTypes);
+    this.log.info('mingtong step 5-0-11');
 
     const includeAll = _.includes(filterStatuses, '*');
+    this.log.info('mingtong step 5-0-12');
     if (includeAll) {
+      this.log.info('mingtong step 5-0-13');
       // if asked to return all then no need to do any further filtering
       // return all env type candidates
       return envTypeCandidates;
     }
-
+    this.log.info('mingtong step 5-0-14');
     // Find a subset of the envTypeCandidates that have not been imported yet in the system
     const notImportedCandidates = await this.findNotImported(requestContext, envTypeCandidates);
+    this.log.info('mingtong step 5-0-15', notImportedCandidates);
     return notImportedCandidates;
   }
 
@@ -142,12 +151,15 @@ class EnvTypeCandidateService extends Service {
    * @returns {Promise<*>}
    */
   async toEnvTypeCandidate(serviceCatalogClient, { product, provisioningArtifact }) {
+    this.log.info('mingtong step 5-0-9-6');
     const lpResult = await retry(() =>
       // wrap with retry with exponential backoff in case of throttling errors
       serviceCatalogClient.listLaunchPaths({ ProductId: product.ProductId }).promise(),
     );
+    this.log.info('mingtong step 5-0-9-6-1',lpResult);
     // expecting only one launch path via one portfolio
     const launchPathId = _.get(lpResult, 'LaunchPathSummaries[0].Id');
+    this.log.info('mingtong step 5-0-9-6-2', launchPathId);
     const ppResult = await retry(() =>
       // wrap with retry with exponential backoff in case of throttling errors
       serviceCatalogClient
@@ -158,17 +170,22 @@ class EnvTypeCandidateService extends Service {
         })
         .promise(),
     );
+    this.log.info('mingtong step 5-0-9-6-3');
     const params = ppResult.ProvisioningArtifactParameters;
     const usageInstructions = ppResult.UsageInstructions;
     const metaData = usageInstructions.find(obj => obj.Type === 'metadata') || null;
     let mdValues = {};
+    this.log.info('mingtong step 5-0-9-6-4');
     if (metaData) {
       const { Value } = metaData || null;
       if (Value) {
+        this.log.info('mingtong step 5-0-9-6-5');
         mdValues = JSON.parse(Value);
+        this.log.info('mingtong step 5-0-9-6-5', mdValues);
       }
     }
     const { PartnerName, KnowMore, PartnerURL } = mdValues;
+    this.log.info('mingtong step 5-0-9-6-6');
     const environmentType = {
       id: `${product.ProductId}-${provisioningArtifact.Id}`,
       name: `${product.Name}-${provisioningArtifact.Name}`,
@@ -194,6 +211,7 @@ class EnvTypeCandidateService extends Service {
       },
       params,
     };
+    this.log.info('mingtong step 5-0-9-6-7', environmentType);
     return environmentType;
   }
 
@@ -208,28 +226,33 @@ class EnvTypeCandidateService extends Service {
    * @returns {Promise<[*]>}
    */
   async toEnvTypeCandidates(serviceCatalogClient, products, versionFilter) {
+    this.log.info('mingtong step 5-0-9-0');
     const productEnvTypes = await Promise.all(
       _.map(products, async product => {
         const paResult = await retry(() =>
           // wrap with retry with exponential backoff in case of throttling errors
           serviceCatalogClient.listProvisioningArtifacts({ ProductId: product.ProductId }).promise(),
         );
+        this.log.info('mingtong step 5-0-9-1');
 
         // Sort versions (provisioningArtifacts) in decending order of creation time (i.e., latest first)
         let provisioningArtifacts = _.sortBy(
           _.filter(paResult.ProvisioningArtifactDetails || [], pa => pa.Active), // filter out inactive versions
           v => -1 * v.CreatedTime,
         );
+        this.log.info('mingtong step 5-0-9-2');
         if (_.isEmpty(provisioningArtifacts)) {
+          this.log.info('mingtong step 5-0-9-3');
           // No active versions
           return null;
         }
         const latestVersion = provisioningArtifacts[0];
         latestVersion.isLatest = true;
+        this.log.info('mingtong step 5-0-9-4');
         provisioningArtifacts = versionFilterEnum.includeOnlyLatest(versionFilter)
           ? [latestVersion]
           : provisioningArtifacts;
-
+        this.log.info('mingtong step 5-0-9-5');
         // In AWS Service Catalog each product could have one or more versions
         // We want to represent each version of the product as an independent environment type
         return Promise.all(
@@ -258,8 +281,9 @@ class EnvTypeCandidateService extends Service {
   }
 
   async assertAuthorized(requestContext, { action, conditions }, ...args) {
+    this.log.info('mingtong step 5-0-1');
     const authorizationService = await this.service('authorizationService');
-
+    this.log.info('mingtong step 5-0-2');
     // The "authorizationService.assertAuthorized" below will evaluate permissions by calling the "conditions" functions first
     // It will then give a chance to all registered plugins (if any) to perform their authorization.
     // The plugins can even override the authorization decision returned by the conditions
@@ -269,6 +293,7 @@ class EnvTypeCandidateService extends Service {
       { extensionPoint: 'env-type-candidates-authz', action, conditions },
       ...args,
     );
+    this.log.info('mingtong step 5-0-3');
   }
 
   /**

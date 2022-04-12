@@ -82,7 +82,8 @@ class ServerlessUIToolsPlugin {
 
   getCloudFront() {
     const profile = this.serverless.service.custom.settings.awsProfile;
-    const region = this.serverless.service.custom.settings.awsRegion;
+    // const region = this.serverless.service.custom.settings.awsRegion;
+    const region = 'cn-northwest-1';
 
     aws.config.update({
       maxRetries: 3,

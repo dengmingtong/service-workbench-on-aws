@@ -178,7 +178,7 @@ const generateDefaultIAMPolicy = accountId =>
       "Resource": "arn:aws-cn:iam::${accountId}:role/analysis-*",
       "Condition": {
         "ArnLike": {
-          "iam:PolicyARN": "arn:aws-cn:iam::aws-cn:policy/service-role/AmazonElasticMapReduceRole"
+          "iam:PolicyARN": "arn:aws-cn:iam::aws:policy/service-role/AmazonElasticMapReduceRole"
         }
       }
     },
