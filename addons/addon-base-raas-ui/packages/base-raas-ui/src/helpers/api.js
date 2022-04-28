@@ -150,6 +150,7 @@ function getEnvironmentCost(id, numberDaysInPast, groupByService = true, groupBy
 }
 
 function getAllProjCostGroupByUser(numberDaysInPast) {
+  console.log('getAllProjCostGroupByUser mingtong step 1, numberDaysInPast', numberDaysInPast);
   return httpApiGet(`api/costs?proj=ALL&groupByUser=true&numberOfDaysInPast=${numberDaysInPast}`);
 }
 

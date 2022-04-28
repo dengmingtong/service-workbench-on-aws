@@ -40,6 +40,7 @@ class ProvisionerService extends Service {
 
   // eslint-disable-next-line no-unused-vars
   async provision({ providerTypeConfig, providerConfig, action }) {
+    this.log.info('auth mingtong step 9-1');
     if (!action) {
       throw this.boom.badRequest('Can not provision Cognito User Pool. Missing required parameter "action"', false);
     }
@@ -58,6 +59,7 @@ class ProvisionerService extends Service {
         providerConfig.id,
       );
     }
+    this.log.info('auth mingtong step 9-2');
     if (action === authProviderConstants.provisioningAction.create && !_.isNil(existingProviderConfig)) {
       // The authentication provider with same config id already exists.
       throw this.boom.authProviderAlreadyExists(
@@ -79,8 +81,9 @@ class ProvisionerService extends Service {
     // added to the providerConfig.
     // The providerConfigWithOutputs variable below is the updated providerConfig with these outputs
     let providerConfigWithOutputs = providerConfig;
+    this.log.info('auth mingtong step 9-3');
     providerConfigWithOutputs = await this.saveCognitoUserPool(providerConfigWithOutputs);
-
+    this.log.info('auth mingtong step 9-4');
     if (existingProviderConfig) {
       providerConfigWithOutputs.clientId = existingProviderConfig.config.clientId;
     } else {
@@ -104,7 +107,7 @@ class ProvisionerService extends Service {
     providerConfigWithOutputs.signInUri = `${baseAuthUri}/oauth2/authorize?response_type=code&client_id=${clientId}&redirect_uri=${websiteUrl}/&code_challenge_method=S256&code_challenge=TEMP_PKCE_VERIFIER&state=TEMP_STATE_VERIFIER`;
     providerConfigWithOutputs.signOutUri = `${baseAuthUri}/logout?client_id=${clientId}&response_type=code&redirect_uri=${websiteUrl}`;
     providerConfigWithOutputs.authCodeTokenExchangeUri = `${baseAuthUri}/oauth2/token`;
-
+    this.log.info('auth mingtong step 9-5');
     this.log.info('Saving Cognito User Pool Authentication Provider Configuration.');
 
     // Save auth provider configuration and make it active

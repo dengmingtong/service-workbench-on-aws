@@ -13,17 +13,25 @@
  *  permissions and limitations under the License.
  */
 
-const CognitoUserPoolAuthenticationProviderService = require('./built-in-providers/cogito-user-pool/provider-service');
-const UserAttributesMapperService = require('./built-in-providers/cogito-user-pool/user-attributes-mapper-service');
+// const CognitoUserPoolAuthenticationProviderService = require('./built-in-providers/cogito-user-pool/provider-service');
+const KeycloakAuthenticationProviderService = require('./built-in-providers/keycloak/provider-service');
+// const UserAttributesMapperService = require('./built-in-providers/cogito-user-pool/user-attributes-mapper-service');
 
 function registerBuiltInAuthProviders(container) {
   // --- COGNITO USER POOL AUTHENTICATION PROVIDER RELATED --- //
   // cognito user pool - provider
+  // container.register(
+  //   'cognitoUserPoolAuthenticationProviderService',
+  //   new CognitoUserPoolAuthenticationProviderService(),
+  // );
+  // container.register('userAttributesMapperService', new UserAttributesMapperService());
+
   container.register(
-    'cognitoUserPoolAuthenticationProviderService',
-    new CognitoUserPoolAuthenticationProviderService(),
+    'keycloakAuthenticationProviderService',
+    new KeycloakAuthenticationProviderService(),
   );
-  container.register('userAttributesMapperService', new UserAttributesMapperService());
+  // container.register('userAttributesMapperService', new UserAttributesMapperService());  
+
 }
 
 module.exports = registerBuiltInAuthProviders;

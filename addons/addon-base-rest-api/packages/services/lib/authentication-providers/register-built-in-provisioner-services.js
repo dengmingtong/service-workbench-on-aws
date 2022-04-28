@@ -14,6 +14,7 @@
  */
 
 const CognitoUserPoolAuthenticationProvisionerService = require('./built-in-providers/cogito-user-pool/provisioner-service');
+const KeyCloakAuthenticationProvisionerService = require('./built-in-providers/keycloak/provisioner-service');
 
 function registerBuiltInAuthProvisioners(container) {
   // --- COGNITO USER POOL AUTHENTICATION PROVIDER RELATED --- //
@@ -22,6 +23,12 @@ function registerBuiltInAuthProvisioners(container) {
     'cognitoUserPoolAuthenticationProvisionerService',
     new CognitoUserPoolAuthenticationProvisionerService(),
   );
+
+  container.register(
+    'keycloakAuthenticationProvisionerService',
+    new KeyCloakAuthenticationProvisionerService(),
+  );  
+  
 }
 
 module.exports = registerBuiltInAuthProvisioners;

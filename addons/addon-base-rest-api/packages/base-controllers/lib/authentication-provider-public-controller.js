@@ -30,8 +30,10 @@ async function configure(context) {
   router.get(
     '/',
     wrap(async (req, res) => {
+      console.log('public/provider/configs mingtong step 1');
       const providers = await authenticationProviderConfigService.getAuthenticationProviderConfigs();
-
+      
+      console.log('public/provider/configs mingtong step 2, providers', providers);
       // Construct/filter results based on info that's needed client-side
       const result = [];
       providers.forEach(provider => {
@@ -46,6 +48,7 @@ async function configure(context) {
 
         if (provider.config.type.type !== cognitoAuthType) {
           // For non-Cognito providers, just return their info as-is
+          console.log('public/provider/configs mingtong step 3');
           result.push(basePublicInfo);
         } else {
           // If native users are enabled for a Cognito user pool, add the pool's info
@@ -82,8 +85,9 @@ async function configure(context) {
           });
         }
       });
-
+      console.log('public/provider/configs mingtong step 4');
       res.status(200).json(result);
+      console.log('public/provider/configs mingtong step 4, res: ', res);
     }),
   );
 

@@ -23,6 +23,7 @@ const settingKeys = {
   awsRegion: 'awsRegion',
   envName: 'envName',
   solutionName: 'solutionName',
+  keyCloakResource: 'keyCloakResource',
   enableNativeUserPoolUsers: 'enableNativeUserPoolUsers',
   fedIdpIds: 'fedIdpIds',
   fedIdpNames: 'fedIdpNames',
@@ -41,6 +42,7 @@ class AddAuthProviders extends Service {
       'authenticationProviderConfigService',
       'authenticationProviderTypeService',
       'cognitoUserPoolAuthenticationProvisionerService',
+      'keycloakAuthenticationProvisionerService',
     ]);
   }
 
@@ -53,6 +55,7 @@ class AddAuthProviders extends Service {
    * 4. Configure cognito user pool domain for the client application
    */
   async addCognitoAuthenticationProviderWithSamlFederation() {
+    this.log.info('auth mingtong step 1');
     // Get settings
     const envName = this.settings.get(settingKeys.envName);
     const solutionName = this.settings.get(settingKeys.solutionName);
@@ -69,6 +72,8 @@ class AddAuthProviders extends Service {
     const idpsNotConfigured = [fedIdpIds, fedIdpNames, fedIdpDisplayNames, fedIdpMetadatas].some(
       array => array.length === 0,
     );
+    this.log.info('auth mingtong step 2, idpsNotConfigured:', idpsNotConfigured);
+    this.log.info('auth mingtong step 2, enableNativeUserPoolUsers:', enableNativeUserPoolUsers);
     if (!enableNativeUserPoolUsers && idpsNotConfigured) {
       this.log.info('Cognito user pool not enabled in settings; skipping creation');
       return;
@@ -96,25 +101,33 @@ class AddAuthProviders extends Service {
       federatedIdentityProviders,
     };
 
+    this.log.info('auth mingtong step 3, cognitoAuthProviderConfig', cognitoAuthProviderConfig);
     // Define auth provider type config
     const authenticationProviderTypeService = await this.service('authenticationProviderTypeService');
+    this.log.info('auth mingtong step 3-1');
     const authenticationProviderTypes = await authenticationProviderTypeService.getAuthenticationProviderTypes(
       getSystemRequestContext(),
     );
+    this.log.info('auth mingtong step 3-2');
 
     const cognitoAuthProviderTypeConfig = _.find(authenticationProviderTypes, {
       type: authProviderConstants.cognitoAuthProviderTypeId,
     });
+    this.log.info('auth mingtong step 3-3, cognitoAuthProviderTypeConfig',cognitoAuthProviderTypeConfig);
 
     // Check whether user pool already exists
     const aws = await this.service('aws');
+    this.log.info('auth mingtong step 3-4');
     const cognitoIdentityServiceProvider = new aws.sdk.CognitoIdentityServiceProvider();
+    this.log.info('auth mingtong step 3-5');
     // TODO: Handle pagination (hopefully there aren't more than 1000 user pools)
     const result = await cognitoIdentityServiceProvider.listUserPools({ MaxResults: '60' }).promise();
+    this.log.info('auth mingtong step 3-6');
     const userPool = _.find(result.UserPools, { Name: userPoolName });
-
+    this.log.info('auth mingtong step 4, userPool', userPool);
     let authProviderExists = false;
     if (userPool) {
+      this.log.info('auth mingtong step 5');
       // If pool exists, set its ID in the config so it can be updated
       cognitoAuthProviderConfig.userPoolId = userPool.Id;
 
@@ -127,12 +140,12 @@ class AddAuthProviders extends Service {
       // Verify that the stored auth provider config also exists
       const awsRegion = this.settings.get(settingKeys.awsRegion);
       const authProviderId = `https://cognito-idp.${awsRegion}.amazonaws.com/${userPool.Id}`;
-
+      this.log.info('auth mingtong step 6');
       const authenticationProviderConfigService = await this.service('authenticationProviderConfigService');
       authProviderExists = !!(await authenticationProviderConfigService.getAuthenticationProviderConfig(
         authProviderId,
       ));
-
+      this.log.info('auth mingtong step 7');
       if (authProviderExists) {
         cognitoAuthProviderConfig.id = authProviderId;
       }
@@ -143,20 +156,68 @@ class AddAuthProviders extends Service {
       ? authProviderConstants.provisioningAction.update
       : authProviderConstants.provisioningAction.create;
 
+    this.log.info('auth mingtong step 8');      
     const cognitoAuthenticationProvisionerService = await this.service(
       'cognitoUserPoolAuthenticationProvisionerService',
     );
+    this.log.info('auth mingtong step 9');
     await cognitoAuthenticationProvisionerService.provision({
       providerTypeConfig: cognitoAuthProviderTypeConfig,
       providerConfig: cognitoAuthProviderConfig,
       action,
     });
-  }
+  }  
+
+  /**
+   * Configure KeyCloak Authentication Provider. The step method below invokes the keycloak auth provider "Provisioner" service.
+   * The service will add keycloak config to dynamodb.
+   */
+   async addKeyCloakAuthenticationProvider() {
+    this.log.info('auth mingtong step 1');
+    // Get settings
+    const envName = this.settings.get(settingKeys.envName);
+    const solutionName = this.settings.get(settingKeys.solutionName);
+    const keyCloakResource = this.settings.get(settingKeys.keyCloakResource);
+
+    const keycloakAuthProviderConfig = {
+      title: 'KeyCloak',
+      id: 'SWB-Test',
+      type: "keycloak",
+      signInUri: "https://keycloak-mingtong.demo.solutions.aws.a2z.org.cn/auth/realms/SWB-Test/protocol/openid-connect/token?client_id=swb-test-client&response_type=code",
+      signOutUri: "https://keycloak-mingtong.demo.solutions.aws.a2z.org.cn/auth/realms/SWB-Test/protocol/openid-connect/token?client_id=swb-test-client&response_type=code",
+      clientId: "swb-test-client"      
+    };
+    this.log.info('auth mingtong step 3, cognitoAuthProviderConfig', keycloakAuthProviderConfig);
+    // Define auth provider type config
+    const authenticationProviderTypeService = await this.service('authenticationProviderTypeService');
+    this.log.info('auth mingtong step 3-1');
+    const authenticationProviderTypes = await authenticationProviderTypeService.getAuthenticationProviderTypesKeyCloak(
+      getSystemRequestContext(),
+    );
+    this.log.info('auth mingtong step 3-2');
+
+    const keycloakAuthProviderTypeConfig = _.find(authenticationProviderTypes, {
+      type: authProviderConstants.keycloakAuthProviderTypeId,
+    });
+    this.log.info('auth mingtong step 3-3, keycloakAuthProviderTypeConfig',keycloakAuthProviderTypeConfig);
+
+
+    this.log.info('auth mingtong step 8');      
+    const keycloakAuthenticationProvisionerService = await this.service(
+      'keycloakAuthenticationProvisionerService',
+    );
+    this.log.info('auth mingtong step 9');
+    await keycloakAuthenticationProvisionerService.provision({
+      providerTypeConfig: keycloakAuthProviderTypeConfig,
+      providerConfig: keycloakAuthProviderConfig
+    });
+  }   
 
   async execute() {
     // Setup both the default (internal) auth provider as well as a Cognito
     // auth provider (if configured)
-    await this.addCognitoAuthenticationProviderWithSamlFederation();
+    // await this.addCognitoAuthenticationProviderWithSamlFederation();
+    await this.addKeyCloakAuthenticationProvider();
   }
 }
 

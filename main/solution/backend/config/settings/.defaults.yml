@@ -21,10 +21,10 @@ hostedZoneId: ${cf:${self:custom.settings.infrastructureStackName}.HostedZoneId}
 websiteUrl: ${cf:${self:custom.settings.infrastructureStackName}.WebsiteUrl}
 
 # a list of domain names to allow in the API
-corsAllowList: '["${self:custom.settings.websiteUrl}"]'
+corsAllowList: '["https://swb-mingtong.demo.solutions.aws.a2z.org.cn"]'
 
 # a list of domain names to allow in the API while in dev (envType == dev)
-corsAllowListLocal: '["http://localhost:3000"]'
+corsAllowListLocal: '["http://localhost:3000", "https://swb-mingtong.demo.solutions.aws.a2z.org.cn"]'
 
 # The S3 bucket name used to host the static website
 websiteBucketName: ${cf:${self:custom.settings.infrastructureStackName}.WebsiteBucket}

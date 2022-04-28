@@ -23,6 +23,7 @@ import { storage, isAbsoluteUrl, getQueryParam, removeQueryParams, addQueryParam
 import localStorageKeys from '../constants/local-storage-keys';
 import { boom } from '../../helpers/errors';
 import { websiteUrl } from '../../helpers/settings';
+import keycloak from './keycloak'
 
 function toAbsoluteUrl(uri) {
   return isAbsoluteUrl(uri) ? uri : `${config.apiPath}/${uri}`;
@@ -118,6 +119,11 @@ const AuthenticationProviderPublicConfig = types
           // The authentication plugins will be notified of 'loginDetected' in this case after the login process is
           // complete by the "initialization-plugin"
           window.location = self.absoluteSignInUrl;
+        }
+        if (self.credentialHandlingType === 'keycloak') {
+          console.log('AuthenticationProviderPublicConfig mingtong step !');
+          //初始化keycloak
+          keycloak.login();
         }
       } catch (err) {
         handleException(err);

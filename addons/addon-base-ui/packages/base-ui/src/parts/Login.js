@@ -66,6 +66,7 @@ class Login extends React.Component {
   });
 
   handleLogin = action(event => {
+    console.log('handleLogin mingtong step 1');
     event.preventDefault();
     event.stopPropagation();
 
@@ -75,6 +76,7 @@ class Login extends React.Component {
     const username = _.trim(this.username) || '';
     const password = this.password || '';
     const selectedAuthenticationProviderId = this.props.authentication.selectedAuthenticationProviderId || '';
+    console.log('Login mingtong step q, selectedAuthenticationProviderId', selectedAuthenticationProviderId);
     let error = false;
 
     if (_.isEmpty(selectedAuthenticationProviderId)) {

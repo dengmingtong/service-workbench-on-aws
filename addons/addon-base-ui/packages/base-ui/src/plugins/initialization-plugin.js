@@ -17,6 +17,8 @@ import _ from 'lodash';
 
 import { setIdToken } from '../helpers/api';
 
+import keycloak from '../models/authentication/keycloak';
+
 const AUTHN_EXTENSION_POINT = 'authentication';
 
 /**
@@ -29,14 +31,46 @@ const AUTHN_EXTENSION_POINT = 'authentication';
  */
 async function init(payload, appContext) {
   const { authentication, authenticationProviderPublicConfigsStore, pluginRegistry } = appContext;
-
+  console.log('plugin init mingtong step 1');
   await authenticationProviderPublicConfigsStore.load();
+  console.log('plugin init mingtong step 2');
+  console.log('start init keycloak, mingtong step');
+  //init keycloak
+  await keycloak.init({onLoad: "check-sso"})
+  // keycloak.init({onLoad: "login-required"})
+  .then((authenticated) => {
+    console.log('KeycloakClient init mingtong step2, authenticated', authenticated)
+    if(authenticated) {
+      console.log('KeycloakClient init mingtong step3, authenticated', authenticated);
+      console.log('KeycloakClient init mingtong step4, keycloak.token', keycloak.token);
+      console.log('KeycloakClient init mingtong step5, keycloak.clientId', keycloak.clientId);
+      console.log('KeycloakClient init mingtong step6, keycloak.refreshToken', keycloak.refreshToken);
+      localStorage.setItem('keycloak_token', keycloak.token);
+      localStorage.setItem('keycloak_clientId', keycloak.clientId);
+      localStorage.setItem('keycloak_refreshToken', keycloak.refreshToken);
 
+      keycloak.loadUserInfo().then(userInfo => {
+        localStorage.setItem('keycloak_username',userInfo.preferred_username);
+        localStorage.setItem('keycloak_useremail',userInfo.email);
+      });
+      console.log('KeycloakClient init mingtong step7, ');
+    }
+    else {
+      console.info("failed keycloak authentication");
+      console.log('KeycloakClient init mingtong step8, authenticated', authenticated)
+      // window.location.reload();
+    }
+  })
+  .catch(function () {
+    console.error("Something wrong keycloak authentication");
+    // window.location.reload();
+  });  
   const tokenInfo = await authentication.getIdTokenInfo();
   payload.tokenInfo = { ...payload.tokenInfo, ...tokenInfo };
 
   const { idToken, decodedIdToken } = tokenInfo;
   if (tokenInfo.status === 'notExpired') {
+    console.log('plugin init mingtong step 3');
     setIdToken(idToken, decodedIdToken);
     authentication.saveIdToken(idToken);
     // Set selected authentication provider. This is used during logout
@@ -49,6 +83,7 @@ async function init(payload, appContext) {
     // or we have access to the token from memory or local store because the user had logged in the past
     await pluginRegistry.runPlugins(AUTHN_EXTENSION_POINT, 'loginDetected');
   } else {
+    console.log('plugin init mingtong step 4');
     // Treat all other cases such as
     //  - if the token was not found (i.e., tokenInfo.status === 'notFound') or
     //  - if the token was corrupted (i.e., tokenInfo.status === 'corrupted') or

@@ -66,7 +66,8 @@
     "serverless": "^1.63.0",
     "serverless-deployment-bucket": "^1.1.0",
     "typescript": "^3.7.5",
-    "webpack": "4.41.2"
+    "webpack": "4.41.2",
+    "keycloak-js": "^18.0.0"
   },
   "scripts": {
     "coverage": "NODE_ENV=test jest --config jest.config.js --passWithNoTests --verbose --collectCoverage --watchAll=false --coverage && codecov --disable=gcov",

@@ -17,6 +17,56 @@ const { parseMethodArn, buildRestApiPolicy, newUnauthorizedError, customAuthoriz
 
 const bearerPrefix = 'Bearer ';
 
+const jwt = require('jsonwebtoken');
+const jwksClient = require('jwks-rsa');
+
+const keyClient = jwksClient({
+  cache: true,
+  cacheMaxAge: 86400000, //value in ms
+  rateLimit: true,
+  jwksRequestsPerMinute: 10,
+  strictSsl: true,
+  jwksUri: 'https://keycloak-mingtong.demo.solutions.aws.a2z.org.cn/auth/realms/SWB-Test/protocol/openid-connect/certs'
+})
+
+const verificationOptions = {
+  // verify claims, e.g.
+  // "audience": "urn:audience"
+  "algorithms": "RS256"
+}
+
+function getSigningKey (header = decoded.header, callback) {
+  console.log('lambda auth newHandler mingtong step 6, header: ', header);
+  keyClient.getSigningKey(header.kid, function(err, key) {
+    const signingKey = key.publicKey || key.rsaPublicKey;
+    console.log('lambda auth newHandler mingtong step 7, signingKey: ', signingKey);
+    callback(null, signingKey);
+  })
+}
+
+async function validateToken(token) {
+  console.log('lambda auth newHandler mingtong step 5, token: ', token);
+  let authenticated = false;
+  var promise = new Promise(function(resolve, reject) {
+    jwt.verify(token, getSigningKey, verificationOptions, function (error) {
+      if (error) {
+        console.log('lambda auth newHandler mingtong step 11, error: ', error);
+        resolve(false);
+      } else {
+        console.log('lambda auth newHandler mingtong step 12: ')
+        resolve(true);
+      }
+    });
+  });
+  await promise.then(function(data) {
+    console.log('resolved! ', data);
+    authenticated = true;
+  });
+  console.log('lambda auth newHandler mingtong step 13, authenticated', authenticated);
+  return authenticated;
+
+}
+
 const getToken = authorizationHeader => {
   if (!authorizationHeader) {
     return '';
@@ -48,26 +98,37 @@ const consoleLogger = {
 
 module.exports = function newHandler({ authenticationService = noopAuthenticationService, log = consoleLogger } = {}) {
   return async ({ methodArn: rawMethodArn, authorizationToken }) => {
+    log.info('lambda auth newHandler mingtong step 1');
+    log.info('lambda auth newHandler mingtong step 1, rawMethodArn: ', rawMethodArn);
     const methodArn = parseMethodArn(rawMethodArn);
+    log.info('lambda auth newHandler mingtong step 2, methodArn: ', methodArn);
     if (!methodArn) {
       throw new Error(`invalid method arn: ${rawMethodArn}`);
     }
+    log.info('lambda auth newHandler mingtong step 3, authorizationToken: ', authorizationToken);
     const token = getToken(authorizationToken);
-    const result = await authenticationService.authenticate(token);
-    const { authenticated, error, ...claims } = result;
-    if (error) {
-      log.info(
-        `authentication error for ${claims.username || '<anonymous>'}/${claims.authenticationProviderId ||
-          '<unknown provider>'}: ${error.toString()}`,
-      );
-    }
+    log.info('lambda auth newHandler mingtong step 4, token: ', token);
+    // const result = await authenticationService.authenticate(token);
+    // const { authenticated, error, ...claims } = result;
+    // if (error) {
+    //   log.info(
+    //     `authentication error for ${claims.username || '<anonymous>'}/${claims.authenticationProviderId ||
+    //       '<unknown provider>'}: ${error.toString()}`,
+    //   );
+    // }
+    const authenticated = await validateToken(token);
+    log.info('lambda auth newHandler mingtong step 8, token: ', authenticated);
     if (!authenticated) {
+      log.info('lambda auth newHandler mingtong step 9, token: ', authenticated);
       throw newUnauthorizedError();
     }
+    log.info('lambda auth newHandler mingtong step 10, token: ', authenticated);
     return customAuthorizerResponse({
-      principalId: claims.uid,
+      // principalId: claims.uid,
+      principalId: 'service-workbench',
       policyDocument: buildRestApiPolicy(methodArn, 'Allow'),
-      context: sanitizeResponseContext(claims),
+      // context: sanitizeResponseContext(claims),
+      context: sanitizeResponseContext('service-workbench'),
     });
   };
 };

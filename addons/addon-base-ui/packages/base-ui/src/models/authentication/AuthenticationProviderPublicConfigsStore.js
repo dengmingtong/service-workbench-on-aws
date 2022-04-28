@@ -26,6 +26,7 @@ const AuthenticationProviderPublicConfigsStore = BaseStore.named('Authentication
   .actions(self => ({
     async doLoad() {
       const configs = await getAuthenticationProviderPublicConfigs();
+      console.log('AuthenticationProviderPublicConfigsStore mingtong step 1, configs ', configs);
 
       self.runInAction(() => {
         self.authenticationProviderPublicConfigs = configs;

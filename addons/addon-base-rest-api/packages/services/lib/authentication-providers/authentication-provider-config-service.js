@@ -36,13 +36,16 @@ class AuthenticationProviderConfigService extends Service {
   }
 
   async getAuthenticationProviderConfigs(fields = []) {
+    this.log.info('AuthenticationProviderConfigService mingtong step 1');
     const dbService = await this.service('dbService');
     const table = this.settings.get(settingKeys.tableName);
+    this.log.info('AuthenticationProviderConfigService mingtong step 2, table:', table);
     const dbResults = await dbService.helper
       .scanner()
       .table(table)
       .projection(fields)
       .scan();
+    this.log.info('AuthenticationProviderConfigService mingtong step 3, dbResults:', dbResults);      
     return _.map(dbResults, toProviderConfig);
   }
 
@@ -82,16 +85,24 @@ class AuthenticationProviderConfigService extends Service {
     providerConfig,
     status = authProviderConstants.status.initializing,
   }) {
+
+    this.log.info('saveAuthenticationProviderConfig mingtong step 1, providerTypeConfig', providerTypeConfig); 
+    this.log.info('saveAuthenticationProviderConfig mingtong step 2, providerConfig', providerConfig);    
+
     const jsonSchemaValidationService = await this.service('jsonSchemaValidationService');
     const providerConfigJsonSchema = _.get(providerTypeConfig, 'config.inputSchema');
 
+    this.log.info('saveAuthenticationProviderConfig mingtong step 3, providerConfigJsonSchema', providerConfigJsonSchema);    
+
     // Validate input
     await jsonSchemaValidationService.ensureValid(providerConfig, providerConfigJsonSchema);
+    this.log.info('saveAuthenticationProviderConfig mingtong step 4');
 
     const dbService = await this.service('dbService');
     const table = this.settings.get(settingKeys.tableName);
 
     providerConfig.type = providerTypeConfig;
+    this.log.info('saveAuthenticationProviderConfig mingtong step 5');
 
     const dbResult = await dbService.helper
       .updater()
@@ -102,6 +113,7 @@ class AuthenticationProviderConfigService extends Service {
       // once the provisioning is complete, the status should be set to "active" by the subclasses
       .item({ config: serializeProviderConfig(providerConfig), status })
       .update();
+    this.log.info('saveAuthenticationProviderConfig mingtong step 6, dbResult:', dbResult);      
     return dbResult && toProviderConfig(dbResult);
   }
 }

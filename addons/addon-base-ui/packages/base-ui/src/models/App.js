@@ -30,12 +30,14 @@ const App = types
   .actions(self => ({
     init: async payload => {
       const tokenNotExpired = _.get(payload, 'tokenInfo.status') === 'notExpired';
+      console.log('App init mingtong step 1, tokenNotExpired', tokenNotExpired)
       if (tokenNotExpired) {
         self.setUserAuthenticated(true);
       }
     },
 
     setUserAuthenticated(flag) {
+      console.log('setUserAuthenticated mingtong step 1, flag', flag)
       self.userAuthenticated = flag;
     },
 

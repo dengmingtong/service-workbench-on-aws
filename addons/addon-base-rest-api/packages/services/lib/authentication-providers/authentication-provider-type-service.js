@@ -17,6 +17,7 @@ const Service = require('@amzn/base-services-container/lib/service');
 const _ = require('lodash');
 
 const cognitoUserPoolAuthenticationProviderType = require('./built-in-providers/cogito-user-pool/type');
+const keycloakAuthenticationProviderType = require('./built-in-providers/keycloak/type');
 
 class AuthenticationProviderTypeService extends Service {
   constructor() {
@@ -35,6 +36,20 @@ class AuthenticationProviderTypeService extends Service {
     });
     return result ? result.types : [];
   }
+
+  async getAuthenticationProviderTypesKeyCloak(requestContext) {
+
+    this.log.info('getAuthenticationProviderTypesKeyCloak mingtong step 1, requestContext:', requestContext);
+    const types = [keycloakAuthenticationProviderType];
+
+    // Give all plugins a chance in registering their authentication provider types
+    // Each plugin will receive the following payload object with the shape {requestContext, container, types}
+    const pluginRegistryService = await this.service('pluginRegistryService');
+    const result = await pluginRegistryService.visitPlugins('authentication-provider-type', 'registerTypes', {
+      payload: { requestContext, container: this.container, types },
+    });
+    return result ? result.types : [];
+  }  
 
   async getAuthenticationProviderType(requestContext, providerTypeId) {
     const providerTypes = await this.getAuthenticationProviderTypes(requestContext);

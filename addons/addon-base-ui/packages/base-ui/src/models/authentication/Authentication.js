@@ -107,14 +107,28 @@ const Authentication = types
       return idToken;
     },
 
+    async getIdTokenFromKeycloak() {
+      console.log('getIdTokenFromKeycloak mingtong step 1');
+      // const idToken = keycloakClient.getIdToken();
+      const token = localStorage.getItem('keycloak_token');
+      console.log('getIdTokenFromKeycloak mingtong step 2, idToken:', token);
+      return token
+    }, 
+
     async getIdTokenInfo() {
-      const idToken = await self.getIdToken();
+      console.log('getIdTokenInfo mingtong step 1');
+      // const idToken = await self.getIdToken();
+      const idToken = await self.getIdTokenFromKeycloak();
+
+      console.log('getIdTokenInfo mingtong step 2, idToken:', idToken);
 
       let tokenStatus = 'notFound';
       let decodedIdToken;
       if (idToken) {
         try {
+          console.log('getIdTokenInfo mingtong step 3, idToken:', idToken);
           decodedIdToken = jwtDecode(idToken);
+          console.log('getIdTokenInfo mingtong step 4, decodedIdToken:', decodedIdToken);
           // Check if the token is expired
           // decodedIdToken.exp is epoch time in SECONDS
           // ( - See "exp" claim JWT RFC - https://tools.ietf.org/html/rfc7519#section-4.1.4 for details
@@ -134,6 +148,9 @@ const Authentication = types
           tokenStatus = 'corrupted';
         }
       }
+      console.log('getIdTokenInfo mingtong step 5, idToken:', idToken);
+      console.log('getIdTokenInfo mingtong step 6, decodedIdToken:', decodedIdToken);
+      console.log('getIdTokenInfo mingtong step 7, tokenStatus:', tokenStatus);
       return {
         idToken,
         decodedIdToken,
@@ -149,6 +166,7 @@ const Authentication = types
 
     async login({ username, password }) {
       if (self.shouldCollectUserNamePassword) {
+        console.log('shouldCollectUserNamePassword mingtong step 1');
         const result = await self.selectedAuthenticationProvider.login({
           username,
           password,
@@ -168,6 +186,7 @@ const Authentication = types
       } else {
         // If we do no need to collect credentials from the user then just call login method of the selected authentication provider without any arguments
         // The selected auth provider will then take care of rest of the login flow (such as redirecting to other identity provider etc)
+        console.log('shouldCollectUserNamePassword mingtong step 2');
         await self.selectedAuthenticationProvider.login();
       }
     },

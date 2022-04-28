@@ -43,6 +43,7 @@ postDeployment:
     APP_AUTO_CONFIRM_NATIVE_USERS: ${self:custom.settings.autoConfirmNativeUsers}
     APP_NATIVE_ADMIN_PASSWORD_PARAM_NAME: ${self:custom.settings.nativeAdminPasswordParamName}
     APP_ENV_NAME: ${self:custom.settings.envName}
+    APP_KEYCLOAK_RESOURCE: ${self:custom.settings.keyCloakResource}
 
 egressStoreObjectsHandler:
   role: RoleEgressStoreObjectsHandler

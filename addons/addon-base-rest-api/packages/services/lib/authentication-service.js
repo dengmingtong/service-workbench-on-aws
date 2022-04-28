@@ -62,6 +62,7 @@ class AuthenticationService extends Service {
     }
     let claims;
     try {
+      this.log.info('lambda authenticate mingtong step 2, token: ', token);
       claims = jwtDecode(token);
     } catch (error) {
       return notAuthenticated({
@@ -81,6 +82,7 @@ class AuthenticationService extends Service {
     let tokenValidatorLocator;
     try {
       tokenValidatorLocator = providerConfig.config.type.config.impl.tokenValidatorLocator;
+      this.log.info('lambda authenticate mingtong step 3, tokenValidatorLocator: ', tokenValidatorLocator);
     } catch (error) {
       // exceptional circumstance, throw an actual error
       throw new Error(`malformed provider config for provider id '${providerId}'`);
@@ -91,6 +93,12 @@ class AuthenticationService extends Service {
         { token, issuer: claims.iss },
         providerConfig,
       );
+      this.log.info('lambda authenticate mingtong step 4, token: ', token);
+      this.log.info('lambda authenticate mingtong step 4, verifiedToken: ', verifiedToken);
+      this.log.info('lambda authenticate mingtong step 4, uid: ', uid);
+      this.log.info('lambda authenticate mingtong step 4, username: ', username);
+      this.log.info('lambda authenticate mingtong step 4, identityProviderName: ', identityProviderName);
+      this.log.info('lambda authenticate mingtong step 4, providerId: ', providerId);
       return authenticated({
         token,
         verifiedToken,
@@ -110,6 +118,7 @@ class AuthenticationService extends Service {
   }
 
   async authenticate(token) {
+    this.log.info('lambda authenticate mingtong step 1');
     const originalAuthResult = await this.authenticateMain(token);
     // Give all plugins a chance to customize the authentication result
     return this.checkWithPlugins(token, originalAuthResult);
