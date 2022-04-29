@@ -54,6 +54,7 @@ function configure(obj) {
 
 function fetchJson(url, options = {}, retryCount = 0) {
   // see https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+  console.log('fetchJson mingtong step 1, url: ', url);
   let isOk = false;
   let httpStatus;
 
@@ -73,7 +74,7 @@ function fetchJson(url, options = {}, retryCount = 0) {
   };
 
   if (merged.method === 'GET') delete merged.body; // otherwise fetch will throw an error
-
+  console.log('fetchJson mingtong step 2, merged.method: ', merged.method);
   let retryOptions = options;
   if (merged.params) {
     // if query string parameters are specified then add them to the URL
@@ -101,7 +102,8 @@ function fetchJson(url, options = {}, retryCount = 0) {
     // `https://some-host/some-path?param1=value1&param2=value2?param1=value1&param2=value2`
     retryOptions = _.omit(options, 'params');
   }
-
+  console.log('fetchJson mingtong step 3, merged: ', merged);
+  console.log('fetchJson mingtong step 4, url: ', url);
   return Promise.resolve()
     .then(() => fetch(url, merged))
     .catch(err => {
@@ -128,10 +130,12 @@ function fetchJson(url, options = {}, retryCount = 0) {
     })
     .then(text => {
       let json;
+      console.log('fetchJson mingtong step 5, text: ', text);
       try {
         if (_.isObject(text)) {
           json = text;
         } else {
+          console.log('fetchJson mingtong step 6, text: ', text);
           json = JSON.parse(text);
         }
       } catch (err) {

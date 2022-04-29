@@ -43,19 +43,20 @@ class ProviderService extends Service {
     this.log.info('keycloak validateToken mingtong step 2');
     // In case of cognito, the issuer is the cognito userPoolUri
     const userPoolUri = issuer;
-    let cognitoTokenVerifier = this.keycloakTokenVerifiersCache[userPoolUri];
-    this.log.info('keycloak validateToken mingtong step 3, cognitoTokenVerifier', cognitoTokenVerifier);
-    if (!cognitoTokenVerifier) {
+    this.log.info('keycloak validateToken mingtong step 2-1， issuer：', issuer);
+    let keycloakTokenVerifier = this.keycloakTokenVerifiersCache[issuer];
+    this.log.info('keycloak validateToken mingtong step 3, keycloakTokenVerifier', keycloakTokenVerifier);
+    if (!keycloakTokenVerifier) {
       this.log.info('keycloak validateToken mingtong step 4');
       // No cognitoTokenVerifier in the cache so create a new one
-      cognitoTokenVerifier = await getCognitoTokenVerifier(userPoolUri, this.log);
+      keycloakTokenVerifier = await getKeycloakTokenVerifier(issuer, this.log);
       // Add newly created cognitoTokenVerifier to the cache
-      this.keycloakTokenVerifiersCache[userPoolUri] = cognitoTokenVerifier;
+      this.keycloakTokenVerifiersCache[issuer] = keycloakTokenVerifier;
     }
     // User the cognitoTokenVerifier to validate cognito token
-    this.log.info('keycloak validateToken mingtong step 5');
-    const verifiedToken = await cognitoTokenVerifier.verify(token);
-    this.log.info('keycloak validateToken mingtong step 6');
+    this.log.info('keycloak validateToken mingtong step 5, token', token);
+    const verifiedToken = await keycloakTokenVerifier.verify(token);
+    this.log.info('keycloak validateToken mingtong step 6, verifiedToken', verifiedToken);
     const { uid, username, identityProviderName } = await this.saveUser(verifiedToken, providerConfig.config.id);
     this.log.info('keycloak validateToken mingtong step 7');
     return { verifiedToken, username, uid, identityProviderName };
@@ -98,35 +99,44 @@ class ProviderService extends Service {
   }
 
   async saveUser(decodedToken, authenticationProviderId) {
+    this.log.info('keycloak validateToken saveUser mingtong step 1, decodedToken', decodedToken);
+    this.log.info('keycloak validateToken saveUser mingtong step 2, authenticationProviderId', authenticationProviderId);
     const userAttributesMapperService = await this.service('userAttributesMapperService');
     // Ask user attributes mapper service to read information from the decoded token and map them to user attributes
     const userAttributes = await userAttributesMapperService.mapAttributes(decodedToken);
 
-    if (userAttributes.isNativePoolUser) {
-      userAttributes.username = userAttributes.usernameInIdp;
-      userAttributes.email = userAttributes.usernameInIdp;
+    // if (userAttributes.isNativePoolUser) {
+    //   this.log.info('keycloak validateToken saveUser mingtong step 3, userAttributes', userAttributes);
+    //   userAttributes.username = userAttributes.usernameInIdp;
+    //   userAttributes.email = userAttributes.usernameInIdp;
 
-      // For native pool users, authenticationProviderId is in the format https://cognito-idp.<region>.amazonaws.com/<userPoolId>
-      await this.syncNativeEmailWithUsername(userAttributes.usernameInIdp, authenticationProviderId);
-    }
-
-    if (userAttributes.isSamlAuthenticatedUser || userAttributes.isNativePoolUser) {
+    //   // For native pool users, authenticationProviderId is in the format https://cognito-idp.<region>.amazonaws.com/<userPoolId>
+    //   await this.syncNativeEmailWithUsername(userAttributes.usernameInIdp, authenticationProviderId);
+    // }
+    
+    // if (userAttributes.isSamlAuthenticatedUser || userAttributes.isNativePoolUser) {
+      this.log.info('keycloak validateToken saveUser mingtong step 4, userAttributes', userAttributes);
       // If this user is authenticated via SAML or native user pool then we need to add it to our user table if it doesn't exist already
       const userService = await this.service('userService');
 
       const user = await userService.findUserByPrincipal({
         username: userAttributes.username,
         authenticationProviderId,
-        identityProviderName: userAttributes.identityProviderName,
+        // identityProviderName: userAttributes.identityProviderName,
+        identityProviderName: 'keycloak',
       });
+      console.log('keycloak validateToken saveUser mingtong step 5-1, user', user);
       if (user) {
+        this.log.info('keycloak validateToken saveUser mingtong step 6, user', user);
         await this.updateUser(userAttributes, user);
         userAttributes.uid = user.uid;
       } else {
+        this.log.info('keycloak validateToken saveUser mingtong step 7, user', user);
         const createdUser = await this.createUser(authenticationProviderId, userAttributes);
         userAttributes.uid = createdUser.uid;
       }
-    }
+    // }
+    this.log.info('keycloak validateToken saveUser mingtong step 5, userAttributes', userAttributes);
     return userAttributes;
   }
 

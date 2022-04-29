@@ -180,6 +180,7 @@ class UserRolesService extends Service {
 
   async list({ fields = [] } = {}) {
     // Remember doing a scanning is not a good idea if you billions of rows
+    console.log('user-roles-service mingtong step 1');
     return this._scanner()
       .limit(1000)
       .projection(fields)

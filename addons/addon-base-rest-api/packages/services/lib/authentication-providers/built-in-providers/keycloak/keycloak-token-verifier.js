@@ -17,65 +17,61 @@ const request = require('request');
 const jwkToPem = require('jwk-to-pem');
 const _ = require('lodash');
 const jwt = require('jsonwebtoken');
+const jwksClient = require('jwks-rsa');
 
-async function getCognitoTokenVerifier(userPoolUri, logger = console) {
-  function toPem(keyDictionary) {
-    const modulus = keyDictionary.n;
-    const exponent = keyDictionary.e;
-    const keyType = keyDictionary.kty;
-    const jwk = { kty: keyType, n: modulus, e: exponent };
-    const pem = jwkToPem(jwk);
-    return pem;
+async function getKeycloakTokenVerifier(issuer, logger = console) {
+
+  const keyClient = jwksClient({
+    cache: true,
+    cacheMaxAge: 86400000, //value in ms
+    rateLimit: true,
+    jwksRequestsPerMinute: 10,
+    strictSsl: true,
+    jwksUri: 'https://keycloak-mingtong.demo.solutions.aws.a2z.org.cn/auth/realms/SWB-Test/protocol/openid-connect/certs'
+  })
+  
+  const verificationOptions = {
+    // verify claims, e.g.
+    // "audience": "urn:audience"
+    "algorithms": "RS256"
   }
+  
+  logger.info('getKeycloakTokenVerifier mingtong step 1');
 
-  // build key cache from cognito user pools
-  const jwtKeySetUri = `${userPoolUri}/.well-known/jwks.json`;
-  const pemKeyCache = await new Promise((resolve, reject) => {
-    request({ url: jwtKeySetUri, json: true }, (error, response, body) => {
-      if (!error && response && response.statusCode === 200) {
-        const keys = body.keys;
-        const keyCache = {};
-        _.forEach(keys, key => {
-          // kid = key id
-          const kid = key.kid;
-          keyCache[kid] = toPem(key);
-        });
-        resolve(keyCache);
-      } else {
-        logger.error('Failed to retrieve the keys from the well known user-pool URI');
-        reject(error);
-      }
-    });
-  });
+  function getSigningKey (header = decoded.header, callback) {
+    logger.info('getKeycloakTokenVerifier mingtong step 3 header: ', header);
+    keyClient.getSigningKey(header.kid, function(err, key) {
+      const signingKey = key.publicKey || key.rsaPublicKey;
+      logger.info('getKeycloakTokenVerifier mingtong step 4 signingKey: ', signingKey);
+      callback(null, signingKey);
+    })
+  }  
 
   const verify = async token => {
     // First attempt to decode token before attempting to verify the signature
-    const decodedJwt = jwt.decode(token, { complete: true });
-    if (!decodedJwt) {
-      throw new Error('Not valid JWT token. Could not decode the token');
-    }
-
-    // Fail if token is not from your User Pool
-    if (decodedJwt.payload.iss !== userPoolUri) {
-      throw new Error('Not valid JWT token. The token is not issued by the trusted source');
-    }
-
-    // Reject the jwt if it's not an 'Identity Token'
-    if (decodedJwt.payload.token_use !== 'id') {
-      throw new Error('Not valid JWT token. The token is not the identity token');
-    }
-
-    const keyId = decodedJwt.header.kid;
-    const pem = pemKeyCache[keyId];
-    if (!pem) {
-      throw new Error('Not valid JWT token. No valid key available for verifying the token.');
-    }
-
-    const payload = await jwt.verify(token, pem, { issuer: userPoolUri });
-    return payload;
+    logger.info('getKeycloakTokenVerifier mingtong step 2, token', token);
+    let decoded_output;
+    var promise = new Promise(function(resolve, reject) {
+      jwt.verify(token, getSigningKey, verificationOptions, function (error, decoded) {
+        if (error) {
+          logger.info('getKeycloakTokenVerifier mingtong step 5 error: ', error);
+          resolve(error);
+        } else {
+          logger.info('getKeycloakTokenVerifier mingtong step 6 decoded: ', decoded);
+          resolve(decoded);
+        }
+      });
+    });
+    await promise.then(function(data) {
+      console.log('resolved! ', data);
+      decoded_output = data;
+      logger.info('getKeycloakTokenVerifier mingtong step 7 decoded_output: ', decoded_output);
+    });
+    logger.info('getKeycloakTokenVerifier mingtong step 8 decoded_output: ', decoded_output);
+    return decoded_output;
   };
 
   return { verify };
 }
 
-module.exports = { getCognitoTokenVerifier };
+module.exports = { getKeycloakTokenVerifier };

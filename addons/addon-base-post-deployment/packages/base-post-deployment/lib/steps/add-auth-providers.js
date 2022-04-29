@@ -181,7 +181,7 @@ class AddAuthProviders extends Service {
 
     const keycloakAuthProviderConfig = {
       title: 'KeyCloak',
-      id: 'SWB-Test',
+      id: 'https://keycloak-mingtong.demo.solutions.aws.a2z.org.cn/auth/realms/SWB-Test',
       type: "keycloak",
       signInUri: "https://keycloak-mingtong.demo.solutions.aws.a2z.org.cn/auth/realms/SWB-Test/protocol/openid-connect/token?client_id=swb-test-client&response_type=code",
       signOutUri: "https://keycloak-mingtong.demo.solutions.aws.a2z.org.cn/auth/realms/SWB-Test/protocol/openid-connect/token?client_id=swb-test-client&response_type=code",

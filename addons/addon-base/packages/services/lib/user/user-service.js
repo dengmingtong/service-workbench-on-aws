@@ -276,6 +276,8 @@ class UserService extends Service {
   }
 
   async getUserByPrincipal({ username, ns, fields = [] }) {
+    console.log('getUserByPrincipal, mingtong step username', username);
+    console.log('getUserByPrincipal, mingtong step ns', ns);
     const dbService = await this.service('dbService');
     const table = this.settings.get(settingKeys.tableName);
     const users = await dbService.helper

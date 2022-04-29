@@ -29,6 +29,7 @@ async function configure(context) {
   router.get(
     '/',
     wrap(async (req, res) => {
+      console.log('/api/user mingtong step 1');
       const userRoles = await userRolesService.list();
       res.status(200).json(userRoles);
     }),

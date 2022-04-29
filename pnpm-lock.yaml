@@ -784,6 +784,7 @@ importers:
       aws-sdk: 2.1015.0
       jsonwebtoken: 8.5.1
       jwk-to-pem: 2.0.5
+      jwks-rsa: 1.12.3
       jwt-decode: 2.2.0
       lodash: 4.17.21
       request: 2.88.2
@@ -822,6 +823,7 @@ importers:
       jest-junit: ^10.0.0
       jsonwebtoken: ^8.5.1
       jwk-to-pem: ^2.0.5
+      jwks-rsa: ^1.9.0
       jwt-decode: ^2.2.0
       lodash: ^4.17.21
       prettier: ^1.19.1

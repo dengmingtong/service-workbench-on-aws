@@ -48,7 +48,7 @@ async function validateToken(token) {
   console.log('lambda auth newHandler mingtong step 5, token: ', token);
   let authenticated = false;
   var promise = new Promise(function(resolve, reject) {
-    jwt.verify(token, getSigningKey, verificationOptions, function (error) {
+    jwt.verify(token, getSigningKey, verificationOptions, function (error, decoded) {
       if (error) {
         console.log('lambda auth newHandler mingtong step 11, error: ', error);
         resolve(false);
@@ -64,7 +64,6 @@ async function validateToken(token) {
   });
   console.log('lambda auth newHandler mingtong step 13, authenticated', authenticated);
   return authenticated;
-
 }
 
 const getToken = authorizationHeader => {
@@ -108,27 +107,38 @@ module.exports = function newHandler({ authenticationService = noopAuthenticatio
     log.info('lambda auth newHandler mingtong step 3, authorizationToken: ', authorizationToken);
     const token = getToken(authorizationToken);
     log.info('lambda auth newHandler mingtong step 4, token: ', token);
-    // const result = await authenticationService.authenticate(token);
-    // const { authenticated, error, ...claims } = result;
-    // if (error) {
-    //   log.info(
-    //     `authentication error for ${claims.username || '<anonymous>'}/${claims.authenticationProviderId ||
-    //       '<unknown provider>'}: ${error.toString()}`,
-    //   );
-    // }
-    const authenticated = await validateToken(token);
-    log.info('lambda auth newHandler mingtong step 8, token: ', authenticated);
+    const result = await authenticationService.authenticate(token);
+    log.info('lambda auth newHandler mingtong step 5-1, result: ', result);
+    const { authenticated, error, ...claims } = result;
+    if (error) {
+      log.info(
+        `authentication error for ${claims.username || '<anonymous>'}/${claims.authenticationProviderId ||
+          '<unknown provider>'}: ${error.toString()}`,
+      );
+    }
     if (!authenticated) {
-      log.info('lambda auth newHandler mingtong step 9, token: ', authenticated);
       throw newUnauthorizedError();
     }
-    log.info('lambda auth newHandler mingtong step 10, token: ', authenticated);
     return customAuthorizerResponse({
-      // principalId: claims.uid,
-      principalId: 'service-workbench',
+      principalId: claims.uid,
       policyDocument: buildRestApiPolicy(methodArn, 'Allow'),
-      // context: sanitizeResponseContext(claims),
-      context: sanitizeResponseContext('service-workbench'),
+      context: sanitizeResponseContext(claims),
     });
+
+    // mingtong temp working code
+    // const authenticated = await validateToken(token);
+    // log.info('lambda auth newHandler mingtong step 8, token: ', authenticated);
+    // if (!authenticated) {
+    //   log.info('lambda auth newHandler mingtong step 9, token: ', authenticated);
+    //   throw newUnauthorizedError();
+    // }
+    // log.info('lambda auth newHandler mingtong step 10, token: ', authenticated);
+    // return customAuthorizerResponse({
+    //   // principalId: claims.uid,
+    //   principalId: 'service-workbench',
+    //   policyDocument: buildRestApiPolicy(methodArn, 'Allow'),
+    //   // context: sanitizeResponseContext(claims),
+    //   context: sanitizeResponseContext('service-workbench'),
+    // });
   };
 };

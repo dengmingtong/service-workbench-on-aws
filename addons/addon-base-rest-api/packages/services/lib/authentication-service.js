@@ -65,13 +65,18 @@ class AuthenticationService extends Service {
       this.log.info('lambda authenticate mingtong step 2, token: ', token);
       claims = jwtDecode(token);
     } catch (error) {
+      this.log.info('lambda authenticate mingtong step 3');
       return notAuthenticated({
         error: `jwt decode error: ${error.toString()}`,
       });
     }
+    this.log.info('lambda authenticate mingtong step 4, claims:', claims);
     const providerId = claims.iss;
+    this.log.info('lambda authenticate mingtong step 5, providerId:', providerId);
     const providerConfig = await authenticationProviderConfigService.getAuthenticationProviderConfig(providerId);
+    this.log.info('lambda authenticate mingtong step 6, providerConfig:', providerConfig);
     if (!providerConfig) {
+      this.log.info('lambda authenticate mingtong step 7, providerConfig:', providerConfig);
       return notAuthenticated({
         uid: claims.sub,
         username: claims.username,
@@ -82,7 +87,7 @@ class AuthenticationService extends Service {
     let tokenValidatorLocator;
     try {
       tokenValidatorLocator = providerConfig.config.type.config.impl.tokenValidatorLocator;
-      this.log.info('lambda authenticate mingtong step 3, tokenValidatorLocator: ', tokenValidatorLocator);
+      this.log.info('lambda authenticate mingtong step 8, tokenValidatorLocator:', tokenValidatorLocator);
     } catch (error) {
       // exceptional circumstance, throw an actual error
       throw new Error(`malformed provider config for provider id '${providerId}'`);
