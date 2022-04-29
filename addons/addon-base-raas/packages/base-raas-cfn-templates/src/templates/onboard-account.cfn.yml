@@ -168,7 +168,7 @@ Resources:
           - Effect: 'Allow'
             Principal:
               AWS:
-                - !Join [':', ['arn:', !Ref 'AWS::Partition', ':iam:', Ref: CentralAccountId, 'root']]
+                - !Ref CentralAccountId
                 - !Ref ApiHandlerArn
                 - !Ref WorkflowRoleArn
             Action:
@@ -232,7 +232,7 @@ Resources:
               Action:
                 - s3:GetObject
               Resource:
-                - 'arn:${AWS::Partition}:s3:::cf-templates-*/*'
+                - !Sub 'arn:${AWS::Partition}:s3:::cf-templates-*/*'
         - PolicyName: s3-upload-access
           PolicyDocument:
             Statement:
@@ -533,7 +533,7 @@ Resources:
           - Effect: 'Allow'
             Principal:
               AWS:
-                - !Join [':', ['arn:', !Ref 'AWS::Partition', ':iam:', Ref: CentralAccountId, 'root']]
+                - !Ref CentralAccountId
                 - !Ref ApiHandlerArn
                 - !Ref WorkflowRoleArn
             Action:
@@ -556,7 +556,7 @@ Resources:
           - Effect: 'Allow'
             Principal:
               AWS:
-                - !Join [':', ['arn:', !Ref 'AWS::Partition', ':iam:', Ref: CentralAccountId, 'root']]
+                - !Ref CentralAccountId
             Action:
               - 'sts:AssumeRole'
             Condition:
@@ -591,7 +591,7 @@ Resources:
           - Effect: 'Allow'
             Principal:
               AWS:
-                - !Join [':', ['arn:', !Ref 'AWS::Partition', ':iam:', Ref: CentralAccountId, 'root']]
+                - !Ref CentralAccountId
             Action:
               - 'sts:AssumeRole'
             Condition:
@@ -727,7 +727,8 @@ Resources:
           - Sid: Allow root access
             Effect: 'Allow'
             Principal:
-              AWS: !Sub arn:${AWS::Partition}:iam::${AWS::AccountId}:root
+              AWS: 
+                - !Ref CentralAccountId
             Action:
               - 'kms:*'
             Resource: '*'
