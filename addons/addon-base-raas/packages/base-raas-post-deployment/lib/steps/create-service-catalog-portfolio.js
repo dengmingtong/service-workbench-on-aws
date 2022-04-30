@@ -316,7 +316,8 @@ class CreateServiceCatalogPortfolio extends Service {
     const params = {
       Parameters: {
         Info: {
-          LoadTemplateFromURL: `https://${s3BucketName}.s3.cn-north-1.amazonaws.com/service-catalog-products/${productFileName}.cfn.yml`,
+          // LoadTemplateFromURL: `https://${s3BucketName}.s3.cn-north-1.amazonaws.com/service-catalog-products/${productFileName}.cfn.yml`,
+          LoadTemplateFromURL: `https://${s3BucketName}.s3.ap-east-1.amazonaws.com/service-catalog-products/${productFileName}.cfn.yml`,
         },
         DisableTemplateValidation: true,
         Type: 'CLOUD_FORMATION_TEMPLATE',
@@ -450,7 +451,8 @@ class CreateServiceCatalogPortfolio extends Service {
       ProvisioningArtifactParameters: {
         DisableTemplateValidation: true,
         Info: {
-          LoadTemplateFromURL: `https://${s3BucketName}.s3.cn-north-1.amazonaws.com/service-catalog-products/${productToCreate.filename}.cfn.yml`,
+          // LoadTemplateFromURL: `https://${s3BucketName}.s3.cn-north-1.amazonaws.com/service-catalog-products/${productToCreate.filename}.cfn.yml`,
+          LoadTemplateFromURL: `https://${s3BucketName}.s3.ap-east-1.amazonaws.com/service-catalog-products/${productToCreate.filename}.cfn.yml`,
         },
         Type: 'CLOUD_FORMATION_TEMPLATE',
         Name: autoCreateVersion, // Could be used as a version id in the future, for now, just a placeholder

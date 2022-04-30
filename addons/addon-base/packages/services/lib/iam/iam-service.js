@@ -320,8 +320,8 @@ class IamService extends Service {
     const srcManagedPolicies = await this.listAllManagedRolePolicies(srcRole.RoleName, iamClientForSrcAcc);
     const targetManagedPolicies = await this.listAllManagedRolePolicies(targetRole.RoleName, iamClientForTargetAcc);
 
-    // Handle AWS Managed policies first (all AWS managed policy arns have 'aws' in place of account number. E.g., "arn:aws-cn:iam::aws:policy/AmazonEC2FullAccess")
-    // Customer managed policies have account number in ARN, for example: arn:aws-cn:iam::123456789012:policy/SomeCustomerManagedPolicyName
+    // Handle AWS Managed policies first (all AWS managed policy arns have 'aws' in place of account number. E.g., "arn:aws:iam::aws:policy/AmazonEC2FullAccess")
+    // Customer managed policies have account number in ARN, for example: arn:aws:iam::123456789012:policy/SomeCustomerManagedPolicyName
     const isAwsManagedPolicy = p => _.split(p.PolicyArn, ':')[4] === 'aws';
 
     const syncAwsManagedPolicies = async () => {

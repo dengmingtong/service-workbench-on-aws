@@ -66,28 +66,39 @@ class GoBuildTools {
   s3() {
     const provider = this.serverless.getProvider('aws');
     let awsCredentials;
-    let region;
+    let region = provider.getRegion();
+    console.log('serverless go build mingtong step 3, region: ', region);
     if (
       provider.cachedCredentials &&
       provider.cachedCredentials.accessKeyId &&
       provider.cachedCredentials.secretAccessKey &&
       provider.cachedCredentials.sessionToken
     ) {
-      region = provider.getRegion();
+      console.log('serverless go build mingtong step 1');
       awsCredentials = {
         accessKeyId: provider.cachedCredentials.accessKeyId,
         secretAccessKey: provider.cachedCredentials.secretAccessKey,
         sessionToken: provider.cachedCredentials.sessionToken,
       };
     } else {
-      region = provider.getCredentials().region;
+      console.log('serverless go build mingtong step 2');
+      // region = provider.getCredentials().region;
       awsCredentials = provider.getCredentials().credentials;
+      console.log('serverless go build mingtong step 2-1, getCredentials', provider.getCredentials());
+    }
+    if (region == 'cn-north-1' || region == 'cn-northwest-1') {
+      return new provider.sdk.S3({
+        region,
+        credentials: awsCredentials,
+        endpoint: `https://s3.${region}.amazonaws.com.cn`,
+      });
     }
     return new provider.sdk.S3({
       region,
       credentials: awsCredentials,
-      endpoint: `https://s3.cn-north-1.amazonaws.com.cn`,
-    });
+      endpoint: `https://s3.${region}.amazonaws.com`,
+    });    
+
   }
 
   /**

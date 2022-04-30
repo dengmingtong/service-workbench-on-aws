@@ -35,6 +35,7 @@ const settingKeys = {
   studyDataKmsKeyArn: 'studyDataKmsKeyArn',
   studyDataKmsPolicyWorkspaceSid: 'studyDataKmsPolicyWorkspaceSid',
   enableEgressStore: 'enableEgressStore',
+  regionPartition: 'regionPartition',
   egressStoreKmsKeyArn: 'egressStoreKmsKeyArn',
   egressStoreKmsPolicyWorkspaceSid: 'egressStoreKmsPolicyWorkspaceSid',
 };
@@ -244,7 +245,7 @@ class EnvironmentResourceService extends Service {
       internalStudies,
       study => study.envPermission && (study.envPermission.read || study.envPermission.write),
     );
-
+    const partition = this.settings.get(settingKeys.regionPartition);
     // construct the revised statements depending on the type of permissions
     const revisedStatements = await Promise.all(
       _.map(filteredStudies, async study => {
@@ -263,7 +264,7 @@ class EnvironmentResourceService extends Service {
           study,
           s3BucketName,
           statementParamFunctions,
-          oldStatement => addAccountToStatement(oldStatement, memberAccountId),
+          oldStatement => addAccountToStatement(oldStatement, memberAccountId, partition),
         );
         return revisedStatementsPerStudy;
       }),
@@ -283,7 +284,7 @@ class EnvironmentResourceService extends Service {
     // 'envPermission', it is an object with the following shape: { read: true/false, write: true/false }
     const { s3BucketName, s3Policy } = await this.getS3BucketAndPolicy();
     const filteredStudies = await this.getInternalStudies(studies, s3BucketName);
-
+    const partition = this.settings.get(settingKeys.regionPartition);
     // construct the revised statements for all types of statements and remove the memberAccountId
     const revisedStatements = await Promise.all(
       _.map(filteredStudies, async study => {
@@ -293,7 +294,7 @@ class EnvironmentResourceService extends Service {
           study,
           s3BucketName,
           statementParamFunctions,
-          oldStatement => removeAccountFromStatement(oldStatement, memberAccountId),
+          oldStatement => removeAccountFromStatement(oldStatement, memberAccountId, partition),
         );
         return revisedStatementsPerStudy;
       }),
@@ -308,7 +309,8 @@ class EnvironmentResourceService extends Service {
 
   // @private
   async addToKmsKeyPolicy(requestContext, memberAccountId) {
-    await this.updateKMSPolicy(environmentStatement => addAccountToStatement(environmentStatement, memberAccountId));
+    const partition = this.settings.get(settingKeys.regionPartition);
+    await this.updateKMSPolicy(environmentStatement => addAccountToStatement(environmentStatement, memberAccountId, partition));
     await this.addToEgressKmsKeyPolicy(memberAccountId);
     // Write audit event
     await this.audit(requestContext, { action: 'add-to-KmsKey-policy', body: memberAccountId });
@@ -316,23 +318,25 @@ class EnvironmentResourceService extends Service {
 
   async addToEgressKmsKeyPolicy(memberAccountId) {
     const enableEgressStore = this.settings.getBoolean(settingKeys.enableEgressStore);
+    const partition = this.settings.get(settingKeys.regionPartition);
     if (enableEgressStore) {
       await this.updateEgressKMSPolicy(environmentStatement =>
-        addAccountToStatement(environmentStatement, memberAccountId),
+        addAccountToStatement(environmentStatement, memberAccountId, partition),
       );
     }
   }
 
   // @private
   async removeFromKmsKeyPolicy(requestContext, memberAccountId) {
+    const partition = this.settings.get(settingKeys.regionPartition);
     await this.updateKMSPolicy(environmentStatement =>
-      removeAccountFromStatement(environmentStatement, memberAccountId),
+      removeAccountFromStatement(environmentStatement, memberAccountId, partition),
     );
 
     const enableEgressStore = this.settings.getBoolean(settingKeys.enableEgressStore);
     if (enableEgressStore) {
       await this.updateEgressKMSPolicy(environmentStatement =>
-        removeAccountFromStatement(environmentStatement, memberAccountId),
+        removeAccountFromStatement(environmentStatement, memberAccountId, partition),
       );
     }
 

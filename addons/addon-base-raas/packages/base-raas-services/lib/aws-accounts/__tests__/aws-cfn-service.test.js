@@ -82,7 +82,7 @@ describe('AwsAccountService', () => {
   const mockStackOutputs = [
     {
       OutputKey: 'EncryptionKeyArn',
-      OutputValue: 'arn:aws-cn:kms:placeholder',
+      OutputValue: 'arn:aws:kms:placeholder',
       Description: 'KMS Encryption Key Arn',
     },
     {
@@ -92,7 +92,7 @@ describe('AwsAccountService', () => {
     },
     {
       OutputKey: 'CrossAccountExecutionRoleArn',
-      OutputValue: 'arn:aws-cn:iam::execution-placeholder',
+      OutputValue: 'arn:aws:iam::execution-placeholder',
       Description: 'The arn of the cross account role.',
     },
     {
@@ -107,7 +107,7 @@ describe('AwsAccountService', () => {
     },
     {
       OutputKey: 'CrossAccountEnvMgmtRoleArn',
-      OutputValue: 'arn:aws-cn:iam::placeholder',
+      OutputValue: 'arn:aws:iam::placeholder',
       Description: 'The arn of the cross account role for environment management using AWS Service Catalog',
     },
     {
@@ -294,7 +294,7 @@ describe('AwsAccountService', () => {
         cfnStackName: 'HAPPY_STACK',
         externalId: 'test-externalid',
         id: 'testid',
-        onboardStatusRoleArn: 'arn:aws-cn:iam:::role/HAPPY_STACK-cfn-status-role',
+        onboardStatusRoleArn: 'arn:aws:iam:::role/HAPPY_STACK-cfn-status-role',
         permissionStatus: 'PENDING',
         rev: 5,
       };
@@ -480,10 +480,10 @@ describe('AwsAccountService', () => {
         cfnStackId: 'HAPPY_ID',
         vpcId: 'vpc-placeholder',
         subnetId: 'subnet-placeholder',
-        roleArn: 'arn:aws-cn:iam::execution-placeholder',
-        xAccEnvMgmtRoleArn: 'arn:aws-cn:iam::placeholder',
+        roleArn: 'arn:aws:iam::execution-placeholder',
+        xAccEnvMgmtRoleArn: 'arn:aws:iam::placeholder',
         externalId: 'test-externalid',
-        encryptionKeyArn: 'arn:aws-cn:kms:placeholder',
+        encryptionKeyArn: 'arn:aws:kms:placeholder',
         permissionStatus: 'CURRENT',
         rev: completedAccountMock.rev,
         publicRouteTableId: 'rtd-samplePublicRouteTableId',
@@ -527,10 +527,10 @@ describe('AwsAccountService', () => {
         id: completedAccountMock.id,
         cfnStackId: 'HAPPY_ID',
         vpcId: 'vpc-placeholder',
-        roleArn: 'arn:aws-cn:iam::execution-placeholder',
-        xAccEnvMgmtRoleArn: 'arn:aws-cn:iam::placeholder',
+        roleArn: 'arn:aws:iam::execution-placeholder',
+        xAccEnvMgmtRoleArn: 'arn:aws:iam::placeholder',
         externalId: 'test-externalid',
-        encryptionKeyArn: 'arn:aws-cn:kms:placeholder',
+        encryptionKeyArn: 'arn:aws:kms:placeholder',
         permissionStatus: 'CURRENT',
         rev: completedAccountMock.rev,
         appStreamFleetName: 'appstream-fleet',

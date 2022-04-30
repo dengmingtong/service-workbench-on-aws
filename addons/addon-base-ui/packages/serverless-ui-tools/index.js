@@ -82,8 +82,9 @@ class ServerlessUIToolsPlugin {
 
   getCloudFront() {
     const profile = this.serverless.service.custom.settings.awsProfile;
-    // const region = this.serverless.service.custom.settings.awsRegion;
-    const region = 'cn-northwest-1';
+    const region = this.serverless.service.custom.settings.awsRegion;
+    // const region = 'cn-northwest-1';
+    console.log('invalidateCache mingtong step 2-1, region', region);
 
     aws.config.update({
       maxRetries: 3,
@@ -173,6 +174,7 @@ class ServerlessUIToolsPlugin {
 
   async invalidateCache() {
     const distributionId = this.serverless.service.custom.settings.websiteCloudFrontId;
+    console.log('invalidateCache mingtong step 1, distributionId', distributionId);
     const shouldInvalidate = this.options['invalidate-cache'];
     if (shouldInvalidate && !distributionId) {
       throw Error('You specified "--invalidate-cache", but `websiteCloudFrontId` setting was not found');
@@ -181,7 +183,7 @@ class ServerlessUIToolsPlugin {
     if (shouldInvalidate && this.mutatedBucket) {
       this.cli.log('Invalidating CloudFront distribution cache...');
       const sdk = this.getCloudFront();
-
+      console.log('invalidateCache mingtong step 2');
       try {
         const invalidation = await sdk
           .createInvalidation({

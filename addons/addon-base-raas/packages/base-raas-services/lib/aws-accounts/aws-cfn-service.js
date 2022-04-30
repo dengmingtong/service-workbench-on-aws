@@ -36,6 +36,7 @@ const settingKeys = {
   isAppStreamEnabled: 'isAppStreamEnabled',
   enableFlowLogs: 'enableFlowLogs',
   domainName: 'domainName',
+  regionPartition: 'regionPartition',
 };
 
 // see https://github.com/rvedotrc/aws-cloudformation-stack-states for all states
@@ -265,6 +266,8 @@ class AwsCfnService extends Service {
     cfnTemplateInfo.updateStackUrl = getUpdateStackUrl(cfnTemplateInfo);
     cfnTemplateInfo.cfnConsoleUrl = getCfnHomeUrl(cfnTemplateInfo);
 
+    const partition = this.settings.get(settingKeys.regionPartition);
+
     // If we are onboarding the account for the first time, we have to populate some parameters for checking permissions later
     const updatedAcct = {
       id: account.id,
@@ -273,7 +276,7 @@ class AwsCfnService extends Service {
       externalId: account.externalId,
       permissionStatus: 'PENDING',
       onboardStatusRoleArn: [
-        'arn:aws-cn:iam::',
+        'arn:${partition}:iam::',
         account.accountId,
         ':role/',
         createParams.namespace,

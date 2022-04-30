@@ -72,6 +72,7 @@ class EnvTypeCandidateService extends Service {
     // get service catalog client sdk with the service catalog admin role credentials
     const [aws] = await this.service(['aws']);
     const serviceCatalogClient = await getServiceCatalogClient(aws, this.settings.get(settingKeys.envMgmtRoleArn));
+    this.log.info('mingtong step 5-0-7, envMgmtRoleArn', this.settings.get(settingKeys.envMgmtRoleArn));
     this.log.info('mingtong step 5-0-7');
     const result = await retry(() =>
       // wrap with retry with exponential backoff in case of throttling errors

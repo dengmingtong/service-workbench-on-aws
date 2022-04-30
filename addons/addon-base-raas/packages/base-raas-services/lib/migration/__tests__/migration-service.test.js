@@ -71,7 +71,7 @@ describe('migrationService', () => {
         name: `${studyId}`,
         resources: [
           {
-            arn: 'arn:aws-cn:s3:::123456789-stage-solution-sw-studydata/users/old-internal-user/studyName/',
+            arn: 'arn:aws:s3:::123456789-stage-solution-sw-studydata/users/old-internal-user/studyName/',
           },
         ],
         updatedAt: '2021-10-26T18:06:55.767Z',

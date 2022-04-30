@@ -28,18 +28,18 @@
         },
         "crossAccountExecutionRoleArn": {
           "type": "string",
-          "pattern": "^arn:aws-cn:iam::.*$"
+          "pattern": "^arn:${AWS::Partition}:iam::.*$"
         },
         "crossAccountEnvMgmtRoleArn": {
           "type": "string",
-          "pattern": "^arn:aws-cn:iam::.*$"
+          "pattern": "^arn:${AWS::Partition}:iam::.*$"
         },
         "stackId": {
           "type": "string"
         },
         "encryptionKeyArn": {
           "type": "string",
-          "pattern": "^arn:aws-cn:kms:.*$"
+          "pattern": "^arn:${AWS::Partition}:kms:.*$"
         }
       }
     },

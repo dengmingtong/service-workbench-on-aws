@@ -87,7 +87,9 @@ class AwsService extends Service {
    * @returns {Promise<{accessKeyId, secretAccessKey, sessionToken}>}
    */
   async getCredentialsForRole({ roleArn, roleSessionName, externalId }) {
-    const sts = new this.sdk.STS({ apiVersion: '2011-06-15', endpoint: 'https://sts.cn-north-1.amazonaws.com.cn' });
+    // const sts = new this.sdk.STS({ apiVersion: '2011-06-15', endpoint: 'https://sts.cn-north-1.amazonaws.com.cn' });
+    // const sts = new this.sdk.STS({ apiVersion: '2011-06-15', sts_regional_endpoints: 'regional' });
+    const sts = new this.sdk.STS({ apiVersion: '2011-06-15', endpoint: 'https://sts.ap-east-1.amazonaws.com' });
     const envName = this.settings.get(settingKeys.envName);
     const params = {
       RoleArn: roleArn,

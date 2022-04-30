@@ -126,8 +126,8 @@ describe('EnvironmentScConnectionService', () => {
         url: 'www.example.com',
         type: 'SageMaker',
         role: 'presigned-role',
-        roleArn: 'arn:aws-cn:iam:us-west-2:111111111111:role/presigned-role',
-        notebookArn: 'arn:aws-cn:sagemaker:us-west-2:111111111111:notebook-instance/basicnotebookinstance-testnotebook',
+        roleArn: 'arn:aws:iam:us-west-2:111111111111:role/presigned-role',
+        notebookArn: 'arn:aws:sagemaker:us-west-2:111111111111:notebook-instance/basicnotebookinstance-testnotebook',
         policy: 'presigned-url-access',
         info: 'notebook-instance-name',
       };
@@ -221,8 +221,8 @@ describe('EnvironmentScConnectionService', () => {
         url: 'www.example.com',
         type: 'SageMaker',
         role: 'presigned-role',
-        roleArn: 'arn:aws-cn:iam:us-west-2:111111111111:role/presigned-role',
-        notebookArn: 'arn:aws-cn:sagemaker:us-west-2:111111111111:notebook-instance/basicnotebookinstance-testnotebook',
+        roleArn: 'arn:aws:iam:us-west-2:111111111111:role/presigned-role',
+        notebookArn: 'arn:aws:sagemaker:us-west-2:111111111111:notebook-instance/basicnotebookinstance-testnotebook',
         policy: 'presigned-url-access',
         info: 'notebook-instance-name',
       };
@@ -358,8 +358,8 @@ describe('EnvironmentScConnectionService', () => {
         url: 'www.example.com',
         type: 'SageMaker',
         role: 'presigned-role',
-        roleArn: 'arn:aws-cn:iam:us-west-2:111111111111:role/presigned-role',
-        notebookArn: 'arn:aws-cn:sagemaker:us-west-2:111111111111:notebook-instance/basicnotebookinstance-testnotebook',
+        roleArn: 'arn:aws:iam:us-west-2:111111111111:role/presigned-role',
+        notebookArn: 'arn:aws:sagemaker:us-west-2:111111111111:notebook-instance/basicnotebookinstance-testnotebook',
         policy: 'presigned-url-access',
         info: 'notebook-instance-name',
       };

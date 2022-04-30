@@ -612,7 +612,7 @@ describe('EnvironmentSCService', () => {
         studyIds: ['study1', 'study2'],
       };
       const studyRoles = {
-        study1: 'arn:aws-cn:iam::012345678900:role/swb-random-fs-1615225782025',
+        study1: 'arn:aws:iam::012345678900:role/swb-random-fs-1615225782025',
       };
       service.audit = jest.fn();
       service.mustFind = jest.fn().mockResolvedValueOnce(env);
