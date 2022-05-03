@@ -32,6 +32,9 @@ const settingKeys = {
   defaultAuthNProviderTitle: 'defaultAuthNProviderTitle',
   cognitoAuthNProviderTitle: 'cognitoAuthNProviderTitle',
   cognitoUserPoolDomainPrefix: 'cognitoUserPoolDomainPrefix',
+  keyCloakAuthUrl: 'keyCloakAuthUrl',
+  keyCloakRealm: 'keyCloakRealm',
+  keyCloakClientId: 'keyCloakClientId',
 };
 
 class AddAuthProviders extends Service {
@@ -55,7 +58,6 @@ class AddAuthProviders extends Service {
    * 4. Configure cognito user pool domain for the client application
    */
   async addCognitoAuthenticationProviderWithSamlFederation() {
-    this.log.info('auth mingtong step 1');
     // Get settings
     const envName = this.settings.get(settingKeys.envName);
     const solutionName = this.settings.get(settingKeys.solutionName);
@@ -72,8 +74,6 @@ class AddAuthProviders extends Service {
     const idpsNotConfigured = [fedIdpIds, fedIdpNames, fedIdpDisplayNames, fedIdpMetadatas].some(
       array => array.length === 0,
     );
-    this.log.info('auth mingtong step 2, idpsNotConfigured:', idpsNotConfigured);
-    this.log.info('auth mingtong step 2, enableNativeUserPoolUsers:', enableNativeUserPoolUsers);
     if (!enableNativeUserPoolUsers && idpsNotConfigured) {
       this.log.info('Cognito user pool not enabled in settings; skipping creation');
       return;
@@ -175,17 +175,18 @@ class AddAuthProviders extends Service {
    async addKeyCloakAuthenticationProvider() {
     this.log.info('auth mingtong step 1');
     // Get settings
-    const envName = this.settings.get(settingKeys.envName);
-    const solutionName = this.settings.get(settingKeys.solutionName);
-    const keyCloakResource = this.settings.get(settingKeys.keyCloakResource);
+    const keyCloakRealm = this.settings.get(settingKeys.keyCloakRealm);
+    this.log.info('auth mingtong step 2');
+    const keyCloakAuthUrl = this.settings.get(settingKeys.keyCloakAuthUrl);
+    const keyCloakClientId = this.settings.get(settingKeys.keyCloakClientId);
 
     const keycloakAuthProviderConfig = {
       title: 'KeyCloak',
-      id: 'https://keycloak-mingtong.demo.solutions.aws.a2z.org.cn/auth/realms/SWB-Test',
+      id: keyCloakAuthUrl + keyCloakRealm + '/' + keyCloakClientId,
       type: "keycloak",
-      signInUri: "https://keycloak-mingtong.demo.solutions.aws.a2z.org.cn/auth/realms/SWB-Test/protocol/openid-connect/token?client_id=swb-test-client&response_type=code",
-      signOutUri: "https://keycloak-mingtong.demo.solutions.aws.a2z.org.cn/auth/realms/SWB-Test/protocol/openid-connect/token?client_id=swb-test-client&response_type=code",
-      clientId: "swb-test-client"      
+      keyCloakRealm: keyCloakRealm,
+      keyCloakAuthUrl: keyCloakAuthUrl,
+      keyCloakClientId: keyCloakClientId     
     };
     this.log.info('auth mingtong step 3, cognitoAuthProviderConfig', keycloakAuthProviderConfig);
     // Define auth provider type config

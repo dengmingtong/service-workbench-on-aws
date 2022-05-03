@@ -21,7 +21,7 @@ hostedZoneId: ${cf:${self:custom.settings.infrastructureStackName}.HostedZoneId}
 websiteUrl: ${cf:${self:custom.settings.infrastructureStackName}.WebsiteUrl}
 
 # a list of domain names to allow in the API
-corsAllowList: '["https://swb-mingtong.demo.solutions.aws.a2z.org.cn"]'
+corsAllowList: '["https://swb-mingtong.demo.solutions.aws.a2z.org.cn", "${self:custom.settings.websiteUrl}"]'
 
 # a list of domain names to allow in the API while in dev (envType == dev)
 corsAllowListLocal: '["http://localhost:3000", "https://swb-mingtong.demo.solutions.aws.a2z.org.cn"]'

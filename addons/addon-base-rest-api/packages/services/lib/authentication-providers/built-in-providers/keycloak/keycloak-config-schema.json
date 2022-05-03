@@ -24,16 +24,16 @@
       "$id": "#/properties/type",
       "type": "string"
     },
-    "clientId": {
-      "$id": "#/properties/clientId",
+    "keyCloakClientId": {
+      "$id": "#/properties/keyCloakClientId",
       "type": "string"
     },
-    "signInUri": {
-      "$id": "#/properties/signInUri",
+    "keyCloakRealm": {
+      "$id": "#/properties/keyCloakRealm",
       "type": "string"
     },
-    "signOutUri": {
-      "$id": "#/properties/signOutUri",
+    "keyCloakAuthUrl": {
+      "$id": "#/properties/keyCloakAuthUrl",
       "type": "string"
     }
   }

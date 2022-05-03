@@ -44,6 +44,9 @@ postDeployment:
     APP_NATIVE_ADMIN_PASSWORD_PARAM_NAME: ${self:custom.settings.nativeAdminPasswordParamName}
     APP_ENV_NAME: ${self:custom.settings.envName}
     APP_KEYCLOAK_RESOURCE: ${self:custom.settings.keyCloakResource}
+    APP_KEYCLOAK_REALM: ${self:custom.settings.keyCloakRealm}
+    APP_KEYCLOAK_AUTH_URL: ${self:custom.settings.keyCloakAuthUrl}
+    APP_KEYCLOAK_CLIENTID: ${self:custom.settings.keyCloakClientId}  
 
 egressStoreObjectsHandler:
   role: RoleEgressStoreObjectsHandler
