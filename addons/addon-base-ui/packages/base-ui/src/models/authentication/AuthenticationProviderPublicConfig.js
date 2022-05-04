@@ -23,7 +23,8 @@ import { storage, isAbsoluteUrl, getQueryParam, removeQueryParams, addQueryParam
 import localStorageKeys from '../constants/local-storage-keys';
 import { boom } from '../../helpers/errors';
 import { websiteUrl } from '../../helpers/settings';
-import keycloak from './keycloak'
+// import keycloak from './keycloak'
+import Keycloak from 'keycloak-js'
 
 function toAbsoluteUrl(uri) {
   return isAbsoluteUrl(uri) ? uri : `${config.apiPath}/${uri}`;
@@ -64,6 +65,9 @@ const AuthenticationProviderPublicConfig = types
     credentialHandlingType: '',
     signInUri: '',
     signOutUri: '',
+    keyCloakClientId: '',
+    keyCloakRealm: '',  
+    keyCloakAuthUrl: '',   
     enableNativeUserPoolUsers: types.maybeNull(types.boolean),
   })
   .actions(self => ({
@@ -122,6 +126,15 @@ const AuthenticationProviderPublicConfig = types
         }
         if (self.credentialHandlingType === 'keycloak') {
           console.log('AuthenticationProviderPublicConfig mingtong step !');
+          //init keycloak
+          const keycloak = new Keycloak(
+          { 
+              url: self.keyCloakAuthUrl, 
+              realm: self.keyCloakRealm, 
+              clientId: self.keyCloakClientId, 
+          }); 
+          keycloak.init();     
+          console.log('AuthenticationProviderPublicConfig mingtong step 1 !');    
           //初始化keycloak
           keycloak.login();
         }

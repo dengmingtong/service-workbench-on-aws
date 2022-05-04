@@ -17,7 +17,9 @@ import _ from 'lodash';
 
 import { setIdToken } from '../helpers/api';
 
-import keycloak from '../models/authentication/keycloak';
+// import keycloak from '../models/authentication/keycloak';
+
+// import Keycloak from 'keycloak-js'
 
 const AUTHN_EXTENSION_POINT = 'authentication';
 
@@ -34,37 +36,35 @@ async function init(payload, appContext) {
   console.log('plugin init mingtong step 1');
   await authenticationProviderPublicConfigsStore.load();
   console.log('plugin init mingtong step 2');
-  console.log('start init keycloak, mingtong step');
-  //init keycloak
-  await keycloak.init({onLoad: "check-sso"})
-  // keycloak.init({onLoad: "login-required"})
-  .then((authenticated) => {
-    console.log('KeycloakClient init mingtong step2, authenticated', authenticated)
-    if(authenticated) {
-      console.log('KeycloakClient init mingtong step3, authenticated', authenticated);
-      console.log('KeycloakClient init mingtong step4, keycloak.token', keycloak.token);
-      console.log('KeycloakClient init mingtong step5, keycloak.clientId', keycloak.clientId);
-      console.log('KeycloakClient init mingtong step6, keycloak.refreshToken', keycloak.refreshToken);
-      localStorage.setItem('keycloak_token', keycloak.token);
-      localStorage.setItem('keycloak_clientId', keycloak.clientId);
-      localStorage.setItem('keycloak_refreshToken', keycloak.refreshToken);
+  // await keycloak.init({onLoad: "check-sso"})
+  // // keycloak.init({onLoad: "login-required"})
+  // .then((authenticated) => {
+  //   console.log('KeycloakClient init mingtong step2, authenticated', authenticated)
+  //   if(authenticated) {
+  //     console.log('KeycloakClient init mingtong step3, authenticated', authenticated);
+  //     console.log('KeycloakClient init mingtong step4, keycloak.token', keycloak.token);
+  //     console.log('KeycloakClient init mingtong step5, keycloak.clientId', keycloak.clientId);
+  //     console.log('KeycloakClient init mingtong step6, keycloak.refreshToken', keycloak.refreshToken);
+  //     localStorage.setItem('keycloak_token', keycloak.token);
+  //     localStorage.setItem('keycloak_clientId', keycloak.clientId);
+  //     localStorage.setItem('keycloak_refreshToken', keycloak.refreshToken);
 
-      keycloak.loadUserInfo().then(userInfo => {
-        localStorage.setItem('keycloak_username',userInfo.preferred_username);
-        localStorage.setItem('keycloak_useremail',userInfo.email);
-      });
-      console.log('KeycloakClient init mingtong step7, ');
-    }
-    else {
-      console.info("failed keycloak authentication");
-      console.log('KeycloakClient init mingtong step8, authenticated', authenticated)
-      // window.location.reload();
-    }
-  })
-  .catch(function () {
-    console.error("Something wrong keycloak authentication");
-    // window.location.reload();
-  });  
+  //     keycloak.loadUserInfo().then(userInfo => {
+  //       localStorage.setItem('keycloak_username',userInfo.preferred_username);
+  //       localStorage.setItem('keycloak_useremail',userInfo.email);
+  //     });
+  //     console.log('KeycloakClient init mingtong step7, ');
+  //   }
+  //   else {
+  //     console.info("failed keycloak authentication");
+  //     console.log('KeycloakClient init mingtong step8, authenticated', authenticated)
+  //     // window.location.reload();
+  //   }
+  // })
+  // .catch(function () {
+  //   console.error("Something wrong keycloak authentication");
+  //   // window.location.reload();
+  // });  
   const tokenInfo = await authentication.getIdTokenInfo();
   payload.tokenInfo = { ...payload.tokenInfo, ...tokenInfo };
 

@@ -42,10 +42,12 @@ async function configure(context) {
           title: provider.config.title,
           type: provider.config.type.type,
           credentialHandlingType: provider.config.type.config.credentialHandlingType,
-          signInUri: provider.config.signInUri,
-          signOutUri: provider.config.signOutUri,
+          keyCloakClientId: provider.config.keyCloakClientId,
+          keyCloakRealm: provider.config.keyCloakRealm,          
+          keyCloakAuthUrl: provider.config.keyCloakAuthUrl,   
+          // signInUri: provider.config.signInUri,
+          // signOutUri: provider.config.signOutUri,
         };
-
         if (provider.config.type.type !== cognitoAuthType) {
           // For non-Cognito providers, just return their info as-is
           console.log('public/provider/configs mingtong step 3');

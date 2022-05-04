@@ -18,6 +18,7 @@ import _ from 'lodash';
 import { BaseStore } from '../BaseStore';
 import { getAuthenticationProviderPublicConfigs } from '../../helpers/api';
 import AuthenticationProviderPublicConfig from './AuthenticationProviderPublicConfig';
+import Keycloak from 'keycloak-js'
 
 const AuthenticationProviderPublicConfigsStore = BaseStore.named('AuthenticationProviderPublicConfigsStore')
   .props({
@@ -28,6 +29,42 @@ const AuthenticationProviderPublicConfigsStore = BaseStore.named('Authentication
       const configs = await getAuthenticationProviderPublicConfigs();
       console.log('AuthenticationProviderPublicConfigsStore mingtong step 1, configs ', configs);
 
+      const keycloak = new Keycloak(
+      { 
+          url: configs[0].keyCloakAuthUrl, 
+          realm: configs[0].keyCloakRealm, 
+          clientId: configs[0].keyCloakClientId, 
+      });
+      await keycloak.init({onLoad: "check-sso"})
+      // keycloak.init({onLoad: "login-required"})
+      .then((authenticated) => {
+        console.log('KeycloakClient init mingtong step2, authenticated', authenticated)
+        if(authenticated) {
+          console.log('KeycloakClient init mingtong step3, authenticated', authenticated);
+          console.log('KeycloakClient init mingtong step4, keycloak.token', keycloak.token);
+          console.log('KeycloakClient init mingtong step5, keycloak.clientId', keycloak.clientId);
+          console.log('KeycloakClient init mingtong step6, keycloak.refreshToken', keycloak.refreshToken);
+          localStorage.setItem('keycloak_token', keycloak.token);
+          localStorage.setItem('keycloak_clientId', keycloak.clientId);
+          localStorage.setItem('keycloak_refreshToken', keycloak.refreshToken);
+    
+          keycloak.loadUserInfo().then(userInfo => {
+            localStorage.setItem('keycloak_username',userInfo.preferred_username);
+            localStorage.setItem('keycloak_useremail',userInfo.email);
+          });
+          console.log('KeycloakClient init mingtong step7, ');
+        }
+        else {
+          console.info("failed keycloak authentication");
+          console.log('KeycloakClient init mingtong step8, authenticated', authenticated)
+          // window.location.reload();
+        }
+      })
+      .catch(function () {
+        console.error("Something wrong keycloak authentication");
+        // window.location.reload();
+      });        
+
       self.runInAction(() => {
         self.authenticationProviderPublicConfigs = configs;
         const authentication = getEnv(self).authentication;
@@ -37,6 +74,9 @@ const AuthenticationProviderPublicConfigsStore = BaseStore.named('Authentication
     },
   }))
   .views(self => ({
+    get keycloakConfig() {
+      return self.authenticationProviderPublicConfigs[0];      
+    },
     get authenticationProviderOptions() {
       const size = _.size(self.authenticationProviderPublicConfigs);
 

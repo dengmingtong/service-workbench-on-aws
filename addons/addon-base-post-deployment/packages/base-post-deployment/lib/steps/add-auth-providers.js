@@ -182,7 +182,7 @@ class AddAuthProviders extends Service {
 
     const keycloakAuthProviderConfig = {
       title: 'KeyCloak',
-      id: keyCloakAuthUrl + keyCloakRealm + '/' + keyCloakClientId,
+      id: keyCloakAuthUrl + 'realms/' + keyCloakRealm,
       type: "keycloak",
       keyCloakRealm: keyCloakRealm,
       keyCloakAuthUrl: keyCloakAuthUrl,
