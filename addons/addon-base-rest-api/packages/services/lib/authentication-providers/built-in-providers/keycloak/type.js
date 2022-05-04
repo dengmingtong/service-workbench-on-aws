@@ -17,8 +17,8 @@ const inputSchema = require('./keycloak-config-schema');
 
 module.exports = {
   type: 'keycloak',
-  title: 'KeyCloak',
-  description: 'Authentication provider for KeyCloak',
+  title: 'keycloak',
+  description: 'Authentication provider for keycloak',
   config: {
     credentialHandlingType: 'keycloak',
     inputSchema,

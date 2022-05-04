@@ -169,7 +169,7 @@ class AddAuthProviders extends Service {
   }  
 
   /**
-   * Configure KeyCloak Authentication Provider. The step method below invokes the keycloak auth provider "Provisioner" service.
+   * Configure keycloak Authentication Provider. The step method below invokes the keycloak auth provider "Provisioner" service.
    * The service will add keycloak config to dynamodb.
    */
    async addKeyCloakAuthenticationProvider() {
@@ -181,11 +181,12 @@ class AddAuthProviders extends Service {
     const keyCloakClientId = this.settings.get(settingKeys.keyCloakClientId);
 
     const keycloakAuthProviderConfig = {
-      title: 'KeyCloak',
+      title: 'keycloak',
       id: keyCloakAuthUrl + 'realms/' + keyCloakRealm,
       type: "keycloak",
       keyCloakRealm: keyCloakRealm,
       keyCloakAuthUrl: keyCloakAuthUrl,
+      enableNativeUserPoolUsers: true,
       keyCloakClientId: keyCloakClientId     
     };
     this.log.info('auth mingtong step 3, cognitoAuthProviderConfig', keycloakAuthProviderConfig);

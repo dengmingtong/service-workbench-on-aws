@@ -35,6 +35,10 @@
     "keyCloakAuthUrl": {
       "$id": "#/properties/keyCloakAuthUrl",
       "type": "string"
+    },
+    "enableNativeUserPoolUsers": {
+      "$id": "#/properties/enableNativeUserPoolUsers",
+      "type": "boolean"
     }
   }
 }

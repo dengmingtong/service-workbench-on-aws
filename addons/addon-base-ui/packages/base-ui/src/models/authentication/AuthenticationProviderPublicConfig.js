@@ -24,7 +24,7 @@ import localStorageKeys from '../constants/local-storage-keys';
 import { boom } from '../../helpers/errors';
 import { websiteUrl } from '../../helpers/settings';
 // import keycloak from './keycloak'
-import Keycloak from 'keycloak-js'
+// import Keycloak from 'keycloak-js'
 
 function toAbsoluteUrl(uri) {
   return isAbsoluteUrl(uri) ? uri : `${config.apiPath}/${uri}`;
@@ -127,16 +127,16 @@ const AuthenticationProviderPublicConfig = types
         if (self.credentialHandlingType === 'keycloak') {
           console.log('AuthenticationProviderPublicConfig mingtong step !');
           //init keycloak
-          const keycloak = new Keycloak(
-          { 
-              url: self.keyCloakAuthUrl, 
-              realm: self.keyCloakRealm, 
-              clientId: self.keyCloakClientId, 
-          }); 
-          keycloak.init();     
+          // const keycloak = new Keycloak(
+          // { 
+          //     url: self.keyCloakAuthUrl, 
+          //     realm: self.keyCloakRealm, 
+          //     clientId: self.keyCloakClientId, 
+          // }); 
+          // window._keycloak.init();     
           console.log('AuthenticationProviderPublicConfig mingtong step 1 !');    
           //初始化keycloak
-          keycloak.login();
+          window._keycloak.login();
         }
       } catch (err) {
         handleException(err);
@@ -153,6 +153,17 @@ const AuthenticationProviderPublicConfig = types
       // of user inactivity
       await pluginRegistry.runPlugins(AUTHN_EXTENSION_POINT, 'logoutInitiated', { autoLogout });
 
+      // //init keycloak
+      // const keycloak = new Keycloak(
+      // { 
+      //     url: self.keyCloakAuthUrl, 
+      //     realm: self.keyCloakRealm, 
+      //     clientId: self.keyCloakClientId, 
+      // }); 
+      // keycloak.init();     
+      // console.log('AuthenticationProviderPublicConfig mingtong step 4 !');    
+      //初始化keycloak     
+
       if (self.signOutUri) {
         // if the selectedAuthenticationProvider requires us to redirect to some logout URL
         // (such as SAML logout url in case of identity federation) just redirect to the specified url.
@@ -160,6 +171,7 @@ const AuthenticationProviderPublicConfig = types
         // complete by the "initialization-plugin"
         window.location = self.absoluteSignOutUrl;
       } else {
+        console.log('start logout, mingtong step');
         const cleaner = getEnv(self).cleaner;
         await cleaner.cleanup();
         window.history.pushState('', '', '/');
@@ -169,6 +181,10 @@ const AuthenticationProviderPublicConfig = types
           explicitLogout: true,
           autoLogout,
         });
+        window._keycloak.logout();
+        localStorage.setItem('keycloak_token', '');
+        localStorage.setItem('keycloak_clientId', '');
+        localStorage.setItem('keycloak_refreshToken', '');        
       }
     },
   }))

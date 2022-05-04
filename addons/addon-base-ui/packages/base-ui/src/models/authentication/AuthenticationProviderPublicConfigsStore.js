@@ -29,26 +29,26 @@ const AuthenticationProviderPublicConfigsStore = BaseStore.named('Authentication
       const configs = await getAuthenticationProviderPublicConfigs();
       console.log('AuthenticationProviderPublicConfigsStore mingtong step 1, configs ', configs);
 
-      const keycloak = new Keycloak(
+      window._keycloak = new Keycloak(
       { 
           url: configs[0].keyCloakAuthUrl, 
           realm: configs[0].keyCloakRealm, 
           clientId: configs[0].keyCloakClientId, 
       });
-      await keycloak.init({onLoad: "check-sso"})
+      await window._keycloak.init({onLoad: "check-sso"})
       // keycloak.init({onLoad: "login-required"})
       .then((authenticated) => {
         console.log('KeycloakClient init mingtong step2, authenticated', authenticated)
         if(authenticated) {
           console.log('KeycloakClient init mingtong step3, authenticated', authenticated);
-          console.log('KeycloakClient init mingtong step4, keycloak.token', keycloak.token);
-          console.log('KeycloakClient init mingtong step5, keycloak.clientId', keycloak.clientId);
-          console.log('KeycloakClient init mingtong step6, keycloak.refreshToken', keycloak.refreshToken);
-          localStorage.setItem('keycloak_token', keycloak.token);
-          localStorage.setItem('keycloak_clientId', keycloak.clientId);
-          localStorage.setItem('keycloak_refreshToken', keycloak.refreshToken);
+          console.log('KeycloakClient init mingtong step4, keycloak.token', window._keycloak.token);
+          console.log('KeycloakClient init mingtong step5, keycloak.clientId', window._keycloak.clientId);
+          console.log('KeycloakClient init mingtong step6, keycloak.refreshToken', window._keycloak.refreshToken);
+          localStorage.setItem('keycloak_token', window._keycloak.token);
+          localStorage.setItem('keycloak_clientId', window._keycloak.clientId);
+          localStorage.setItem('keycloak_refreshToken', window._keycloak.refreshToken);
     
-          keycloak.loadUserInfo().then(userInfo => {
+          window._keycloak.loadUserInfo().then(userInfo => {
             localStorage.setItem('keycloak_username',userInfo.preferred_username);
             localStorage.setItem('keycloak_useremail',userInfo.email);
           });
@@ -74,9 +74,9 @@ const AuthenticationProviderPublicConfigsStore = BaseStore.named('Authentication
     },
   }))
   .views(self => ({
-    get keycloakConfig() {
-      return self.authenticationProviderPublicConfigs[0];      
-    },
+    // get keycloakConfig() {
+    //   return self.authenticationProviderPublicConfigs[0];      
+    // },
     get authenticationProviderOptions() {
       const size = _.size(self.authenticationProviderPublicConfigs);
 

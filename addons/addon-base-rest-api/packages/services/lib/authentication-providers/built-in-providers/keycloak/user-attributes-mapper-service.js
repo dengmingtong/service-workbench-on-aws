@@ -97,7 +97,7 @@ class UserAttributesMapperService extends Service {
     prepended
      */
     let username = '';
-    username = decodedToken.preferred_username;
+    username = decodedToken.email;
 
     console.log('getUsername mingtong step 1, username', username);
 

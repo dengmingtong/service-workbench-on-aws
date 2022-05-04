@@ -25,10 +25,10 @@ import _ from 'lodash';
  */
 function toIdpOptions(providerConfigs) {
   const options = [];
-
+  console.log('toIdpOptions, mingtong step 1 providerConfig: ', providerConfigs);
   _.forEach(providerConfigs, providerConfig => {
     const config = providerConfig.config;
-
+    console.log('toIdpOptions, mingtong step 2 config: ', config);
     // Each providerConfig (authentication provider) can have zero or more identity providers.
     if (!_.isEmpty(config.federatedIdentityProviders)) {
       _.forEach(config.federatedIdentityProviders, idp => {
@@ -43,7 +43,7 @@ function toIdpOptions(providerConfigs) {
         });
       });
     }
-
+    console.log('toIdpOptions, mingtong step 3 config: ', config);
     // If native user pool is enabled, add Cognito User Pool
     if (!_.isUndefined(config.enableNativeUserPoolUsers) && config.enableNativeUserPoolUsers) {
       options.push({
