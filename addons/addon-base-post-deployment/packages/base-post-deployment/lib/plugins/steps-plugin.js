@@ -13,7 +13,8 @@
  *  permissions and limitations under the License.
  */
 
-const CreateRootUserService = require('../steps/create-root-user-service');
+// const CreateRootUserService = require('../steps/create-root-user-service');
+const CreateKeycloakRootUserService = require('../steps/create-keycloak-root-user-service');
 const AddAuthProviders = require('../steps/add-auth-providers');
 const CreateJwtKeyService = require('../steps/create-jwt-key-service');
 
@@ -32,6 +33,7 @@ async function getSteps(existingStepsMap, pluginRegistry) {
     ['createJwtKeyService', new CreateJwtKeyService()],
     ['addAuthProviders', new AddAuthProviders()],
     // ['createRootUser', new CreateRootUserService()],
+    ['createRootUser', new CreateKeycloakRootUserService()],
   ]);
 
   return stepsMap;

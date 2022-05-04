@@ -13,6 +13,21 @@
 # this name can be changed to ensure they are disambiguated.
 #solutionName: sw
 
+# keyCloakResource: swb-test-client
+
+# keyCloakRealm: 
+
+# keyCloakClientId: 
+
+# keyCloakAuthUrl:
+
+# rootUserEmail: root@example.com
+
+# Root user's first name
+# rootUserFirstName: root
+# Root user's last name
+# rootUserLastName: root
+
 # The environment name where you want to deploy the solution to. Normally this defaults to
 # the serverless stage name and should be left unchanged here.
 # This is also used for creating a namespace for resources. Usually, this is same as serverless "stage".
@@ -106,6 +121,7 @@
 # For aws for global regions, aws-cn for china regions
 # regionPartition: aws
 
+
 # Bucket policy for the deployment bucket.
 # THIS IS A DYNAMIC BUCKET POLICY DO NOT EDIT ANYTHING HERE--USE EDIT-S3-BUCKET-POLICY-SERVICE
 # deploymentBucketPolicy:
@@ -135,7 +151,3 @@
 #         },
 #       ],
 #   }
-
-keycloakAuthURL: 
-keycloakRealm: 
-keycloakClientId: 
