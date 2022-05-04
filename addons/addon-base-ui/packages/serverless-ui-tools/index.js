@@ -82,8 +82,10 @@ class ServerlessUIToolsPlugin {
 
   getCloudFront() {
     const profile = this.serverless.service.custom.settings.awsProfile;
-    const region = this.serverless.service.custom.settings.awsRegion;
-    // const region = 'cn-northwest-1';
+    let region = this.serverless.service.custom.settings.awsRegion;
+    if (region === 'cn-north-1') {
+      region = 'cn-northwest-1';
+    }
     console.log('invalidateCache mingtong step 2-1, region', region);
 
     aws.config.update({

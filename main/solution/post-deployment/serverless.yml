@@ -55,8 +55,8 @@ custom:
             APP_LOCAL_ROLE_ARN: ${cfnOutput('PostDeploymentRoleArn')} # When running locally, run under this role
 
   s3Sync:
-    # endpoint: https://s3.cn-north-1.amazonaws.com.cn
-    endpoint: https://s3.ap-east-1.amazonaws.com
+    endpoint: https://s3.cn-north-1.amazonaws.com.cn
+    # endpoint: https://s3.ap-east-1.amazonaws.com
     buckets:
       - bucketName: ${self:custom.settings.deploymentBucketName}
         bucketPrefix: saml-metadata/

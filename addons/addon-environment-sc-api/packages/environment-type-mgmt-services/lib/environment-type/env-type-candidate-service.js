@@ -68,6 +68,7 @@ class EnvTypeCandidateService extends Service {
     // Validate filter
     await this.validateListFilter({ filterStatuses, versionFilter });
     this.log.info('mingtong step 5-0-6');
+    this.log.info('mingtong step 5-0-6-1, envMgmtRoleArn', this.settings.get(settingKeys.envMgmtRoleArn));
     // Search products available to the SC admin role
     // get service catalog client sdk with the service catalog admin role credentials
     const [aws] = await this.service(['aws']);
