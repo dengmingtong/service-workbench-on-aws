@@ -199,23 +199,26 @@ class AwsCfnService extends Service {
   }
 
   async getAndUploadTemplateForAccount(requestContext, accountId) {
+    console.log('getAndUploadTemplateForAccount mingtong step 1');
     await this.assertAuthorized(
       requestContext,
       { action: 'get-upload-cfn-template', conditions: [allowIfActive, allowIfAdmin] },
       { accountId },
     );
+    console.log('getAndUploadTemplateForAccount mingtong step 2');
     const cfnTemplateInfo = {};
     const createParams = {};
 
     const awsAccountsService = await this.service('awsAccountsService');
     const cfnTemplateService = await this.service('cfnTemplateService');
     const s3Service = await this.service('s3Service');
-
+    console.log('getAndUploadTemplateForAccount mingtong step 3');
     // Verify active Non-AppStream environments do not exist
     await awsAccountsService.checkForActiveNonAppStreamEnvs(requestContext, accountId);
-
+    console.log('getAndUploadTemplateForAccount mingtong step 4');
     const account = await awsAccountsService.mustFind(requestContext, { id: accountId });
     cfnTemplateInfo.template = await cfnTemplateService.getTemplate('onboard-account');
+    console.log('getAndUploadTemplateForAccount mingtong step 5');
     cfnTemplateInfo.region = this.settings.get(settingKeys.awsRegion);
     cfnTemplateInfo.name = account.cfnStackName || `initial-stack-${new Date().getTime()}`;
     cfnTemplateInfo.accountId = account.accountId;
@@ -236,12 +239,12 @@ class AwsCfnService extends Service {
     createParams.domainName = this.settings.optional(settingKeys.domainName, '');
     createParams.externalId = account.externalId;
     createParams.namespace = cfnTemplateInfo.name;
-
+    console.log('getAndUploadTemplateForAccount mingtong step 6');
     // The id of the template is actually the hash of the of the content of the template
     const hash = crypto.createHash('sha256');
     hash.update(cfnTemplateInfo.template);
     cfnTemplateInfo.id = hash.digest('hex');
-
+    console.log('getAndUploadTemplateForAccount mingtong step 7');
     // Upload to S3
     const bucket = this.settings.get(settingKeys.envBootstrapBucket);
     const key = `aws-accounts/acct-${account.id}/cfn/region/${cfnTemplateInfo.region}/${cfnTemplateInfo.id}.yml`;
@@ -252,7 +255,7 @@ class AwsCfnService extends Service {
         Key: key,
       })
       .promise();
-
+    console.log('getAndUploadTemplateForAccount mingtong step 8');
     // Sign the url
     // expireSeconds: 604800 /* seven days */, if we need 7 days, we need to use a real IAM user credentials.
     const expireSeconds = 12 * 60 * 60; // 12 hours
@@ -267,7 +270,7 @@ class AwsCfnService extends Service {
     cfnTemplateInfo.cfnConsoleUrl = getCfnHomeUrl(cfnTemplateInfo);
 
     const partition = this.settings.get(settingKeys.regionPartition);
-
+    console.log('getAndUploadTemplateForAccount mingtong step 9');
     // If we are onboarding the account for the first time, we have to populate some parameters for checking permissions later
     const updatedAcct = {
       id: account.id,
@@ -276,14 +279,18 @@ class AwsCfnService extends Service {
       externalId: account.externalId,
       permissionStatus: 'PENDING',
       onboardStatusRoleArn: [
-        'arn:${partition}:iam::',
+        'arn:',
+        partition,
+        ':iam::',
         account.accountId,
         ':role/',
         createParams.namespace,
         '-cfn-status-role',
       ].join(''),
     };
+    console.log('getAndUploadTemplateForAccount mingtong step 10');
     await awsAccountsService.update(requestContext, updatedAcct);
+    console.log('getAndUploadTemplateForAccount mingtong step 11, cfnTemplateInfo', cfnTemplateInfo);
 
     return cfnTemplateInfo;
   }

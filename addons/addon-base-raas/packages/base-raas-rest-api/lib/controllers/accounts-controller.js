@@ -57,6 +57,7 @@ async function configure(context) {
     wrap(async (req, res) => {
       const requestContext = res.locals.requestContext;
       const possibleBody = req.body;
+      console.log('/api/accounts post mingtong step 1, possibleBody', possibleBody);
       const result = await accountService.provisionAccount(requestContext, possibleBody);
 
       res.status(200).json(result);

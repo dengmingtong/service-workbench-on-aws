@@ -160,6 +160,7 @@ class AwsAccountsService extends Service {
   }
 
   async create(requestContext, rawData) {
+    console.log('aws accounts service create mingtong step 1, rawData', rawData);
     // ensure that the caller has permissions to create the account
     // Perform default condition checks to make sure the user is active and is admin
     await this.assertAuthorized(
@@ -167,15 +168,15 @@ class AwsAccountsService extends Service {
       { action: 'create', conditions: [allowIfActive, allowIfAdmin] },
       rawData,
     );
-
+    console.log('aws accounts service create mingtong step 2');
     // Validate input
     const [validationService] = await this.service(['jsonSchemaValidationService']);
     await validationService.ensureValid(rawData, createSchema);
-
+    console.log('aws accounts service create mingtong step 3');
     // For now, we assume that 'createdBy' and 'updatedBy' are always users and not groups
     const by = _.get(requestContext, 'principalIdentifier.uid');
     const id = uuid();
-
+    console.log('aws accounts service create mingtong step 4');
     // Prepare the db object
     const dbObject = this._fromRawToDbObject(rawData, {
       rev: 0,
@@ -183,10 +184,13 @@ class AwsAccountsService extends Service {
       updatedBy: by,
       permissionStatus: rawData.permissionStatus || 'NEEDS_ONBOARD',
     });
-
+    console.log('aws accounts service create mingtong step 5');
     const accountId = rawData.accountId;
     const appStreamImageName = rawData.appStreamImageName;
+    console.log('aws accounts service create mingtong step 6, accountId', accountId);
+    console.log('aws accounts service create mingtong step 6, appStreamImageName', appStreamImageName);
     if (this.shouldShareAppStreamImageWithMemberAccount(accountId, appStreamImageName)) {
+      console.log('aws accounts service create mingtong step 7');
       await this.shareAppStreamImageWithMemberAccount(requestContext, accountId, appStreamImageName);
     }
 
@@ -203,12 +207,12 @@ class AwsAccountsService extends Service {
         throw this.boom.badRequest(`awsAccounts with id "${id}" already exists`, true);
       },
     );
-
+    console.log('aws accounts service create mingtong step 8');
     await this.updateEnvironmentInstanceFilesBucketPolicy();
-
+    console.log('aws accounts service create mingtong step 9');
     // Write audit event
     await this.audit(requestContext, { action: 'create-aws-account', body: result });
-
+    console.log('aws accounts service create mingtong step 10, result', result);
     return result;
   }
 
@@ -306,6 +310,7 @@ class AwsAccountsService extends Service {
   }
 
   async update(requestContext, rawData) {
+    console.log('aws account service update mingtong step 1, rawData', rawData);
     // ensure that the caller has permissions to update the account
     // Perform default condition checks to make sure the user is active and is admin
     await this.assertAuthorized(
@@ -313,28 +318,34 @@ class AwsAccountsService extends Service {
       { action: 'update', conditions: [allowIfActive, allowIfAdmin] },
       rawData,
     );
+    console.log('aws account service update mingtong step 2');
 
     // Validate input
     const [validationService] = await this.service(['jsonSchemaValidationService']);
     await validationService.ensureValid(rawData, updateSchema);
+    console.log('aws account service update mingtong step 3');
 
     // For now, we assume that 'updatedBy' is always a user and not a group
     const by = _.get(requestContext, 'principalIdentifier.uid');
     const { id, rev } = rawData;
-
+    console.log('aws account service update mingtong step 4');
     // Verify active Non-AppStream environments do not exist
     await this.checkForActiveNonAppStreamEnvs(requestContext, id);
+
+    console.log('aws account service update mingtong step 5');
 
     const awsAccount = await this.mustFind(requestContext, { id });
     const accountId = awsAccount.accountId;
     const appStreamImageName = rawData.appStreamImageName;
+    console.log('aws account service update mingtong step 6');
     if (this.shouldShareAppStreamImageWithMemberAccount(accountId, appStreamImageName)) {
+      console.log('aws account service update mingtong step 7');
       await this.shareAppStreamImageWithMemberAccount(requestContext, accountId, appStreamImageName);
     }
 
     // Prepare the db object
     const dbObject = _.omit(this._fromRawToDbObject(rawData, { updatedBy: by }), ['rev']);
-
+    console.log('aws account service update mingtong step 8');
     // Time to save the the db object
     const result = await runAndCatch(
       async () => {
@@ -360,10 +371,11 @@ class AwsAccountsService extends Service {
         throw this.boom.notFound(`awsAccounts with id "${id}" does not exist`, true);
       },
     );
+    console.log('aws account service update mingtong step 9');
 
     // Write audit event
     await this.audit(requestContext, { action: 'update-aws-account', body: result });
-
+    console.log('aws account service update mingtong step 10, result: ', result);
     return result;
   }
 

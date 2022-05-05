@@ -57,6 +57,7 @@ async function configure(context) {
     wrap(async (req, res) => {
       const id = req.params.id;
       const requestContext = res.locals.requestContext;
+      console.log('get-template mingtong step 1');
       const result = await awsCfnService.getAndUploadTemplateForAccount(requestContext, id);
       res.status(200).json(result);
     }),
@@ -82,8 +83,10 @@ async function configure(context) {
   router.post(
     '/',
     wrap(async (req, res) => {
+      console.log('api/aws-accounts mingtong step 1');
       const requestContext = res.locals.requestContext;
       const possibleBody = req.body;
+      console.log('api/aws-accounts mingtong step 1, possibleBody', possibleBody);
       const result = await awsAccountsService.create(requestContext, possibleBody);
 
       res.status(200).json(result);

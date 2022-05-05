@@ -46,7 +46,7 @@ postDeployment:
     APP_KEYCLOAK_RESOURCE: ${self:custom.settings.keyCloakResource}
     APP_KEYCLOAK_REALM: ${self:custom.settings.keyCloakRealm}
     APP_KEYCLOAK_AUTH_URL: ${self:custom.settings.keyCloakAuthUrl}
-    APP_KEYCLOAK_CLIENTID: ${self:custom.settings.keyCloakClientId}  
+    APP_KEYCLOAK_CLIENTID: ${self:custom.settings.keyCloakClientId}
 
 egressStoreObjectsHandler:
   role: RoleEgressStoreObjectsHandler

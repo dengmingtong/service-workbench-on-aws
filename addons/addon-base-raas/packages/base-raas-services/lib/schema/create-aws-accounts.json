@@ -51,7 +51,7 @@
     },
     "encryptionKeyArn": {
       "type": "string",
-      "pattern": "^arn:${AWS::Partition}:kms:.*$"
+      "pattern": "^arn:(aws|aws-cn):kms:.*$"
     },
     "appStreamStackName": {
       "type": "string",
@@ -92,7 +92,7 @@
     "onboardStatusRoleArn": {
       "type": "string",
       "minLength": 10,
-      "pattern": "^arn:${AWS::Partition}:iam::.*$"
+      "pattern": "^arn:(aws|aws-cn):iam::.*$"
     },
     "cfnStackName": {
       "type": "string",
@@ -101,7 +101,7 @@
     "cfnStackId": {
       "type": "string",
       "maxLength": 255,
-      "pattern": "^arn:${AWS::Partition}:cloudformation:.*$"
+      "pattern": "^arn:(aws|aws-cn):cloudformation:.*$"
     },
     "permissionStatus": {
       "type": "string"

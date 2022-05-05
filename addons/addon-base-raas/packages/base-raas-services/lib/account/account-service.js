@@ -76,23 +76,25 @@ class AccountService extends Service {
   async provisionAccount(requestContext, rawData) {
     // ensure that the caller has permissions to provision the account
     // Perform default condition checks to make sure the user is active and is admin
+    console.log('provisionAccount mingtong step 1, rawData', rawData);
     await this.assertAuthorized(
       requestContext,
       { action: 'provision', conditions: [allowIfActive, allowIfAdmin] },
       rawData,
     );
-
+    console.log('provisionAccount mingtong step 2');
     // TODO: prepare all params and pass them down to step and create ready account there
     const [validationService, workflowTriggerService] = await this.service([
       'jsonSchemaValidationService',
       'workflowTriggerService',
     ]);
-
+    console.log('provisionAccount mingtong step 3');
     // Validate input
     await validationService.ensureValid(rawData, createSchema);
-
+    console.log('provisionAccount mingtong step 4');
     let appStreamConfig = {};
     if (this.settings.getBoolean(settingKeys.isAppStreamEnabled)) {
+      console.log('provisionAccount mingtong step 5');
       const {
         appStreamFleetDesiredInstances,
         appStreamDisconnectTimeoutSeconds,
@@ -124,10 +126,12 @@ class AccountService extends Service {
         );
       }
     }
+    console.log('provisionAccount mingtong step 6');
     const { accountName, accountEmail, masterRoleArn, externalId, description } = rawData;
 
     // Check launch pre-requisites
     if (!(accountName && accountEmail && masterRoleArn && externalId && description)) {
+      console.log('provisionAccount mingtong step 7');
       const cause = this.getConfigError(accountName, accountEmail, masterRoleArn, externalId, description);
       throw this.boom.badRequest(
         `Creating AWS account process has not been correctly configured: missing ${cause}.`,
@@ -137,6 +141,7 @@ class AccountService extends Service {
     const workflowRoleArn = this.settings.get(settingKeys.workflowRoleArn);
     const apiHandlerArn = this.settings.get(settingKeys.apiHandlerArn);
     const aws = await this.service('aws');
+    console.log('provisionAccount mingtong step 8');
     const { Account: callerAccountId } = await new aws.sdk.STS({ apiVersion: '2011-06-15' })
       .getCallerIdentity()
       .promise();
@@ -155,10 +160,12 @@ class AccountService extends Service {
       callerAccountId,
       ...appStreamConfig,
     };
+    console.log('provisionAccount mingtong step 9');
     await workflowTriggerService.triggerWorkflow(requestContext, { workflowId: 'wf-provision-account' }, input);
-
+    console.log('provisionAccount mingtong step 10');
     // Write audit event
     await this.audit(requestContext, { action: 'provision-account', body: { accountName, accountEmail, description } });
+    console.log('provisionAccount mingtong step 11');
   }
 
   async saveAccountToDb(requestContext, rawData, id, status = 'PENDING') {
@@ -318,7 +325,7 @@ class AccountService extends Service {
 
   async assertAuthorized(requestContext, { action, conditions }, ...args) {
     const authorizationService = await this.service('authorizationService');
-
+    console.log('assertAuthorized mingtong step 1');
     // The "authorizationService.assertAuthorized" below will evaluate permissions by calling the "conditions" functions first
     // It will then give a chance to all registered plugins (if any) to perform their authorization.
     // The plugins can even override the authorization decision returned by the conditions
@@ -328,6 +335,7 @@ class AccountService extends Service {
       { extensionPoint: 'account-authz', action, conditions },
       ...args,
     );
+    console.log('assertAuthorized mingtong step 2');
   }
 
   async audit(requestContext, auditEvent) {
