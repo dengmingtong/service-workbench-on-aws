@@ -29,6 +29,7 @@ async function configure(context) {
     '/',
     wrap(async (req, res) => {
       const requestContext = res.locals.requestContext;
+      console.log('/api/costs mingtong step 1', requestContext);
       const result = await costsService.getIndividualEnvironmentOrProjCost(requestContext, req.query);
       res.status(200).json(result);
     }),

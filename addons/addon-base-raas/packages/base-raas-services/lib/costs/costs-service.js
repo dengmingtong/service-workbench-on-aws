@@ -38,42 +38,48 @@ class CostsService extends Service {
   }
 
   async getIndividualEnvironmentOrProjCost(requestContext, query) {
+    console.log('getIndividualEnvironmentOrProjCost mingtong step 1, requestContext', requestContext);
     // ensure that the caller has permissions to read the cost
     // Perform default condition checks to make sure the user is active and has allowed roles
     const allowIfHasCorrectRoles = (reqContext, { action }) =>
       allowIfHasRole(reqContext, { action, resource: 'environment-or-project-cost' }, ['admin', 'researcher']);
+    console.log('getIndividualEnvironmentOrProjCost mingtong step 2');
     await this.assertAuthorized(
       requestContext,
       { action: 'read', conditions: [allowIfActive, allowIfHasCorrectRoles] },
       query,
     );
-
+    console.log('getIndividualEnvironmentOrProjCost mingtong step 3');
     const { env, scEnv, proj, groupByUser, groupByEnv, groupByService, numberOfDaysInPast } = query;
     const [environmentService, environmentScService, costApiCacheService] = await this.service([
       'environmentService',
       'environmentScService',
       'costApiCacheService',
     ]);
-
+    console.log('getIndividualEnvironmentOrProjCost mingtong step 4');
     if (groupByUser === 'true' && groupByEnv === 'true' && groupByService === 'true') {
       return 'Can not groupByUser, groupByEnv, and groupByService. Please pick at most 2 out of the 3.';
     }
     let indexId = '';
-
+    console.log('getIndividualEnvironmentOrProjCost mingtong step 5');
     if (proj) {
       indexId = proj;
+      console.log('getIndividualEnvironmentOrProjCost mingtong step 5-1, indexId', indexId);
     } else if (env) {
       // The following will only succeed if the user has permissions to access the specified environment
       const result = await environmentService.mustFind(requestContext, { id: env });
       indexId = result.indexId;
+      console.log('getIndividualEnvironmentOrProjCost mingtong step 5-2, indexId', indexId);
     } else if (scEnv) {
       // The following will only succeed if the user has permissions to access the specified service catalog based environment
       const result = await environmentScService.mustFind(requestContext, { id: scEnv, fields: ['indexId'] });
       indexId = result.indexId;
+      console.log('getIndividualEnvironmentOrProjCost mingtong step 5-3, indexId', indexId);
     }
 
     const cacheResponse = await costApiCacheService.find(requestContext, { indexId, query: JSON.stringify(query) });
     if (cacheResponse) {
+      console.log('getIndividualEnvironmentOrProjCost mingtong step 6, cacheResponse', cacheResponse);
       const updatedAt = new Date(cacheResponse.updatedAt);
       const now = new Date();
       const elapsedHours = (now - updatedAt) / 1000 / 60 / 60;
@@ -81,7 +87,7 @@ class CostsService extends Service {
         return JSON.parse(cacheResponse.result);
       }
     }
-
+    console.log('getIndividualEnvironmentOrProjCost mingtong step 7');
     let filter = {};
     if (proj) {
       filter = {
@@ -118,8 +124,9 @@ class CostsService extends Service {
         Key: 'Env',
       });
     }
-
+    console.log('getIndividualEnvironmentOrProjCost mingtong step 8');
     const response = await this.callAwsCostExplorerApi(requestContext, indexId, numberOfDaysInPast, filter, groupBy);
+    console.log('getIndividualEnvironmentOrProjCost mingtong step 9');
 
     if (response) {
       const rawCacheData = {
@@ -129,17 +136,18 @@ class CostsService extends Service {
       };
       await costApiCacheService.create(requestContext, rawCacheData);
     }
-
+    console.log('getIndividualEnvironmentOrProjCost mingtong step 10, response', response);
     return response || [];
   }
 
   async callAwsCostExplorerApi(requestContext, indexId, numberOfDaysInPast, filter, groupBy) {
+    console.log('callAwsCostExplorerApi mingtong step 1');
     const [aws] = await this.service(['aws']);
     const { accessKeyId, secretAccessKey, sessionToken } = await this.getCredentials(requestContext, indexId);
-
+    console.log('callAwsCostExplorerApi mingtong step 2');
     const costExplorer = new aws.sdk.CostExplorer({
       apiVersion: '2017-10-25',
-      region: 'us-east-1',
+      region: 'cn-northwest-1',
       accessKeyId,
       secretAccessKey,
       sessionToken,
@@ -147,7 +155,7 @@ class CostsService extends Service {
     const now = new Date();
     const startDate = new Date();
     startDate.setDate(now.getDate() - numberOfDaysInPast);
-
+    console.log('callAwsCostExplorerApi mingtong step 3');
     const result = await costExplorer
       .getCostAndUsage({
         TimePeriod: {
@@ -168,9 +176,10 @@ class CostsService extends Service {
         }
         throw e;
       });
-
+    console.log('callAwsCostExplorerApi mingtong step 4');
     let response;
     if (result) {
+      console.log('callAwsCostExplorerApi mingtong step 5, result', result);
       response = result.ResultsByTime.map(item => {
         const costItems = {};
         item.Groups.forEach(group => {
@@ -187,16 +196,18 @@ class CostsService extends Service {
         };
       });
     }
-
+    console.log('callAwsCostExplorerApi mingtong step 6, response', response);
     return response;
   }
 
   async getCredentials(requestContext, indexId) {
+    console.log('getCredentials mingtong step 1');
     const [aws, awsAccountsService, indexesService] = await this.service([
       'aws',
       'awsAccountsService',
       'indexesService',
     ]);
+    console.log('getCredentials mingtong step 2');
     const { roleArn: RoleArn, externalId: ExternalId } = await runAndCatch(
       async () => {
         const { awsAccountId } = await indexesService.mustFind(requestContext, { id: indexId });
@@ -207,9 +218,12 @@ class CostsService extends Service {
         throw this.boom.badRequest(`account with id "${indexId} is not available`);
       },
     );
-
+    console.log('getCredentials mingtong step 3');
     const by = _.get(requestContext, 'principalIdentifier.uid');
-    const sts = new aws.sdk.STS({ region: 'us-east-1' });
+    console.log('getCredentials mingtong step 4, by', by);
+    // const sts = new aws.sdk.STS({ region: 'us-east-1' });
+    const sts = new aws.sdk.STS({ region: 'cn-north-1' });
+    console.log('getCredentials mingtong step 5');
     const {
       Credentials: { AccessKeyId: accessKeyId, SecretAccessKey: secretAccessKey, SessionToken: sessionToken },
     } = await sts
@@ -219,7 +233,7 @@ class CostsService extends Service {
         ExternalId,
       })
       .promise();
-
+    console.log('getCredentials mingtong step 6');
     return { accessKeyId, secretAccessKey, sessionToken };
   }
 
