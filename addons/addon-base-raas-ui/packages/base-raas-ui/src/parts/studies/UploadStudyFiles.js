@@ -34,7 +34,9 @@ class UploadStudyFiles extends React.Component {
   }
 
   async fileUploadHandler(fileUpload) {
+    console.log('start upload file mingtong step 1, fileUpload', fileUpload);
     const file = fileUpload.getFile();
+    console.log('start upload file mingtong step 2, file', file);
     if (!file) {
       throw new Error('No file');
     }
@@ -42,8 +44,11 @@ class UploadStudyFiles extends React.Component {
     // Get presigned POST request
     let uploadRequest;
     try {
+      console.log('start upload file mingtong step 3, fileUpload.fullFilePath', fileUpload.fullFilePath);
       const presignResult = await getPresignedStudyUploadRequests(this.props.studyId, fileUpload.fullFilePath);
+      console.log('start upload file mingtong step 4, presignResult', presignResult);
       uploadRequest = presignResult[fileUpload.fullFilePath];
+      console.log('start upload file mingtong step 5, uploadRequest', uploadRequest);
     } catch (error) {
       const errMessage = 'Error occurred obtaining presigned request';
       console.error(`${errMessage}:`, error);
@@ -56,10 +61,13 @@ class UploadStudyFiles extends React.Component {
 
     // Upload file
     const uploadHandle = upload(file, uploadRequest.url, uploadRequest.fields);
+    console.log('start upload file mingtong step 6');
     fileUpload.setCancel(uploadHandle.cancel);
+    console.log('start upload file mingtong step 7');
     uploadHandle.onProgress(fileUpload.updateProgress);
 
     try {
+      console.log('start upload file mingtong step 8');
       await uploadHandle.done;
     } catch (error) {
       const errMessage = 'Error encountered while uploading file';

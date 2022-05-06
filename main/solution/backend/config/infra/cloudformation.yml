@@ -43,6 +43,7 @@ Resources:
         CorsRules:
           - AllowedOrigins:
               - ${self:custom.settings.websiteUrl}
+              - ${self:custom.settings.websiteR53Url}
               - !If
                 - IsDev
                 - http://localhost:3000
@@ -369,6 +370,7 @@ Resources:
         CorsRules:
           - AllowedOrigins:
               - ${self:custom.settings.websiteUrl}
+              - ${self:custom.settings.websiteR53Url}
               - !If
                 - IsDev
                 - http://localhost:3000
@@ -403,6 +405,7 @@ Resources:
         CorsRules:
           - AllowedOrigins:
               - ${self:custom.settings.websiteUrl}
+              - ${self:custom.settings.websiteR53Url}
               - !If
                 - IsDev
                 - http://localhost:3000
